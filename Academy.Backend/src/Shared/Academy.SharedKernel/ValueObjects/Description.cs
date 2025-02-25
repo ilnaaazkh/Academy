@@ -7,9 +7,10 @@ namespace Academy.SharedKernel.ValueObjects
         public const int MAX_LENGTH = 2000;
         public string Value { get; }
 
-        private Description(string description)
+        private Description() { }
+        private Description(string value)
         {
-            Value = description;
+            Value = value;
         }
 
         public static Result<Description, Error> Create(string description)

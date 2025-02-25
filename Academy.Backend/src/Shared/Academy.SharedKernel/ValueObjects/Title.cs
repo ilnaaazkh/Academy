@@ -7,6 +7,7 @@ namespace Academy.SharedKernel.ValueObjects
         public const int MAX_LENGTH = 100;
         public string Value { get; }
 
+        private Title() {}
         private Title(string value)
         {
             Value = value;

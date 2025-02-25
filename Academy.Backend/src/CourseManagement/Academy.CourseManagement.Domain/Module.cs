@@ -5,12 +5,13 @@ using CSharpFunctionalExtensions;
 
 namespace Academy.CourseManagement.Domain
 {
-    internal class Module : Entity<ModuleId>
+    public class Module : Entity<ModuleId>
     {
+        private List<Lesson> lessons = new();
         public Title Title { get; private set; }
         public Description Description { get; set; }
-
         public Position Position { get; private set; } = null!;
+        public IReadOnlyList<Lesson> Lessons => lessons.AsReadOnly();
 
         public Module(Title title, Description description)
         {

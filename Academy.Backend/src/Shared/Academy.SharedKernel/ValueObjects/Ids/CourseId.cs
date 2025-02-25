@@ -11,9 +11,9 @@ namespace Academy.SharedKernel.ValueObjects.Ids
     {
         public Guid Value { get; set; }
 
-        private CourseId(Guid id)
+        private CourseId(Guid value)
         {
-            Value = id;
+            Value = value;
         }
 
         public static CourseId Create(Guid id) => new CourseId(id);

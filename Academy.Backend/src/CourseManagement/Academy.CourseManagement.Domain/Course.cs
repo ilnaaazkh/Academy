@@ -5,7 +5,7 @@ using CSharpFunctionalExtensions;
 
 namespace Academy.CourseManagement.Domain
 {
-    internal class Course : Entity<CourseId>
+    public class Course : Entity<CourseId>
     {
         public Title Title { get; private set; }
         public Description Description { get; set; }
@@ -13,6 +13,8 @@ namespace Academy.CourseManagement.Domain
         private List<Module> _modules = new();
         public IReadOnlyList<Module> Modules => _modules;
 
+        public Course() { }            
+        
         public Course(Title title, Description description)
         {
             Title = title;

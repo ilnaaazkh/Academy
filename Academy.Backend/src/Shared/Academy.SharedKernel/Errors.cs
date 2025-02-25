@@ -22,5 +22,26 @@
                 return Error.NotFound("record.not.found", $"record not found{forId}");
             }
         }
+
+        public static class Question
+        {
+            public static Error AtLeastTwoAnswersRequired(string questionTitle)
+            {
+                return Error.Validation(
+                    "question.at.least.two.answers.required",
+                    $"Question '{questionTitle}' must have at least two possible answers.",
+                    null
+                );
+            }
+
+            public static Error AtLeastOneCorrectAnswerRequired(string questionTitle)
+            {
+                return Error.Validation(
+                    "question.at.least.one.correct.answer.required",
+                    $"Question '{questionTitle}' must have at least one correct answer.",
+                    null
+                );
+            }
+        }
     }
 }
