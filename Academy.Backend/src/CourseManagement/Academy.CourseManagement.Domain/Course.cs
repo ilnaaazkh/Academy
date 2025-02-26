@@ -9,7 +9,7 @@ namespace Academy.CourseManagement.Domain
     {
         public Title Title { get; private set; }
         public Description Description { get; set; }
-
+        public Status Status { get; private set; }
         private List<Module> _modules = new();
         public IReadOnlyList<Module> Modules => _modules;
 

@@ -30,6 +30,11 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
                .HasConversion(t => t.Value,
                    value => Description.Create(value).Value);
 
+            builder.Property(c => c.Status)
+                .IsRequired()
+                .HasMaxLength(Status.MAX_LENGTH)
+                .HasConversion(id => id.Value, value => Status.Create(value).Value);
+
             builder.HasMany(c => c.Modules)
                 .WithOne()
                 .HasForeignKey("course_id");
