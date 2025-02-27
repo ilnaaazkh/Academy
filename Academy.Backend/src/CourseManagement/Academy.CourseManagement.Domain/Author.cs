@@ -4,7 +4,7 @@ using CSharpFunctionalExtensions;
 
 namespace Academy.CourseManagement.Domain
 {
-    internal class Author : Entity<AuthorId>
+    public class Author : Entity<AuthorId>
     {
         public Email Email { get; private set; }
         public FullName FullName { get; private set; }
@@ -18,5 +18,7 @@ namespace Academy.CourseManagement.Domain
             FullName = fullName;
             PhoneNumber = phoneNumber;
         }
+
+        private Author() { }
     }
 }
