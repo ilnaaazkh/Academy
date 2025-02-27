@@ -1,4 +1,5 @@
-﻿using Academy.SharedKernel.ValueObjects;
+﻿using Academy.SharedKernel;
+using Academy.SharedKernel.ValueObjects;
 using Academy.SharedKernel.ValueObjects.Ids;
 using CSharpFunctionalExtensions;
 
@@ -21,5 +22,39 @@ namespace Academy.CourseManagement.Domain
             LessonType = lessonType;
         }
 
+
+        public UnitResult<Error> SetPosition(Position position)
+        {
+            Position = position;
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> MoveForward()
+        {
+            var moveResult = Position.MoveForward();
+
+            if (moveResult.IsFailure)
+            {
+                return moveResult.Error;
+            }
+
+            Position = moveResult.Value;
+
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> MoveBack()
+        {
+            var moveResult = Position.MoveBack();
+
+            if (moveResult.IsFailure)
+            {
+                return moveResult.Error;
+            }
+
+            Position = moveResult.Value;
+
+            return UnitResult.Success<Error>();
+        }
     }
 }

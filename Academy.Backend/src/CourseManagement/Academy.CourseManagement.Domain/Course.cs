@@ -50,5 +50,31 @@ namespace Academy.CourseManagement.Domain
 
             return UnitResult.Success<Error>();
         }
+
+        public UnitResult<Error> AddLesson(ModuleId moduleId, Lesson lesson)
+        {
+            var module = _modules.FirstOrDefault(m => m.Id == moduleId);
+
+            if(module is null)
+            {
+                return Errors.General.NotFound(moduleId.Value);
+            }
+
+            module.AddLesson(lesson);
+            return UnitResult.Success<Error>();
+        }
+        
+        public UnitResult<Error> RemoveLesson(ModuleId moduleId, LessonId lessonId)
+        {
+            var module = _modules.FirstOrDefault(m => m.Id == lessonId);
+            
+            if(module is null)
+            {
+                return Errors.General.NotFound(moduleId.Value);
+            }
+
+            var deletionResult = module.RemoveLesson(lessonId);
+            return deletionResult;
+        }
     }
 }

@@ -7,16 +7,35 @@ namespace Academy.CourseManagement.Domain
 {
     public class Module : Entity<ModuleId>
     {
-        private List<Lesson> lessons = new();
+        private List<Lesson> _lessons = new();
         public Title Title { get; private set; }
         public Description Description { get; set; }
         public Position Position { get; private set; } = null!;
-        public IReadOnlyList<Lesson> Lessons => lessons.AsReadOnly();
+        public IReadOnlyList<Lesson> Lessons => _lessons.AsReadOnly();
 
         public Module(Title title, Description description)
         {
             Title = title;
             Description = description;
+        }
+
+        public UnitResult<Error> AddLesson(Lesson lesson)
+        {
+            _lessons.Add(lesson);
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> RemoveLesson(LessonId lessonId)
+        {
+            var lesson = _lessons.FirstOrDefault(l => l.Id == lessonId);
+
+            if(lesson is null)
+            {
+                return Errors.General.NotFound(lessonId.Value);
+            }
+
+            _lessons.Remove(lesson);
+            return UnitResult.Success<Error>();
         }
 
         public UnitResult<Error> SetPosition(Position position)

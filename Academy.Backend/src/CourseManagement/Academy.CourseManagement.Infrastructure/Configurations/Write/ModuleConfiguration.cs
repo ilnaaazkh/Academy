@@ -38,7 +38,8 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
 
             builder.HasMany(c => c.Lessons)
                 .WithOne()
-                .HasForeignKey("module_id");
+                .HasForeignKey("module_id")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

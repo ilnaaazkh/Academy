@@ -1,0 +1,16 @@
+services:
+    academy-postgres-db:
+        container_name: academy-postgres-db
+        image: postgres:17
+        restart: always
+        ports: 
+            - 5432:5432
+        environment:
+            POSTGRES_DB: academy
+            POSTGRES_USER: academy_user
+            POSTGRES_PASSWORD: paSSw0rd
+        volumes: 
+            - postgres-data:/var/lib/postgresql/data
+
+volumes:
+    postgres-data:
