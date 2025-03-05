@@ -1,4 +1,6 @@
-﻿using Academy.CourseManagement.Infrastructure.DbContexts;
+﻿using Academy.CourseManagement.Application.Authors;
+using Academy.CourseManagement.Infrastructure.DbContexts;
+using Academy.CourseManagement.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Academy.CourseManagement.Infrastructure
@@ -9,7 +11,7 @@ namespace Academy.CourseManagement.Infrastructure
             this IServiceCollection services)
         {
             services.AddDbContext<CourseManagementWriteDbContext>();
-            
+            services.AddScoped<IAuthorsRepository, AuthorsRepository>();
             return services;
         }
     }

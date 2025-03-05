@@ -18,5 +18,7 @@ namespace Academy.SharedKernel.ValueObjects.Ids
         {
             yield return Value;
         }
+
+        public static implicit operator Guid(AuthorId id) => id.Value;
     }
 }

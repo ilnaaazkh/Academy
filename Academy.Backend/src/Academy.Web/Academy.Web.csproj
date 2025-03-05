@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Application\Academy.CourseManagement.Application.csproj" />
     <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Infrastructure\Academy.CourseManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Presentation\Academy.CourseManagement.Presentation.csproj" />
   </ItemGroup>

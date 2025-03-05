@@ -42,7 +42,6 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
             });
 
             builder.Property(a => a.Bio)
-               .IsRequired()
                .HasMaxLength(Description.MAX_LENGTH)
                .HasConversion(t => t.Value,
                    value => Description.Create(value).Value);

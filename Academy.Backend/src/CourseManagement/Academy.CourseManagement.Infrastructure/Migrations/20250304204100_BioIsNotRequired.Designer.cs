@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Academy.CourseManagement.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.CourseManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CourseManagementWriteDbContext))]
-    partial class CourseManagementWriteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250304204100_BioIsNotRequired")]
+    partial class BioIsNotRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
