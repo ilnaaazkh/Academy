@@ -27,7 +27,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "module_id",
                 principalSchema: "course_management",
                 principalTable: "modules",
-                principalColumn: "id",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -37,7 +37,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "course_id",
                 principalSchema: "course_management",
                 principalTable: "courses",
-                principalColumn: "id",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -61,7 +61,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "module_id",
                 principalSchema: "course_management",
                 principalTable: "modules",
-                principalColumn: "id");
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "fk_modules_courses_course_id",
@@ -70,7 +70,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "course_id",
                 principalSchema: "course_management",
                 principalTable: "courses",
-                principalColumn: "id");
+                principalColumn: "Id");
         }
     }
 }

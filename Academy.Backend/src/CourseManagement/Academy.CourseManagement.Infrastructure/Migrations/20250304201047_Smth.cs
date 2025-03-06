@@ -30,7 +30,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 name: "pk_authors",
                 schema: "course_management",
                 table: "authors",
-                column: "id");
+                column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "fk_authorships_authors_author_id",
@@ -39,7 +39,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "author_id",
                 principalSchema: "course_management",
                 principalTable: "authors",
-                principalColumn: "id",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -66,7 +66,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 name: "pk_author",
                 schema: "course_management",
                 table: "author",
-                column: "id");
+                column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "fk_authorships_author_author_id",
@@ -75,7 +75,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 column: "author_id",
                 principalSchema: "course_management",
                 principalTable: "author",
-                principalColumn: "id",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
     }

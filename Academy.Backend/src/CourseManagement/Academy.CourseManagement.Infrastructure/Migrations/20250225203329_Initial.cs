@@ -47,7 +47,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         column: x => x.course_id,
                         principalSchema: "course_management",
                         principalTable: "courses",
-                        principalColumn: "id");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +73,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         column: x => x.module_id,
                         principalSchema: "course_management",
                         principalTable: "modules",
-                        principalColumn: "id");
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

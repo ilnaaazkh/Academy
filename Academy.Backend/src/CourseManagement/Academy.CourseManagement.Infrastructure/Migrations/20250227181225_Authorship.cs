@@ -45,14 +45,14 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         column: x => x.author_id,
                         principalSchema: "course_management",
                         principalTable: "author",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_authorships_courses_course_id",
                         column: x => x.course_id,
                         principalSchema: "course_management",
                         principalTable: "courses",
-                        principalColumn: "id",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

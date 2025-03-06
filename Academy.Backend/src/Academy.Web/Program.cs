@@ -1,6 +1,7 @@
 using Academy.CourseManagement.Infrastructure;
 using Academy.CourseManagement.Application;
 using Academy.Web.Migrations;
+using Academy.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services
     .AddCourseManagementApplication();
 
 var app = builder.Build();
+app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {

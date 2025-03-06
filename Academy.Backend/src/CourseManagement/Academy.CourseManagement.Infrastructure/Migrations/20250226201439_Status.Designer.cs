@@ -30,7 +30,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -59,7 +59,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Attachments")
                         .IsRequired()
@@ -113,7 +113,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("id");
+                        .HasColumnName("Id");
 
                     b.Property<string>("Description")
                         .IsRequired()
