@@ -1,4 +1,5 @@
 ﻿using Academy.CourseManagement.Application.Authors.Create;
+using Academy.CourseManagement.Application.Authors.Delete;
 using Academy.CourseManagement.Application.Authors.Update.UpdateMainInfo;
 using Academy.CourseManagement.Contracts.Requests;
 using Academy.CourseManagement.Presentation.Extensions;
@@ -16,7 +17,6 @@ namespace Academy.CourseManagement.Presentation
             [FromServices] CreateAuthorCommandHandler handler,
             CancellationToken cancellationToken = default)
         {
-            throw new Exception("Poshel nahuui");
             var result = await handler.Handle(request.ToCommand(), cancellationToken);
 
             if (result.IsFailure)
@@ -35,6 +35,23 @@ namespace Academy.CourseManagement.Presentation
             CancellationToken cancellationToken = default)
         {
             var result = await handler.Handle(request.ToCommand(id), cancellationToken);
+
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> DeleteAuthor(
+            [FromRoute] Guid id,
+            [FromServices] DeleteAuthorCommandHandler handler,
+            CancellationToken cancellationToken = default)
+        {
+            var command = new DeleteAuthorCommand(id);
+            var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
             {
