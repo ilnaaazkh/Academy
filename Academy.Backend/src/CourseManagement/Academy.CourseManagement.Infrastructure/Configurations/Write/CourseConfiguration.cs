@@ -6,7 +6,7 @@ using Academy.SharedKernel.ValueObjects;
 
 namespace Academy.CourseManagement.Infrastructure.Configurations.Write
 {
-    public class CourseConfiguration : IEntityTypeConfiguration<Course>
+    internal class CourseConfiguration : IEntityTypeConfiguration<Course>
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {

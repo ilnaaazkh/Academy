@@ -11,5 +11,6 @@ namespace Academy.CourseManagement.Application.Authors
         Task<Result<Author, Error>> GetById(AuthorId id, CancellationToken cancellationToken = default);
         Task<Result<Guid, Error>> Remove(Author author, CancellationToken cancellationToken = default);
         Task<Result<Guid, Error>> Save(Author author, CancellationToken cancellationToken = default);
+        Task<bool> IsAuthorExist(AuthorId id);
     }
 }

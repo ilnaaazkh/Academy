@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Academy.CourseManagement.Infrastructure.Repositories
 {
-    public class AuthorsRepository : IAuthorsRepository
+    internal class AuthorsRepository : IAuthorsRepository
     {
         private readonly CourseManagementWriteDbContext _dbContext;
 
@@ -56,6 +56,11 @@ namespace Academy.CourseManagement.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
 
             return author.Id.Value;
+        }
+
+        public async Task<bool> IsAuthorExist(AuthorId id)
+        {
+            return await _dbContext.Authors.AnyAsync(a => a.Id == id);
         }
     }
 }

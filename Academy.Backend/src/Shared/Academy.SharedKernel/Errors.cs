@@ -43,5 +43,13 @@
                 );
             }
         }
+
+        public static class Author {
+            public static Error AuthorNotExist(Guid? id)
+            {
+                return Error.Validation("author.not.exist", $"author with id = {id} doesn't exist", null);
+            }
+        }
+
     }
 }

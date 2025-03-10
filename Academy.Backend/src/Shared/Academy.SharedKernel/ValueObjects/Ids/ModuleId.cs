@@ -12,7 +12,7 @@ namespace Academy.SharedKernel.ValueObjects.Ids
         }
 
         public static ModuleId Create(Guid id) => new ModuleId(id);
-        public static ModuleId NewCourseId() => new ModuleId(Guid.NewGuid());
+        public static ModuleId NewModuleId() => new ModuleId(Guid.NewGuid());
 
         protected override IEnumerable<IComparable> GetComparableEqualityComponents()
         {

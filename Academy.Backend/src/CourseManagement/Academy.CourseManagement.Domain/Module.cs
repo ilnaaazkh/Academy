@@ -13,8 +13,12 @@ namespace Academy.CourseManagement.Domain
         public Position Position { get; private set; } = null!;
         public IReadOnlyList<Lesson> Lessons => _lessons.AsReadOnly();
 
-        public Module(Title title, Description description)
+        public Module(
+            ModuleId id,
+            Title title, 
+            Description description)
         {
+            Id = id;
             Title = title;
             Description = description;
         }
@@ -68,6 +72,20 @@ namespace Academy.CourseManagement.Domain
             }
 
             Position = moveResult.Value;
+
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> UpdateTitle(Title title)
+        {
+            Title = title;
+
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> UpdateDescription(Description description)
+        {
+            Description = description;
 
             return UnitResult.Success<Error>();
         }

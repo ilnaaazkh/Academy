@@ -2,6 +2,7 @@
 using Academy.SharedKernel.ValueObjects;
 using Academy.SharedKernel.ValueObjects.Ids;
 using CSharpFunctionalExtensions;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace Academy.CourseManagement.Domain
 {
@@ -15,10 +16,14 @@ namespace Academy.CourseManagement.Domain
 
         public Course() { }            
         
-        public Course(Title title, Description description)
+        public Course(CourseId id, 
+            Title title, 
+            Description description)
         {
+            Id = id;
             Title = title;
             Description = description;
+            Status = Status.Draft;
         }
 
         public UnitResult<Error> AddModule(Module module)
@@ -75,6 +80,30 @@ namespace Academy.CourseManagement.Domain
 
             var deletionResult = module.RemoveLesson(lessonId);
             return deletionResult;
+        }
+
+        public UnitResult<Error> UpdateTitle(Title title)
+        {
+            Title = title;
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> UpdateDescription(Description description)
+        {
+            Description = description;
+            return UnitResult.Success<Error>();
+        }
+
+        public Result<Module, Error> GetModuleById(ModuleId moduleId)
+        {
+            var module = _modules.FirstOrDefault(m => m.Id == moduleId);
+
+            if(module == null)
+            {
+                return Errors.General.NotFound(moduleId.Value);
+            }
+
+            return module;
         }
     }
 }
