@@ -71,7 +71,7 @@ namespace Academy.CourseManagement.Domain
         
         public UnitResult<Error> RemoveLesson(ModuleId moduleId, LessonId lessonId)
         {
-            var module = _modules.FirstOrDefault(m => m.Id == lessonId);
+            var module = _modules.FirstOrDefault(m => m.Id == moduleId);
             
             if(module is null)
             {

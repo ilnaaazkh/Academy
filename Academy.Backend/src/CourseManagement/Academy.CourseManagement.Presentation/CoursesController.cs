@@ -2,6 +2,7 @@
 using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Delete;
+using Academy.CourseManagement.Application.Courses.DeleteLesson;
 using Academy.CourseManagement.Application.Courses.DeleteModule;
 using Academy.CourseManagement.Application.Courses.Update;
 using Academy.CourseManagement.Application.Courses.UpdateModule;
@@ -132,6 +133,25 @@ namespace Academy.CourseManagement.Presentation
             }
 
             return Ok(result.Value);
+        }
+
+        [HttpDelete("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}")]
+        public async Task<ActionResult> RemoveLesson(
+            [FromRoute] Guid courseId,
+            [FromRoute] Guid moduleId,
+            [FromRoute] Guid lessonId,
+            [FromServices] DeleteLessonCommandHandler handler, 
+            CancellationToken cancellationToken)
+        {
+            var command = new DeleteLessonCommand(courseId, moduleId, lessonId);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            return NoContent();
         }
     }
 }

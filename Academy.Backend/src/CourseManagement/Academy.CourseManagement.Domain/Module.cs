@@ -42,7 +42,18 @@ namespace Academy.CourseManagement.Domain
                 return Errors.General.NotFound(lessonId.Value);
             }
 
+            var lessonsToMove = _lessons.Where(l => l.Position > lesson.Position);
+
+            foreach(var lessonToMove in lessonsToMove)
+            {
+                var moveResult = lessonToMove.MoveBack();
+
+                if (moveResult.IsFailure)
+                    return moveResult.Error;
+            }
+
             _lessons.Remove(lesson);
+
             return UnitResult.Success<Error>();
         }
 
