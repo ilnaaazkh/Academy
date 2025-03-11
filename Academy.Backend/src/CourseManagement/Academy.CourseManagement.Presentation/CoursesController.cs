@@ -1,4 +1,5 @@
-﻿using Academy.CourseManagement.Application.Courses.AddModule;
+﻿using Academy.CourseManagement.Application.Courses.AddLesson;
+using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Delete;
 using Academy.CourseManagement.Application.Courses.DeleteModule;
@@ -113,6 +114,24 @@ namespace Academy.CourseManagement.Presentation
             }
 
             return NoContent();
+        }
+
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons")]
+        public async Task<ActionResult> AddLesson(
+            [FromRoute] Guid courseId,
+            [FromRoute] Guid moduleId,
+            [FromBody] AddLessonRequest request,
+            [FromServices] AddLessonCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(request.ToCommand(courseId, moduleId), cancellationToken);
+
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            return Ok(result.Value);
         }
     }
 }

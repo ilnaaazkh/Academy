@@ -25,7 +25,11 @@ namespace Academy.CourseManagement.Domain
 
         public UnitResult<Error> AddLesson(Lesson lesson)
         {
+            Position position = Position.Create(_lessons.Count + 1).Value;
+            lesson.SetPosition(position);
+
             _lessons.Add(lesson);
+
             return UnitResult.Success<Error>();
         }
 

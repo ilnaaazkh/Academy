@@ -15,13 +15,17 @@ namespace Academy.CourseManagement.Domain
         public IReadOnlyList<Attachment> Attachments { get; private set; } = new List<Attachment>();
         public PracticeLessonData PracticeLessonData { get; private set; }
 
-        public Lesson(Title title, Content content, LessonType lessonType)
+        public Lesson(
+            LessonId id,
+            Title title, 
+            Content content, 
+            LessonType lessonType)
         {
+            Id = id;
             Title = title;
             Content = content;
             LessonType = lessonType;
         }
-
 
         public UnitResult<Error> SetPosition(Position position)
         {

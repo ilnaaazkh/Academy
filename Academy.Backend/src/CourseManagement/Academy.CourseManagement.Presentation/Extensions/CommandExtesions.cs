@@ -1,5 +1,6 @@
 ﻿using Academy.CourseManagement.Application.Authors.Create;
 using Academy.CourseManagement.Application.Authors.Update.UpdateMainInfo;
+using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Update;
@@ -47,6 +48,18 @@ namespace Academy.CourseManagement.Presentation.Extensions
             Guid moduleId)
         {
             return new UpdateModuleCommand(courseId, moduleId, request.Title, request.Description);
+        }
+
+        public static AddLessonCommand ToCommand(
+            this AddLessonRequest request,
+            Guid courseId,
+            Guid moduleId)
+        {
+            return new AddLessonCommand(courseId, 
+                moduleId, 
+                request.Title, 
+                request.Content, 
+                request.LessonType);
         }
     }
 }

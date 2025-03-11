@@ -62,6 +62,7 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
                     );
 
             builder.Property(l => l.PracticeLessonData)
+                .IsRequired(false)
                 .HasConversion(p => JsonSerializer.Serialize(p, JsonSerializerOptions.Default),
                     v => JsonSerializer.Deserialize<PracticeLessonData>(v, JsonSerializerOptions.Default)!);
         }
