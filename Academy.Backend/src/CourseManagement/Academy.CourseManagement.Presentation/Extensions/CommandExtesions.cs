@@ -2,10 +2,12 @@
 using Academy.CourseManagement.Application.Authors.Update.UpdateMainInfo;
 using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
+using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Update;
 using Academy.CourseManagement.Application.Courses.UpdateModule;
 using Academy.CourseManagement.Contracts.Requests;
+using System.Linq;
 
 namespace Academy.CourseManagement.Presentation.Extensions
 {
@@ -60,6 +62,31 @@ namespace Academy.CourseManagement.Presentation.Extensions
                 request.Title, 
                 request.Content, 
                 request.LessonType);
+        }
+
+        public static AddTestToLessonCommand ToCommand(
+            this AddTestToLessonRequest request,
+            Guid courseId,
+            Guid moduleId,
+            Guid lessonId
+            )
+        {
+            var dtos = request.Questions.Select(q =>
+                new Application.Courses.AddTestToLesson.TestQuestionDto(
+                    q.Title,
+                    q.Answers.Select(a =>
+                        new Application.Courses.AddTestToLesson.TestAnswerDto(a.Title, a.IsCorrect)
+                    ).ToList()
+                )
+            );
+
+            var command = new AddTestToLessonCommand(
+                courseId,
+                moduleId,
+                lessonId,
+                dtos);
+
+            return command;
         }
     }
 }

@@ -105,5 +105,18 @@ namespace Academy.CourseManagement.Domain
 
             return module;
         }
+
+        public UnitResult<Error> AddTestToLesson(
+            ModuleId moduleId,
+            LessonId lessonId,
+            IEnumerable<Question> questions)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if (moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.AddTestToLesson(lessonId, questions);
+        }
     }
 }

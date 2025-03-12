@@ -1,5 +1,6 @@
 ﻿using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
+using System.Text.Json.Serialization;
 
 namespace Academy.SharedKernel.ValueObjects
 {
@@ -8,11 +9,13 @@ namespace Academy.SharedKernel.ValueObjects
         public string Title { get; }
         public bool IsCorrect { get; }
 
+        [JsonConstructor]
         private Answer(string title, bool isCorrect)
         {
             Title = title;
             IsCorrect = isCorrect;
         }
+        private Answer() { }
 
         public static Result<Answer, Error> Create(string title, bool isCorrect)
         {

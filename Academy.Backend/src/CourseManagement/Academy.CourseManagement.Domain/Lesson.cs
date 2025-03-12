@@ -27,6 +27,16 @@ namespace Academy.CourseManagement.Domain
             LessonType = lessonType;
         }
 
+        public UnitResult<Error> AddTest(IEnumerable<Question> questions)
+        {
+            if (LessonType != LessonType.Test)
+                return Errors.Lesson.CannotAddTestToNonTestLesson();
+
+            Questions = questions.ToList();
+
+            return UnitResult.Success<Error>();
+        }
+
         public UnitResult<Error> SetPosition(Position position)
         {
             Position = position;

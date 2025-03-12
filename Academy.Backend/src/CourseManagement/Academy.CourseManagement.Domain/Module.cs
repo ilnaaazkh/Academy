@@ -104,5 +104,19 @@ namespace Academy.CourseManagement.Domain
 
             return UnitResult.Success<Error>();
         }
+
+        public UnitResult<Error> AddTestToLesson(
+            LessonId lessonId,
+            IEnumerable<Question> questions)
+        {
+            var lesson = _lessons.FirstOrDefault(l => l.Id == lessonId);
+
+            if(lesson == null)
+            {
+                return Errors.General.NotFound(lessonId.Value);
+            }
+
+            return lesson.AddTest(questions);
+        }
     }
 }

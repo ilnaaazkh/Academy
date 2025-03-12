@@ -1,5 +1,6 @@
 ﻿using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
+using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Delete;
 using Academy.CourseManagement.Application.Courses.DeleteLesson;
@@ -152,6 +153,25 @@ namespace Academy.CourseManagement.Presentation
             }
 
             return NoContent();
+        }
+
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/test-questions")]
+        public async Task<ActionResult> AddTestToLesson(
+            [FromRoute] Guid courseId,
+            [FromRoute] Guid moduleId,
+            [FromRoute] Guid lessonId,
+            [FromBody] AddTestToLessonRequest request,
+            [FromServices] AddTestToLessonCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand(courseId, moduleId, lessonId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
         }
     }
 }

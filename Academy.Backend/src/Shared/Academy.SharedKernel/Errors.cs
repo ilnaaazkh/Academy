@@ -51,5 +51,16 @@
             }
         }
 
+        public static class Lesson 
+        {
+            public static Error CannotAddTestToNonTestLesson()
+            {
+                return Error.Validation(
+                    "lesson.cannot.add.test",
+                    "Cannot add a test to a lesson that is not of type 'TEST'.",
+                    null
+                );
+            }
+        }
     }
 }
