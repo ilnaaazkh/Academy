@@ -4,13 +4,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e2a7427d-4315-4ac5-bc6b-948c12486dd9</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Application\Academy.CourseManagement.Application.csproj" />
+    <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Infrastructure\Academy.CourseManagement.Infrastructure.csproj" />
     <ProjectReference Include="..\CourseManagement\Academy.CourseManagement.Presentation\Academy.CourseManagement.Presentation.csproj" />
   </ItemGroup>
 
