@@ -153,7 +153,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
 
                     b.Property<string>("Questions")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("questions");
 
                     b.Property<string>("Title")

@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.CourseManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CourseManagementWriteDbContext))]
-    [Migration("20250227181225_Authorship")]
-    partial class Authorship
+    [Migration("20250313124300_qqq")]
+    partial class qqq
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,9 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("bio");
@@ -72,9 +71,9 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_author");
+                        .HasName("pk_authors");
 
-                    b.ToTable("author", "course_management");
+                    b.ToTable("authors", "course_management");
                 });
 
             modelBuilder.Entity("Academy.CourseManagement.Domain.Authorship", b =>
@@ -100,7 +99,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -130,7 +129,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("Attachments")
                         .IsRequired()
@@ -152,13 +151,12 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         .HasColumnName("position");
 
                     b.Property<string>("PracticeLessonData")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("practice_lesson_data");
 
                     b.Property<string>("Questions")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("questions");
 
                     b.Property<string>("Title")
@@ -184,7 +182,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -222,7 +220,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_authorships_author_author_id");
+                        .HasConstraintName("fk_authorships_authors_author_id");
 
                     b.HasOne("Academy.CourseManagement.Domain.Course", null)
                         .WithMany()

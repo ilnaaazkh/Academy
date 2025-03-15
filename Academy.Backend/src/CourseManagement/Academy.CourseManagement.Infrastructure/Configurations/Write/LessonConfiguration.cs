@@ -4,7 +4,9 @@ using Academy.SharedKernel.ValueObjects.Ids;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace Academy.CourseManagement.Infrastructure.Configurations.Write
@@ -43,18 +45,19 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
 
             builder.Property(l => l.Questions)
                 .HasConversion(
-                    q => JsonSerializer.Serialize(q, JsonSerializerOptions.Default),
-                    v => JsonSerializer.Deserialize<IReadOnlyList<Question>>(v, JsonSerializerOptions.Default)!,
+                    q => JsonConvert.SerializeObject(q),
+                    v => JsonConvert.DeserializeObject<IReadOnlyList<Question>>(v)!,
                     new ValueComparer<IReadOnlyList<Question>>(
                         (c1, c2) => c1!.SequenceEqual(c2!),
                         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                         c => c.ToList())
-                    );
+                    )
+                .HasColumnType("jsonb");
 
             builder.Property(l => l.Attachments)
                 .HasConversion(
-                    a => JsonSerializer.Serialize(a, JsonSerializerOptions.Default),
-                    v => JsonSerializer.Deserialize<IReadOnlyList<Attachment>>(v, JsonSerializerOptions.Default)!,
+                    a => System.Text.Json.JsonSerializer.Serialize(a, JsonSerializerOptions.Default),
+                    v => System.Text.Json.JsonSerializer.Deserialize<IReadOnlyList<Attachment>>(v, JsonSerializerOptions.Default)!,
                     new ValueComparer<IReadOnlyList<Attachment>>(
                         (c1, c2) => c1!.SequenceEqual(c2!),
                         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
@@ -63,8 +66,8 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
 
             builder.Property(l => l.PracticeLessonData)
                 .IsRequired(false)
-                .HasConversion(p => JsonSerializer.Serialize(p, JsonSerializerOptions.Default),
-                    v => JsonSerializer.Deserialize<PracticeLessonData>(v, JsonSerializerOptions.Default)!);
+                .HasConversion(p => System.Text.Json.JsonSerializer.Serialize(p, JsonSerializerOptions.Default),
+                    v => System.Text.Json.JsonSerializer.Deserialize<PracticeLessonData>(v, JsonSerializerOptions.Default)!);
         }
     }
 }

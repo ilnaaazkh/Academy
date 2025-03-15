@@ -1,6 +1,6 @@
-﻿using Academy.SharedKernel;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using System.Text.Json.Serialization;
+
 
 namespace Academy.SharedKernel.ValueObjects
 {
@@ -14,9 +14,8 @@ namespace Academy.SharedKernel.ValueObjects
         }
 
         private Question() { }
-
         public string Title { get; private set; }
-        public IReadOnlyList<Answer> Answers { get; private set; }
+        public IReadOnlyList<Answer> Answers { get; private set; } = new List<Answer>();
 
         public static Result<Question, Error> Create(string title, List<Answer> answers)
         {

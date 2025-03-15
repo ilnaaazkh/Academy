@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.CourseManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CourseManagementWriteDbContext))]
-    [Migration("20250311151211_NotReqPracticeData")]
-    partial class NotReqPracticeData
+    [Migration("20250313123237_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,7 +156,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
 
                     b.Property<string>("Questions")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("questions");
 
                     b.Property<string>("Title")

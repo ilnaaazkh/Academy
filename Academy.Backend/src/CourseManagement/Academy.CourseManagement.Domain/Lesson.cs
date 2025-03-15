@@ -15,6 +15,8 @@ namespace Academy.CourseManagement.Domain
         public IReadOnlyList<Attachment> Attachments { get; private set; } = new List<Attachment>();
         public PracticeLessonData PracticeLessonData { get; private set; }
 
+        //ef core
+        private Lesson(){}
         public Lesson(
             LessonId id,
             Title title, 
