@@ -1,11 +1,14 @@
-using Academy.CourseManagement.Infrastructure;
-using Academy.CourseManagement.Application;
+using Academy.FilesService.Presentation;
+using Academy.CourseManagement.Presentation;
 using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(CoursesController).Assembly)
+    .AddApplicationPart(typeof(FilesController).Assembly);
+
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
@@ -14,8 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services
-    .AddCourseManagementInfrastructure()
-    .AddCourseManagementApplication();
+    .AddCourseManagementModule()
+    .AddFilesService(builder.Configuration);
 
 var app = builder.Build();
 app.UseExceptionMiddleware();

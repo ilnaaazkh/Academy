@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Academy.Framework\Academy.Framework.csproj" />
+    <ProjectReference Include="..\..\Shared\Academy.SharedKernel\Academy.SharedKernel.csproj" />
+    <ProjectReference Include="..\Academy.FilesService.Infractructure\Academy.FilesService.Infractructure.csproj" />
+  </ItemGroup>
+
+</Project>
