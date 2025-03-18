@@ -18,7 +18,7 @@ namespace Academy.FilesService.Presentation
 
             var processedFiles = formFileProcessor.Process(files);
 
-            var result = await filesService.UploadFiles(processedFiles, cancellationToken);
+            var result = await filesService.UploadFiles(processedFiles, "qqqq", cancellationToken);
 
             if (result.IsFailure)
                 return result.Error.ToResponse();

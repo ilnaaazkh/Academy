@@ -1,4 +1,5 @@
-﻿using Academy.FilesService.Infractructure;
+﻿using Academy.FilesService.Contracts;
+using Academy.FilesService.Infractructure;
 using Academy.FilesService.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ namespace Academy.FilesService.Presentation
     {
         public static IServiceCollection AddFilesService(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IFilesServiceContract, FilesServiceContract>();
             services.AddScoped<IFileProvider, MinioProvider>();
             services.AddScoped<Services.FilesService>();
             return services.AddMinio(configuration);

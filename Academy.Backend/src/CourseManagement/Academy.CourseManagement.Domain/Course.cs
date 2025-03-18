@@ -118,5 +118,18 @@ namespace Academy.CourseManagement.Domain
 
             return moduleResult.Value.AddTestToLesson(lessonId, questions);
         }
+
+        public UnitResult<Error> AddAttachmentsToLesson(
+            ModuleId moduleId, 
+            LessonId lessonId,
+            IEnumerable<Attachment> attachments)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if(moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.AddAttachmentsToLesson(lessonId, attachments);
+        }
     }
 }

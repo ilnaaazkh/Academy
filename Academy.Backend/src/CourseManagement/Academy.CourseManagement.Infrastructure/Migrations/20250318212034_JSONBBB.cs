@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Academy.CourseManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class JSONBBB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -108,8 +108,8 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                     lesson_type = table.Column<string>(type: "text", nullable: false),
                     position = table.Column<int>(type: "integer", nullable: false),
                     questions = table.Column<string>(type: "jsonb", nullable: false),
-                    attachments = table.Column<string>(type: "text", nullable: false),
-                    practice_lesson_data = table.Column<string>(type: "text", nullable: true),
+                    attachments = table.Column<string>(type: "jsonb", nullable: false),
+                    practice_lesson_data = table.Column<string>(type: "jsonb", nullable: true),
                     module_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>

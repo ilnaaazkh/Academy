@@ -1,4 +1,5 @@
-﻿using Academy.CourseManagement.Application.Courses.AddLesson;
+﻿using Academy.CourseManagement.Application.Courses.AddAttachments;
+using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.Create;
@@ -10,6 +11,8 @@ using Academy.CourseManagement.Application.Courses.UpdateModule;
 using Academy.CourseManagement.Contracts.Requests;
 using Academy.CourseManagement.Presentation.Extensions;
 using Academy.Framework;
+using Academy.Framework.Processors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Academy.CourseManagement.Presentation
@@ -166,6 +169,27 @@ namespace Academy.CourseManagement.Presentation
         {
             var command = request.ToCommand(courseId, moduleId, lessonId);
 
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/attachments")]
+        public async Task<ActionResult> AddAttachmentsToLesson(
+           [FromRoute] Guid courseId,
+           [FromRoute] Guid moduleId,
+           [FromRoute] Guid lessonId,
+           IFormFileCollection files,
+           [FromServices] AddAttachmentsCommandHandler handler,
+           CancellationToken cancellationToken)
+        {
+            await using var formFileProcessor = new FormFileProcessor();
+            var processedFiles = formFileProcessor.Process(files);
+
+            var command = new AddAttachmentsCommand(courseId, moduleId, lessonId, processedFiles);
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)

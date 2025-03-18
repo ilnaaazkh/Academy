@@ -16,9 +16,12 @@ namespace Academy.FilesService.Services
             _fileProvider = fileProvider;
         }
 
-        public async Task<Result<IReadOnlyList<string>, ErrorList>> UploadFiles(IEnumerable<UploadFileCommand> files, CancellationToken cancellationToken)
+        public async Task<Result<IReadOnlyList<string>, ErrorList>> UploadFiles(
+            IEnumerable<UploadFileCommand> files, 
+            string bucket,
+            CancellationToken cancellationToken)
         {
-            var fileDatas = files.Select(f => new FileData(f.FileName, BUCKET, f.Content));
+            var fileDatas = files.Select(f => new FileData(f.FileName, bucket, f.Content));
             return await _fileProvider.UploadFiles(fileDatas, cancellationToken);
         }
     }

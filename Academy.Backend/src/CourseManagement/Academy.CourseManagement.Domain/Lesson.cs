@@ -39,6 +39,13 @@ namespace Academy.CourseManagement.Domain
             return UnitResult.Success<Error>();
         }
 
+        public UnitResult<Error> AddAttachments(IEnumerable<Attachment> attachments)
+        {
+            Attachments = Attachments.Concat(attachments).ToList();
+            
+            return UnitResult.Success<Error>();
+        }
+
         public UnitResult<Error> SetPosition(Position position)
         {
             Position = position;
