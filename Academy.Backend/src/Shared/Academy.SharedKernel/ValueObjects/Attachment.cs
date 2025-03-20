@@ -1,5 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 
 namespace Academy.SharedKernel.ValueObjects
