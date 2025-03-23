@@ -1,6 +1,7 @@
 ﻿using Academy.CourseManagement.Application.Courses.AddAttachments;
 using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
+using Academy.CourseManagement.Application.Courses.AddPracticeData;
 using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Delete;
@@ -190,6 +191,25 @@ namespace Academy.CourseManagement.Presentation
             var processedFiles = formFileProcessor.Process(files);
 
             var command = new AddAttachmentsCommand(courseId, moduleId, lessonId, processedFiles);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+        
+        
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/practice")]
+        public async Task<ActionResult> AddPracticeDataToLesson(
+           [FromRoute] Guid courseId,
+           [FromRoute] Guid moduleId,
+           [FromRoute] Guid lessonId,
+           [FromBody] AddPracticeDataRequest request,
+           [FromServices] AddPracticeDataCommandHandler handler,
+           CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand(courseId, moduleId, lessonId);
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)

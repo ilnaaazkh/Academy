@@ -61,6 +61,15 @@
                     null
                 );
             }
+
+            public static Error CannotAddPracticeToNonPracticeLesson()
+            {
+                return Error.Validation(
+                    "lesson.cannot.add.practice",
+                    "Cannot add a practice to a lesson that is not of type 'PRACTICE'.",
+                    null
+                );
+            }
         }
     }
 }

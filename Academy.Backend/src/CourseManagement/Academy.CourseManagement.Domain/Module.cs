@@ -109,28 +109,48 @@ namespace Academy.CourseManagement.Domain
             LessonId lessonId,
             IEnumerable<Question> questions)
         {
-            var lesson = _lessons.FirstOrDefault(l => l.Id == lessonId);
+            var lessonResult = GetLessonById(lessonId);
 
-            if(lesson == null)
-            {
-                return Errors.General.NotFound(lessonId.Value);
-            }
+            if (lessonResult.IsFailure)
+                return lessonResult.Error;
 
-            return lesson.AddTest(questions);
+            return lessonResult.Value.AddTest(questions);
         }
 
         public UnitResult<Error> AddAttachmentsToLesson(
             LessonId lessonId, 
             IEnumerable<Attachment> attachments)
         {
-            var lesson = _lessons.FirstOrDefault(l => l.Id == lessonId);
+            var lessonResult = GetLessonById(lessonId);
+
+            if (lessonResult.IsFailure)
+                return lessonResult.Error;
+
+            return lessonResult.Value.AddAttachments(attachments);
+        }
+   
+        public UnitResult<Error> AddPracticeDataToLesson(
+            LessonId lessonId, 
+            PracticeLessonData practiceLessonData)
+        {
+            var lessonResult = GetLessonById(lessonId);
+
+            if (lessonResult.IsFailure)
+                return lessonResult.Error;
+
+            return lessonResult.Value.AddPracticeLessonData(practiceLessonData);
+        }
+
+        private Result<Lesson, Error> GetLessonById(LessonId id)
+        {
+            var lesson = _lessons.FirstOrDefault(l => l.Id == id);
 
             if (lesson == null)
             {
-                return Errors.General.NotFound(lessonId.Value);
+                return Errors.General.NotFound(id.Value);
             }
 
-            return lesson.AddAttachments(attachments);
+            return lesson;
         }
     }
 }

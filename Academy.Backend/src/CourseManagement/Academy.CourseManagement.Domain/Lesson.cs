@@ -46,6 +46,16 @@ namespace Academy.CourseManagement.Domain
             return UnitResult.Success<Error>();
         }
 
+        public UnitResult<Error> AddPracticeLessonData(PracticeLessonData practiceLessonData)
+        {
+            if (LessonType != LessonType.Practice)
+                return Errors.Lesson.CannotAddPracticeToNonPracticeLesson();
+
+            PracticeLessonData = practiceLessonData;
+
+            return UnitResult.Success<Error>();
+        }
+
         public UnitResult<Error> SetPosition(Position position)
         {
             Position = position;
