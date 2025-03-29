@@ -2,7 +2,6 @@
 using Academy.SharedKernel.ValueObjects;
 using Academy.SharedKernel.ValueObjects.Ids;
 using CSharpFunctionalExtensions;
-using System.Runtime.InteropServices.Marshalling;
 
 namespace Academy.CourseManagement.Domain
 {
@@ -117,6 +116,32 @@ namespace Academy.CourseManagement.Domain
                 return moduleResult.Error;
 
             return moduleResult.Value.AddTestToLesson(lessonId, questions);
+        }
+
+        public UnitResult<Error> AddAttachmentsToLesson(
+            ModuleId moduleId, 
+            LessonId lessonId,
+            IEnumerable<Attachment> attachments)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if(moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.AddAttachmentsToLesson(lessonId, attachments);
+        }
+
+        public UnitResult<Error> AddPracticeDataToLesson(
+            ModuleId moduleId,
+            LessonId lessonId,
+            PracticeLessonData practiceLessonData)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if (moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.AddPracticeDataToLesson(lessonId, practiceLessonData);
         }
     }
 }

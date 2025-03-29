@@ -56,18 +56,20 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
 
             builder.Property(l => l.Attachments)
                 .HasConversion(
-                    a => System.Text.Json.JsonSerializer.Serialize(a, JsonSerializerOptions.Default),
-                    v => System.Text.Json.JsonSerializer.Deserialize<IReadOnlyList<Attachment>>(v, JsonSerializerOptions.Default)!,
+                    a => JsonConvert.SerializeObject(a),
+                    v => JsonConvert.DeserializeObject<IReadOnlyList<Attachment>>(v)!,
                     new ValueComparer<IReadOnlyList<Attachment>>(
                         (c1, c2) => c1!.SequenceEqual(c2!),
                         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                         c => c.ToList())
-                    );
+                    )
+                .HasColumnType("jsonb");
 
             builder.Property(l => l.PracticeLessonData)
                 .IsRequired(false)
-                .HasConversion(p => System.Text.Json.JsonSerializer.Serialize(p, JsonSerializerOptions.Default),
-                    v => System.Text.Json.JsonSerializer.Deserialize<PracticeLessonData>(v, JsonSerializerOptions.Default)!);
+                .HasConversion(p => JsonConvert.SerializeObject(p),
+                    v => JsonConvert.DeserializeObject<PracticeLessonData>(v)!)
+                .HasColumnType("jsonb");
         }
     }
 }

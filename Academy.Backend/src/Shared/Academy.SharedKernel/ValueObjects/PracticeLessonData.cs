@@ -1,37 +1,36 @@
 ﻿using CSharpFunctionalExtensions;
+using Newtonsoft.Json;
 
 namespace Academy.SharedKernel.ValueObjects
 {
     public class PracticeLessonData : ValueObject
     {
         public string TemplateCode { get; }
-        public string SolutionPath { get; }
+        public List<Test> Tests { get; }
 
-        private PracticeLessonData(string templateCode, string solutionPath)
+        [JsonConstructor]
+        private PracticeLessonData(string templateCode, List<Test> tests)
         {
             TemplateCode = templateCode;
-            SolutionPath = solutionPath;
+            Tests = tests;
         }
 
-        public static Result<PracticeLessonData, Error> Create(string templateCode, string solutionPath)
+        public static Result<PracticeLessonData, Error> Create(string templateCode, IEnumerable<Test> tests)
         {
             if (string.IsNullOrWhiteSpace(templateCode))
             {
                 return Errors.General.ValueIsRequired(nameof(templateCode));
             }
 
-            if (string.IsNullOrWhiteSpace(solutionPath))
-            {
-                return Errors.General.ValueIsRequired(nameof(solutionPath));
-            }
-
-            return new PracticeLessonData(templateCode, solutionPath);
+            return new PracticeLessonData(templateCode, tests.ToList());
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return TemplateCode;
-            yield return SolutionPath;
+
+            foreach (var test in Tests)
+                yield return test;
         }
     }
 }

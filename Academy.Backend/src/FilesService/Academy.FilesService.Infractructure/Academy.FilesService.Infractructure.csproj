@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FilesService\Academy.FilesService.Contracts\Academy.FilesService.Contracts.csproj" />
+    <PackageReference Include="Minio" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Shared\Academy.Core\Academy.Core.csproj" />
-    <ProjectReference Include="..\Academy.CourseManagement.Domain\Academy.CourseManagement.Domain.csproj" />
+    <ProjectReference Include="..\Academy.FilesService.Services\Academy.FilesService.Services.csproj" />
   </ItemGroup>
 
 </Project>

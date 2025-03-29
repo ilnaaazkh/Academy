@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using Newtonsoft.Json;
+
 
 namespace Academy.SharedKernel.ValueObjects
 {
@@ -7,11 +9,13 @@ namespace Academy.SharedKernel.ValueObjects
         public string FileName { get; }
         public string FileUrl { get; }
 
+        [JsonConstructor]
         private Attachment(string fileName, string fileUrl)
         {
             FileName = fileName;
             FileUrl = fileUrl;
         }
+        internal Attachment() { }
 
         public static Result<Attachment, Error> Create(string fileName, string fileUrl)
         {

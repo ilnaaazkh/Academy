@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Academy.CourseManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(CourseManagementWriteDbContext))]
-    [Migration("20250313124300_qqq")]
-    partial class qqq
+    [Migration("20250318212034_JSONBBB")]
+    partial class JSONBBB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,7 +133,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
 
                     b.Property<string>("Attachments")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("attachments");
 
                     b.Property<string>("Content")
@@ -151,7 +151,7 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         .HasColumnName("position");
 
                     b.Property<string>("PracticeLessonData")
-                        .HasColumnType("text")
+                        .HasColumnType("jsonb")
                         .HasColumnName("practice_lesson_data");
 
                     b.Property<string>("Questions")

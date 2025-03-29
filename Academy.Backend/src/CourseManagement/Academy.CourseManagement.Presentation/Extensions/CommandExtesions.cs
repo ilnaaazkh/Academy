@@ -2,6 +2,7 @@
 using Academy.CourseManagement.Application.Authors.Update.UpdateMainInfo;
 using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
+using Academy.CourseManagement.Application.Courses.AddPracticeData;
 using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Update;
@@ -13,6 +14,15 @@ namespace Academy.CourseManagement.Presentation.Extensions
 {
     public static class CommandExtesions
     {
+        public static AddPracticeDataCommand ToCommand(this AddPracticeDataRequest request, 
+            Guid courseId, 
+            Guid moduleId, 
+            Guid lessonId)
+        {
+            return new AddPracticeDataCommand(
+                courseId, moduleId, lessonId, 
+                request.TemplateCode, request.Tests.Select(t => new TestDto(t.Input, t.Expected)));
+        }
         public static CreateAuthorCommand ToCommand(this CreateAuthorRequest request) 
         {
             return new CreateAuthorCommand(request.FirstName, request.LastName, request.Email, request.PhoneNumber);

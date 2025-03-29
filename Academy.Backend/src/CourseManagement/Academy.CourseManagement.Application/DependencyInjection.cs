@@ -7,7 +7,7 @@ namespace Academy.CourseManagement.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddCourseManagementApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.Scan(scan =>
             {
