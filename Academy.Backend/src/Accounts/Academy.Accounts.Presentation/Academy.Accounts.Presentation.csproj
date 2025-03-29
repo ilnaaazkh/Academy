@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Academy.Framework\Academy.Framework.csproj" />
+  </ItemGroup>
+
 </Project>

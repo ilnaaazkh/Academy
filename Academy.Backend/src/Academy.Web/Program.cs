@@ -1,24 +1,31 @@
 using Academy.FilesService.Presentation;
 using Academy.CourseManagement.Presentation;
+using Academy.Accounts.Presentation;
 using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
+using Microsoft.OpenApi.Models;
+using Academy.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(CoursesController).Assembly)
     .AddApplicationPart(typeof(FilesController).Assembly);
+
 
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGenConfiguration();
 
 builder.Services
     .AddCourseManagementModule()
-    .AddFilesService(builder.Configuration);
+    .AddFilesService(builder.Configuration)
+    .AddAccountsService();
 
 var app = builder.Build();
 app.UseExceptionMiddleware();
@@ -32,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors(options =>
