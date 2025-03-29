@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Academy.Accounts.Infrastructure;
+using Academy.Accounts.Infrastructure.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,23 +15,39 @@ namespace Academy.Accounts.Presentation
                 .BindConfiguration(JwtOptions.JWT)
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
+                
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    var jwtOptions = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
+            services.AddAuthentication();
 
-                    options.TokenValidationParameters = new TokenValidationParameters() 
-                    { 
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = false,
-                        ClockSkew = TimeSpan.Zero,
-                    };
-
-                });
             services.AddAuthorization();
+
+            services.AddInfrastructure();
+
+            return services;
+        }
+
+        private static IServiceCollection AddAuthentication(this IServiceCollection services)
+        {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                            .AddJwtBearer(options =>
+                            {
+                                var jwtOptions = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>().Value;
+
+                                options.TokenValidationParameters = new TokenValidationParameters()
+                                {
+                                    ValidIssuer = "test",
+                                    ValidAudience = "test",
+                                    IssuerSigningKey = 
+                                        new SymmetricSecurityKey("jbcjdbcjsbhjsdchjsdbcsdcsdcds"u8.ToArray()),
+                                    ValidateIssuer = false,
+                                    ValidateAudience = false,
+                                    ValidateLifetime = false,
+                                    ValidateIssuerSigningKey = false,
+                                    ClockSkew = TimeSpan.Zero,
+                                };
+
+                            });
+
             return services;
         }
     }
