@@ -1,5 +1,5 @@
-﻿using Academy.Accounts.Infrastructure;
-using Academy.Accounts.Infrastructure.Models;
+﻿using Academy.Accounts.Application;
+using Academy.Accounts.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -21,7 +21,10 @@ namespace Academy.Accounts.Presentation
 
             services.AddAuthorization();
 
-            services.AddInfrastructure();
+            services
+                .AddApplication()
+                .AddInfrastructure();
+            
 
             return services;
         }

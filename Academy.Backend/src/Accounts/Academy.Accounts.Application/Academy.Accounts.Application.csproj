@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Academy.Core\Academy.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\Academy.SharedKernel\Academy.SharedKernel.csproj" />
+    <ProjectReference Include="..\Academy.Accounts.Infrastructure\Academy.Accounts.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

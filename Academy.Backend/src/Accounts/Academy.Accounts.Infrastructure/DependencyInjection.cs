@@ -8,7 +8,10 @@ namespace Academy.Accounts.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddDbContext<AccountsDbContext>();
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<AccountsDbContext>();
 
             return services;

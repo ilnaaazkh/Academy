@@ -1,4 +1,5 @@
-﻿using Academy.CourseManagement.Infrastructure.DbContexts;
+﻿using Academy.Accounts.Infrastructure;
+using Academy.CourseManagement.Infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Academy.Web.Migrations
