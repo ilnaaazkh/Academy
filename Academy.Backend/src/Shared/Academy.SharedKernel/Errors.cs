@@ -2,6 +2,13 @@
 {
     public static class Errors
     {
+        public static class User
+        {
+            public static Error InvalidCredentials()
+            {
+                return Error.Validation("user.invalid.credentials", "Invalid email or password");
+            }
+        }
         public static class General
         {
             public static Error ValueIsInvalid(string? name = null)

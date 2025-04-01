@@ -3,7 +3,6 @@ using Academy.CourseManagement.Presentation;
 using Academy.Accounts.Presentation;
 using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
-using Microsoft.OpenApi.Models;
 using Academy.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +24,7 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services
     .AddCourseManagementModule()
     .AddFilesService(builder.Configuration)
-    .AddAccountsService();
+    .AddAccountsService(builder.Configuration);
 
 var app = builder.Build();
 app.UseExceptionMiddleware();

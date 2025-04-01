@@ -1,4 +1,5 @@
-﻿using Academy.Accounts.Application.RegisterUser;
+﻿using Academy.Accounts.Application.LoginUser;
+using Academy.Accounts.Application.RegisterUser;
 using Academy.Accounts.Contracts.Requests;
 
 namespace Academy.Accounts.Presentation.Extensions
@@ -7,5 +8,8 @@ namespace Academy.Accounts.Presentation.Extensions
     {
         public static RegisterUserCommand ToCommand(this RegisterUserRequest request) 
             => new(request.Email, request.UserName, request.Password);
+        
+        public static LoginUserCommand ToCommand(this LoginUserRequest request) 
+            => new(request.Email, request.Password);
     }
 }
