@@ -33,8 +33,12 @@ namespace Academy.Accounts.Presentation
             return result.IsSuccess ? Ok(result.Value) : result.Error.ToResponse();
         }
 
-        [Authorize]
+        [HasPermission("delete.course")]
         [HttpGet("test")]
-        public async Task<ActionResult> Test() => Ok("dscsdcsd");
+        public ActionResult Test()
+        {
+            var ctx = HttpContext.User.Claims;
+            return Ok("dscsdcsd");
+        }
     }
 }

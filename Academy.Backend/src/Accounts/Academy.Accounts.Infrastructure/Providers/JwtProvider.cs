@@ -26,7 +26,10 @@ namespace Academy.Accounts.Infrastructure.Providers
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? "")
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                new Claim("Permission", "create.course"),
+                new Claim("Permission", "update.course"),
+                new Claim("Permission", "delete.course")
             };
 
             var token = new JwtSecurityToken(

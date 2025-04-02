@@ -1,7 +1,9 @@
 ﻿using Academy.Accounts.Application;
 using Academy.Accounts.Infrastructure;
 using Academy.Accounts.Infrastructure.Options;
+using Academy.Framework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,6 +22,9 @@ namespace Academy.Accounts.Presentation
 
             services.AddAuthentication(configuration);
             services.AddAuthorization();
+
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
             return services;
         }
