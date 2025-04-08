@@ -2,7 +2,12 @@
 {
     public class Permission 
     {
-        public Guid Id { get; set; }
-        public string Code { get; set; } = string.Empty;
+        public Permission(string code)
+        {
+            Code = code;
+        }
+
+        public Guid Id { get; }
+        public string Code { get; } = string.Empty;
     }
 }

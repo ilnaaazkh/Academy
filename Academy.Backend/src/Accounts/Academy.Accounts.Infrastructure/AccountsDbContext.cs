@@ -15,6 +15,9 @@ namespace Academy.Accounts.Infrastructure
 
         private readonly IConfiguration _configuration;
 
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+
         public AccountsDbContext(IConfiguration configuration)
         {
             _configuration = configuration;

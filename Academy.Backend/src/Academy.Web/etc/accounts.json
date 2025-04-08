@@ -1,0 +1,18 @@
+{
+  "Roles": {
+    "Author": [
+      "courses.create",
+      "courses.update"
+    ],
+    "Student": [
+      "courses.read"
+    ]
+  },
+  "Permissions": {
+    "Courses": [
+      "courses.create",
+      "courses.update",
+      "courses.read"
+    ]
+  }
+}

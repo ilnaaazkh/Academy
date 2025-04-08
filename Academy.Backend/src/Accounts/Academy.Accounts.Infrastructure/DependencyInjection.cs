@@ -1,6 +1,8 @@
-﻿using Academy.Accounts.Infrastructure.Models;
+﻿using Academy.Accounts.Infrastructure.Managers;
+using Academy.Accounts.Infrastructure.Models;
 using Academy.Accounts.Infrastructure.Options;
 using Academy.Accounts.Infrastructure.Providers;
+using Academy.Accounts.Infrastructure.Seeding;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Academy.Accounts.Infrastructure
@@ -20,6 +22,10 @@ namespace Academy.Accounts.Infrastructure
                 .AddEntityFrameworkStores<AccountsDbContext>();
 
             services.AddTransient<JwtProvider>();
+
+            services.AddSingleton<AccountsSeeder>();
+            services.AddScoped<RolePermissionManager>();
+            services.AddScoped<PermissionManager>();
 
             return services;
         }

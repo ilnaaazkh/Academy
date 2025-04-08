@@ -1,7 +1,7 @@
 ﻿using Academy.Accounts.Application;
 using Academy.Accounts.Infrastructure;
 using Academy.Accounts.Infrastructure.Options;
-using Academy.Framework;
+using Academy.Framework.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;

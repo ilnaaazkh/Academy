@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Academy.Framework
+namespace Academy.Framework.Auth
 {
     public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
     {
@@ -11,9 +11,9 @@ namespace Academy.Framework
         {
             var claims = context.User.Claims.Where(x => x.Type == Permission);
 
-            if (claims.Any(c => c.Value == requirement.Permission)) 
-            { 
-                context.Succeed(requirement); 
+            if (claims.Any(c => c.Value == requirement.Permission))
+            {
+                context.Succeed(requirement);
             }
 
             return Task.CompletedTask;

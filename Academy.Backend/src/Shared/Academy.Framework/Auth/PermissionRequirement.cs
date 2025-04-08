@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academy.Framework
+namespace Academy.Framework.Auth
 {
     public class PermissionRequirement : IAuthorizationRequirement
     {
         public string Permission { get; }
 
-        public PermissionRequirement(string permission )
+        public PermissionRequirement(string permission)
         {
             Permission = permission;
         }

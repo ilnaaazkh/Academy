@@ -4,6 +4,7 @@ using Academy.Accounts.Presentation;
 using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
 using Academy.Web.Extensions;
+using Academy.Accounts.Infrastructure.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,10 @@ builder.Services
     .AddAccountsService(builder.Configuration);
 
 var app = builder.Build();
+
+var accountsSeeder = app.Services.GetRequiredService<AccountsSeeder>();
+await accountsSeeder.SeedAsync();
+
 app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Academy.Framework
+namespace Academy.Framework.Auth
 {
     public class HasPermissionAttribute : AuthorizeAttribute
     {

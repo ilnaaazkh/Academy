@@ -3,8 +3,7 @@ using Academy.Accounts.Application.RegisterUser;
 using Academy.Accounts.Contracts.Requests;
 using Academy.Accounts.Presentation.Extensions;
 using Academy.Framework;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using Academy.Framework.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Academy.Accounts.Presentation
