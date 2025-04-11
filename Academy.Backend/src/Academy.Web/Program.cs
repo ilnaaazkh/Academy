@@ -6,8 +6,9 @@ using Academy.Web.Middlewares;
 using Academy.Web.Extensions;
 using Academy.Accounts.Infrastructure.Seeding;
 
-var builder = WebApplication.CreateBuilder(args);
+DotNetEnv.Env.Load();
 
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(CoursesController).Assembly)

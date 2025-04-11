@@ -6,13 +6,16 @@
     ],
     "Student": [
       "courses.read"
+    ],
+    "Admin": [
     ]
   },
   "Permissions": {
     "Courses": [
       "courses.create",
       "courses.update",
-      "courses.read"
+      "courses.read",
+      "courses.delete"
     ]
   }
 }

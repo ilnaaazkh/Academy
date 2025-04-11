@@ -34,7 +34,7 @@ namespace Academy.Accounts.Application.LoginUser
             if (passwordConfirmed == false)
                 return Errors.User.InvalidCredentials().ToErrorList();
 
-            var token = _tokenProvider.GenerateToken(user);
+            var token = await _tokenProvider.GenerateToken(user);
 
             return token;
         }

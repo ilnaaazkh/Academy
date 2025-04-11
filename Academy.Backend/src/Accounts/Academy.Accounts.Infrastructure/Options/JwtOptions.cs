@@ -1,5 +1,6 @@
 ﻿namespace Academy.Accounts.Infrastructure.Options
 {
+
     public class JwtOptions
     {
         public static string JWT = nameof(JWT);

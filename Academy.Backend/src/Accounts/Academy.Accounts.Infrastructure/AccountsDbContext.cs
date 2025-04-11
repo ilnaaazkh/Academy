@@ -40,7 +40,12 @@ namespace Academy.Accounts.Infrastructure
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new RolePermissionConfiguration());
 
-            builder.Entity<User>().ToTable("users");
+            builder.Entity<User>()
+                .ToTable("users")
+                .HasMany(u => u.Roles)
+                .WithMany()
+                .UsingEntity<IdentityUserRole<Guid>>();
+
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins");

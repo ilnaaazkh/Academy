@@ -14,6 +14,9 @@ namespace Academy.Accounts.Infrastructure
             services.AddOptions<JwtOptions>()
                .BindConfiguration(JwtOptions.JWT);
 
+            services.AddOptions<AdminOptions>()
+                .BindConfiguration(AdminOptions.ADMIN);
+
             services.AddDbContext<AccountsDbContext>();
             services.AddIdentity<User, Role>(options =>
                 {
@@ -26,6 +29,7 @@ namespace Academy.Accounts.Infrastructure
             services.AddSingleton<AccountsSeeder>();
             services.AddScoped<RolePermissionManager>();
             services.AddScoped<PermissionManager>();
+            services.AddScoped<AccountSeederService>();
 
             return services;
         }

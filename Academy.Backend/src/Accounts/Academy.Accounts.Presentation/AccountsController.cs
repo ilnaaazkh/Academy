@@ -32,7 +32,7 @@ namespace Academy.Accounts.Presentation
             return result.IsSuccess ? Ok(result.Value) : result.Error.ToResponse();
         }
 
-        [HasPermission("delete.course")]
+        [HasPermission("test.select")]
         [HttpGet("test")]
         public ActionResult Test()
         {

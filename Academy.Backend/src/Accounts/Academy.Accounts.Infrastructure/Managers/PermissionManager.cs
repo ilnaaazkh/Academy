@@ -31,7 +31,7 @@ namespace Academy.Accounts.Infrastructure.Managers
 
                 if (isPermissionExist)
                 {
-                    return;
+                    continue;
                 }
 
                 var permission = new Permission(permissionCode);
@@ -44,6 +44,16 @@ namespace Academy.Accounts.Infrastructure.Managers
         public async Task<Permission?> GetPermissionByCode(string code)
         {
             return await _dbContext.Permissions.FirstOrDefaultAsync(p => p.Code == code);
+        }
+
+        public async Task<IReadOnlyList<Permission>> GetPermissions(Guid userId)
+        {
+            return await _dbContext.Users
+                                    .Where(u => u.Id == userId)
+                                    .SelectMany(u => u.Roles.SelectMany(r => r.Permissions))
+                                    .Distinct()
+                                    .AsNoTracking()
+                                    .ToListAsync();
         }
     }
 }
