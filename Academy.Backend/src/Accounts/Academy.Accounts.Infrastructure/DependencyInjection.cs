@@ -30,6 +30,7 @@ namespace Academy.Accounts.Infrastructure
             services.AddScoped<RolePermissionManager>();
             services.AddScoped<PermissionManager>();
             services.AddScoped<AccountSeederService>();
+            services.AddScoped<RefreshSessionManager>();
 
             return services;
         }

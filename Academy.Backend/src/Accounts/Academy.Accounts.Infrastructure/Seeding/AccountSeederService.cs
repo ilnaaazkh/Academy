@@ -56,7 +56,7 @@ namespace Academy.Accounts.Infrastructure.Seeding
             }
         }
 
-        private async Task SeedRolePermissions(RolePermissionConfig seedData)
+        private async Task SeedRolePermissions(RolePermissionConfig seedData, CancellationToken ct = default)
         {
             foreach (var roleName in seedData.Roles.Keys)
             {
@@ -64,7 +64,7 @@ namespace Academy.Accounts.Infrastructure.Seeding
                     ?? throw new ApplicationException("Try to add rolePermissions to non existing role");
 
                 var rolePermissions = seedData.Roles[roleName];
-                await _rolePermissionManager.AddRange(role.Id, rolePermissions);
+                await _rolePermissionManager.AddRange(role.Id, rolePermissions, ct);
             }
         }
 

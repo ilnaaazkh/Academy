@@ -1,4 +1,6 @@
-﻿using Academy.Accounts.Infrastructure.Models;
+﻿using Academy.Accounts.Contracts.Responses;
+using Academy.Accounts.Infrastructure.Managers;
+using Academy.Accounts.Infrastructure.Models;
 using Academy.Accounts.Infrastructure.Providers;
 using Academy.Core.Abstractions;
 using Academy.Core.Extensions;
@@ -8,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Academy.Accounts.Application.LoginUser
 {
-    public class LoginUserCommandHandler : ICommandHandler<string, LoginUserCommand>
+    public class LoginUserCommandHandler : ICommandHandler<LoginResponse, LoginUserCommand>
     {
         private readonly JwtProvider _tokenProvider;
         private readonly UserManager<User> _userManager;
@@ -20,7 +22,7 @@ namespace Academy.Accounts.Application.LoginUser
             _tokenProvider = tokenProvider;
             _userManager = userManager;
         }
-        public async Task<Result<string, ErrorList>> Handle(
+        public async Task<Result<LoginResponse, ErrorList>> Handle(
             LoginUserCommand command, 
             CancellationToken cancellationToken = default)
         {
@@ -34,9 +36,12 @@ namespace Academy.Accounts.Application.LoginUser
             if (passwordConfirmed == false)
                 return Errors.User.InvalidCredentials().ToErrorList();
 
-            var token = await _tokenProvider.GenerateToken(user);
+            var tokenResult = await _tokenProvider.GenerateAccessToken(user, cancellationToken);
+            var refreshToken = await _tokenProvider.GenerateRefreshToken(user, tokenResult.Jti, cancellationToken);
 
-            return token;
+            var result = new LoginResponse(tokenResult.AccessToken, refreshToken);
+
+            return result;
         }
     }
 }

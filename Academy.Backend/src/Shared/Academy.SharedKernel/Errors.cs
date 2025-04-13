@@ -28,7 +28,26 @@
                 var forId = id == null ? "" : $" for id={id}";
                 return Error.NotFound("record.not.found", $"record not found{forId}");
             }
+
+            public static Error Failure()
+            {
+                return Error.Failure("failure", "Failure");
+            }
         }
+
+        public static class Tokens 
+        {
+            public static Error ExpiredToken()
+            {
+                return Error.Validation("token.is.expired", "Token is expired");
+            }
+            
+            public static Error InvalidToken()
+            {
+                return Error.Validation("token.is.invalid", "Token is invalid");
+            }
+        }
+
 
         public static class Question
         {

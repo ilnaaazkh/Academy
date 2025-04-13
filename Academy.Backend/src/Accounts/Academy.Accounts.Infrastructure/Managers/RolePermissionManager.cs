@@ -14,23 +14,23 @@ namespace Academy.Accounts.Infrastructure.Managers
             _dbContext = dbContext;
         }
 
-        public async Task AddRange(Guid roleId, IEnumerable<string> permissions)
+        public async Task AddRange(Guid roleId, IEnumerable<string> permissions, CancellationToken ct)
         {
             foreach (var permissionCode in permissions)
             {
-                var permission = await _dbContext.Permissions.FirstOrDefaultAsync(p => p.Code == permissionCode)
+                var permission = await _dbContext.Permissions.FirstOrDefaultAsync(p => p.Code == permissionCode, ct)
                     ?? throw new ApplicationException("Try to add non existing permissions to role");
 
                 var isRolePermissionExist = await _dbContext.RolePermissions
-                 .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permission.Id);
+                    .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permission.Id, ct);
 
                 if (isRolePermissionExist)
                     return;
 
-                await _dbContext.RolePermissions.AddAsync(new RolePermission(roleId, permission.Id));
+                await _dbContext.RolePermissions.AddAsync(new RolePermission(roleId, permission.Id), ct);
             }
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(ct);
         }
     }
 }

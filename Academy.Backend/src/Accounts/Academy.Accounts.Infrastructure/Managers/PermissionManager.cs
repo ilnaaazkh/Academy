@@ -41,19 +41,19 @@ namespace Academy.Accounts.Infrastructure.Managers
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Permission?> GetPermissionByCode(string code)
+        public async Task<Permission?> GetPermissionByCode(string code, CancellationToken ct)
         {
-            return await _dbContext.Permissions.FirstOrDefaultAsync(p => p.Code == code);
+            return await _dbContext.Permissions.FirstOrDefaultAsync(p => p.Code == code, ct);
         }
 
-        public async Task<IReadOnlyList<Permission>> GetPermissions(Guid userId)
+        public async Task<IReadOnlyList<Permission>> GetPermissions(Guid userId, CancellationToken ct)
         {
             return await _dbContext.Users
                                     .Where(u => u.Id == userId)
                                     .SelectMany(u => u.Roles.SelectMany(r => r.Permissions))
                                     .Distinct()
                                     .AsNoTracking()
-                                    .ToListAsync();
+                                    .ToListAsync(ct);
         }
     }
 }

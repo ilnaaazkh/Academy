@@ -18,6 +18,8 @@ namespace Academy.Accounts.Infrastructure
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Permission> Permissions { get; set; }
 
+        public DbSet<RefreshSession> RefreshSessions { get; set; }
+
         public AccountsDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -45,6 +47,12 @@ namespace Academy.Accounts.Infrastructure
                 .HasMany(u => u.Roles)
                 .WithMany()
                 .UsingEntity<IdentityUserRole<Guid>>();
+
+            builder.Entity<RefreshSession>()
+                .ToTable("refresh_sessions")
+                .HasOne(rt => rt.User)
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId);
 
             builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims");
             builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens");

@@ -1,4 +1,5 @@
 ﻿using Academy.Accounts.Application.LoginUser;
+using Academy.Accounts.Application.RefreshTokens;
 using Academy.Accounts.Application.RegisterUser;
 using Academy.Accounts.Contracts.Requests;
 using Academy.Accounts.Presentation.Extensions;
@@ -25,6 +26,17 @@ namespace Academy.Accounts.Presentation
         public async Task<ActionResult> Login(
             [FromBody] LoginUserRequest request,
             [FromServices] LoginUserCommandHandler handler,
+            CancellationToken ct)
+        {
+            var result = await handler.Handle(request.ToCommand(), ct);
+
+            return result.IsSuccess ? Ok(result.Value) : result.Error.ToResponse();
+        }
+
+        [HttpPost("refresh")]
+        public async Task<ActionResult> RefreshTokens(
+            [FromBody] RefreshTokensRequest request,
+            [FromServices] RefreshTokensCommandHandler handler,
             CancellationToken ct)
         {
             var result = await handler.Handle(request.ToCommand(), ct);

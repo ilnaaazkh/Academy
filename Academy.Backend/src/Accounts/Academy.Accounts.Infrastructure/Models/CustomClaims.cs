@@ -9,7 +9,7 @@ namespace Academy.Accounts.Infrastructure.Models
 {
     public static class CustomClaims
     {
-        public static Claim Role(string? name) => new Claim("Role", name ?? string.Empty);
-        public static Claim Permission(string code) => new Claim("Permission", code); 
+        public static Claim Role(string? name) => new Claim("role", name ?? string.Empty);
+        public static Claim Permission(string code) => new Claim("permission", code); 
     }
 }
