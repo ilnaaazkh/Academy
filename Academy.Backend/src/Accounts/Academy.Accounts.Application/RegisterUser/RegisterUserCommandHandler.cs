@@ -28,6 +28,8 @@ namespace Academy.Accounts.Application.RegisterUser
                 return new ErrorList(errors);
             }
 
+            await _userManager.AddToRoleAsync(user, Roles.STUDENT);
+
             return Result.Success<ErrorList>();
         }
     }

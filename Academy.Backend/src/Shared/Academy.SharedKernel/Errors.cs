@@ -11,6 +11,11 @@
         }
         public static class General
         {
+            public static Error AccessDenied(string? message = null)
+            {
+                var label = message ?? "Access to recourse is denied"; 
+                return Error.AccessDenied("access.denied", label);
+            }
             public static Error ValueIsInvalid(string? name = null)
             {
                 var label = name ?? "value";

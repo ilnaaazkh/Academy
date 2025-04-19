@@ -5,9 +5,14 @@
       "courses.update"
     ],
     "Student": [
-      "courses.read"
+      "courses.read",
+      "authorings.create",
+      "authorings.update",
+      "authorings.submit"
     ],
     "Admin": [
+      "authorings.approve",
+      "authorings.reject"
     ]
   },
   "Permissions": {
@@ -16,6 +21,13 @@
       "courses.update",
       "courses.read",
       "courses.delete"
+    ],
+    "Authorings": [
+      "authorings.create",
+      "authorings.update",
+      "authorings.submit",
+      "authorings.approve",
+      "authorings.reject"
     ]
   }
 }

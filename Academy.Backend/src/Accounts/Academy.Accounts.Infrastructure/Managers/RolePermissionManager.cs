@@ -25,7 +25,7 @@ namespace Academy.Accounts.Infrastructure.Managers
                     .AnyAsync(rp => rp.RoleId == roleId && rp.PermissionId == permission.Id, ct);
 
                 if (isRolePermissionExist)
-                    return;
+                    continue;
 
                 await _dbContext.RolePermissions.AddAsync(new RolePermission(roleId, permission.Id), ct);
             }

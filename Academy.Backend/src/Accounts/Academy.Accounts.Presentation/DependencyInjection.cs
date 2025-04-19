@@ -1,4 +1,5 @@
 ﻿using Academy.Accounts.Application;
+using Academy.Accounts.Contracts;
 using Academy.Accounts.Infrastructure;
 using Academy.Accounts.Infrastructure.Factories;
 using Academy.Accounts.Infrastructure.Options;
@@ -23,6 +24,8 @@ namespace Academy.Accounts.Presentation
 
             services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+
+            services.AddScoped<IAccountsContract, AccountsContract>();
 
             return services;
         }

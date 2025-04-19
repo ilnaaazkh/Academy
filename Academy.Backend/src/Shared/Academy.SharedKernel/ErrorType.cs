@@ -5,6 +5,7 @@
         Validation,
         Conflict,
         Failure,
+        AccessDenied,
         None
     }
 }

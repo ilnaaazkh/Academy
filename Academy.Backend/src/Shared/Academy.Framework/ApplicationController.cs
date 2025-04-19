@@ -1,5 +1,6 @@
 ﻿using Academy.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Academy.Framework
 {

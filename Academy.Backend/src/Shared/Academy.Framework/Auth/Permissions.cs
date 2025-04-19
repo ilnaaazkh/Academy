@@ -11,6 +11,14 @@ namespace Academy.Framework.Auth
             public const string Read = "courses.read";
             public const string Delete = "courses.delete";
         }
+
+        public static class Authorings 
+        {
+            public const string CreateAuhtoring = "authorings.create";
+            public const string SubmitAuthoring = "authorings.submit";
+            public const string ApproveAuthoring = "authorings.approve";
+            public const string RejectAuthoring = "authorings.reject";
+        }
     }
 
 }

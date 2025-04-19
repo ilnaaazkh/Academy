@@ -37,6 +37,7 @@ namespace Academy.Framework
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Failure => StatusCodes.Status500InternalServerError,
                 ErrorType.Conflict => StatusCodes.Status409Conflict,
+                ErrorType.AccessDenied => StatusCodes.Status403Forbidden,
                 _ => StatusCodes.Status500InternalServerError
             };
 
