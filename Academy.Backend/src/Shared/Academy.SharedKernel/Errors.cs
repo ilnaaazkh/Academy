@@ -2,6 +2,13 @@
 {
     public static class Errors
     {
+        public static class User
+        {
+            public static Error InvalidCredentials()
+            {
+                return Error.Validation("user.invalid.credentials", "Invalid email or password");
+            }
+        }
         public static class General
         {
             public static Error ValueIsInvalid(string? name = null)
@@ -21,7 +28,26 @@
                 var forId = id == null ? "" : $" for id={id}";
                 return Error.NotFound("record.not.found", $"record not found{forId}");
             }
+
+            public static Error Failure()
+            {
+                return Error.Failure("failure", "Failure");
+            }
         }
+
+        public static class Tokens 
+        {
+            public static Error ExpiredToken()
+            {
+                return Error.Validation("token.is.expired", "Token is expired");
+            }
+            
+            public static Error InvalidToken()
+            {
+                return Error.Validation("token.is.invalid", "Token is invalid");
+            }
+        }
+
 
         public static class Question
         {

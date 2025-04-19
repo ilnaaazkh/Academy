@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Academy.Framework\Academy.Framework.csproj" />
+    <ProjectReference Include="..\Academy.Accounts.Application\Academy.Accounts.Application.csproj" />
+    <ProjectReference Include="..\Academy.Accounts.Contracts\Academy.Accounts.Contracts.csproj" />
+    <ProjectReference Include="..\Academy.Accounts.Infrastructure\Academy.Accounts.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -5,7 +5,7 @@ using Academy.CourseManagement.Contracts.Requests;
 using Academy.CourseManagement.Presentation.Extensions;
 using Academy.Framework;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
+
 
 namespace Academy.CourseManagement.Presentation
 {
