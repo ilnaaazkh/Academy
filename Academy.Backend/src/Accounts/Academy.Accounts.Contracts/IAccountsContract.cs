@@ -1,7 +1,10 @@
-﻿namespace Academy.Accounts.Contracts
+﻿using Academy.SharedKernel;
+using CSharpFunctionalExtensions;
+
+namespace Academy.Accounts.Contracts
 {
     public interface IAccountsContract
     {
-        Task<bool> IsUserExist(Guid userId, CancellationToken cancellationToken);
+        Task<UnitResult<ErrorList>> ApproveAuthoringRequest(Guid userId, CancellationToken cancellationToken);
     }
 }

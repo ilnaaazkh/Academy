@@ -1,7 +1,9 @@
 ﻿using Academy.Accounts.Contracts;
 using Academy.Accounts.Infrastructure.Models;
+using Academy.Core.Extensions;
+using Academy.SharedKernel;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Academy.Accounts.Presentation
 {
@@ -14,10 +16,22 @@ namespace Academy.Accounts.Presentation
             _userManager = userManager;
         }
 
-        public async Task<bool> IsUserExist(Guid userId, CancellationToken cancellationToken)
+        public async Task<UnitResult<ErrorList>> ApproveAuthoringRequest(Guid userId, CancellationToken cancellationToken)
         {
-            var result =  await _userManager.Users.AnyAsync(u => u.Id == userId);
-            return result;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user is null)
+                return Errors.General.NotFound(userId).ToErrorList();
+
+            var result = await _userManager.AddToRoleAsync(user, Roles.AUTHOR);
+
+            if (result.Succeeded == false)
+            {
+                var errors = result.Errors.Select(e => Error.Validation(e.Code, e.Description, null));
+                return new ErrorList(errors);
+            }
+
+            return UnitResult.Success<ErrorList>();
         }
     }
 }

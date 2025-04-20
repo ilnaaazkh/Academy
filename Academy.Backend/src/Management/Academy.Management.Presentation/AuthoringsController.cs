@@ -9,6 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 using Academy.Management.Application.Authorings.SubmitAuthoring;
 using Academy.Management.Application.Authorings.ApproveAuthoring;
 using Academy.Management.Application.Authorings.RejectAuthoring;
+using Microsoft.AspNetCore.Http;
+using Academy.Framework.Processors;
+using Academy.Management.Application.Authorings.AddFilesToAuthoring;
 
 namespace Academy.Management.Presentation
 {
@@ -88,6 +91,26 @@ namespace Academy.Management.Presentation
                 return result.Error.ToResponse();
 
             return Ok();
+        }
+
+        [HttpPost("{authoringId:guid}")]
+        [HasPermission(Permissions.Authorings.CreateAuhtoring)]
+        public async Task<ActionResult> AddAttachmentsToAuthoring(
+            [FromForm] IFormFileCollection files,
+            [FromRoute] Guid authoringId,
+            [FromServices] AddAttachemntsToAuthoringCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            await using var formFileProcessor = new FormFileProcessor();
+            var processedFiles = formFileProcessor.Process(files);
+
+            var command = new AddAttachemntsToAuthoringCommand(authoringId, processedFiles);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if(result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
         }
     }
 }

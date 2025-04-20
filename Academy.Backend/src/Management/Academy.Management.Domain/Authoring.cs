@@ -1,5 +1,7 @@
 ﻿using Academy.SharedKernel;
+using Academy.SharedKernel.ValueObjects;
 using CSharpFunctionalExtensions;
+
 
 namespace Academy.Management.Domain
 {
@@ -15,6 +17,8 @@ namespace Academy.Management.Domain
         public AuthorRoleRequestStatus Status { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? ReviewedAt { get; private set; }
+
+        public IReadOnlyList<Attachment> Attachments = new List<Attachment>(); 
 
         private Authoring() { }
         public Authoring(Guid id, Guid userId, string comment)
@@ -68,6 +72,13 @@ namespace Academy.Management.Domain
                 );
 
             Status = AuthorRoleRequestStatus.Pending;
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> AddAttachments(IEnumerable<Attachment> attachments)
+        {
+            Attachments = Attachments.Concat(attachments).ToList();
+
             return UnitResult.Success<Error>();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Academy.Core.Abstractions;
+﻿using Academy.Accounts.Contracts;
+using Academy.Core.Abstractions;
 using Academy.Core.Extensions;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
@@ -8,10 +9,14 @@ namespace Academy.Management.Application.Authorings.ApproveAuthoring
     public class ApproveAuthoringCommandHandler : ICommandHandler<ApproveAuthoringCommand>
     {
         private readonly IAuthoringsRepository _authoringsRepository;
+        private readonly IAccountsContract _accountsContract;
 
-        public ApproveAuthoringCommandHandler(IAuthoringsRepository authoringsRepository)
+        public ApproveAuthoringCommandHandler(
+            IAuthoringsRepository authoringsRepository,
+            IAccountsContract accountsContract)
         {
             _authoringsRepository = authoringsRepository;
+            _accountsContract = accountsContract;
         }
 
         public async Task<UnitResult<ErrorList>> Handle(ApproveAuthoringCommand command, CancellationToken cancellationToken = default)
@@ -22,6 +27,11 @@ namespace Academy.Management.Application.Authorings.ApproveAuthoring
             {
                 return Errors.General.NotFound(command.AuthoringId).ToErrorList();
             }
+
+            var addRoleResult = await _accountsContract.ApproveAuthoringRequest(authoring.UserId, cancellationToken);
+
+            if (addRoleResult.IsFailure)
+                return addRoleResult.Error;
 
             var result = authoring.Approve();
 
