@@ -57,12 +57,13 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpDelete("{id:guid}")]
+        [HasPermission(Permissions.Courses.Delete)]
         public async Task<ActionResult> DeleteCourse(
             [FromRoute] Guid id,
             [FromServices] DeleteCourseCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(new DeleteCourseCommand(id), cancellationToken);
+            var result = await handler.Handle(new DeleteCourseCommand(id, UserId), cancellationToken);
 
             if (result.IsFailure)
             {

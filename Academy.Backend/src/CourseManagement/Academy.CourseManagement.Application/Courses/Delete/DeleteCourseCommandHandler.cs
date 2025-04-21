@@ -19,13 +19,18 @@ namespace Academy.CourseManagement.Application.Courses.Delete
         public async Task<UnitResult<ErrorList>> Handle(DeleteCourseCommand command, CancellationToken cancellationToken = default)
         {
             var courseId = CourseId.Create(command.CourseId);
-            var course = await _coursesRepository.GetById(courseId, cancellationToken);
-            if (course.IsFailure)
+            var courseResult = await _coursesRepository.GetById(courseId, cancellationToken);
+            if (courseResult.IsFailure)
             {
-                return course.Error.ToErrorList();
+                return courseResult.Error.ToErrorList();
             }
 
-            var result = await _coursesRepository.Remove(course.Value, cancellationToken);
+            var course = courseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
+            var result = await _coursesRepository.Remove(course, cancellationToken);
 
             if (result.IsFailure)
             {
