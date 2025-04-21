@@ -2,7 +2,5 @@
 {
     public record CreateCourseRequest(
         string Title,
-        string Description,
-        Guid AuthorId
-        );
+        string Description);
 }

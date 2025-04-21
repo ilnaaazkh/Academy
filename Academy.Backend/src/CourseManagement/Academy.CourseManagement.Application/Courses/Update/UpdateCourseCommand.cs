@@ -6,6 +6,7 @@ namespace Academy.CourseManagement.Application.Courses.Update
     public record UpdateCourseCommand(
         Guid Id,
         string Title,
-        string Description
+        string Description,
+        Guid UserId
         ) : ICommand;
 }

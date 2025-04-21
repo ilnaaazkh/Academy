@@ -15,18 +15,20 @@ using Academy.Framework;
 using Academy.Framework.Processors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Academy.Framework.Auth;
 
 namespace Academy.CourseManagement.Presentation
 {
     public class CoursesController : ApplicationController
     {
         [HttpPost]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> CreateCourse(
             [FromBody] CreateCourseRequest request,
             [FromServices] CreateCourseCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(request.ToCommand(), cancellationToken);
+            var result = await handler.Handle(request.ToCommand(UserId), cancellationToken);
 
             if (result.IsFailure)
             {
@@ -37,13 +39,14 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPut("{id:guid}")]
+        [HasPermission(Permissions.Courses.Update)]
         public async Task<ActionResult> UpdateCourse(
             [FromRoute] Guid id,
             [FromBody] UpdateCourseRequest request,
             [FromServices] UpdateCourseCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(request.ToCommand(id), cancellationToken);
+            var result = await handler.Handle(request.ToCommand(id, UserId), cancellationToken);
 
             if (result.IsFailure)
             {

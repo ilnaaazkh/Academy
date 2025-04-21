@@ -42,6 +42,10 @@ namespace Academy.CourseManagement.Application.Courses.Update
             }
 
             var course = existingCourseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             course.UpdateTitle(Title.Create(command.Title).Value);
             course.UpdateDescription(Description.Create(command.Description).Value);
 

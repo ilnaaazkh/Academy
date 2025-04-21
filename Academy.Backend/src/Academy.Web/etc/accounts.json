@@ -2,7 +2,9 @@
   "Roles": {
     "Author": [
       "courses.create",
-      "courses.update"
+      "courses.update",
+      "courses.delete",
+      "courses.read"
     ],
     "Student": [
       "courses.read",
@@ -11,6 +13,7 @@
       "authorings.submit"
     ],
     "Admin": [
+      "courses.read",
       "authorings.approve",
       "authorings.reject"
     ]

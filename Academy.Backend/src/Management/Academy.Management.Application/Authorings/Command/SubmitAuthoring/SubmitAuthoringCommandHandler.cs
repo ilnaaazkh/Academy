@@ -27,7 +27,7 @@ namespace Academy.Management.Application.Authorings.Command.SubmitAuthoring
 
             if (authoring.UserId != command.UserId)
             {
-                return Errors.General.AccessDenied().ToErrorList();
+                return Errors.User.AccessDenied().ToErrorList();
             }
 
             var result = authoring.SendOnReview();

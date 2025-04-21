@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace Academy.Framework.Auth
+﻿namespace Academy.Framework.Auth
 {
     public static class Permissions
     {

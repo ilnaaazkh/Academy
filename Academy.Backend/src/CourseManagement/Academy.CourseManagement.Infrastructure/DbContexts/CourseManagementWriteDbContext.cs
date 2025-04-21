@@ -13,8 +13,7 @@ namespace Academy.CourseManagement.Infrastructure.DbContexts
         private readonly IConfiguration _configuration;
 
         public DbSet<Course> Courses { get; set; }
-        public DbSet<Author> Authors { get; set; }
-        public DbSet<Authorship> Authorships { get; set; }
+        
         public CourseManagementWriteDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
