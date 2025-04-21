@@ -3,23 +3,28 @@ using Academy.FilesService.Services.Interfaces;
 using Academy.FilesService.Services.Models;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
+using Minio.Exceptions;
 
 namespace Academy.FilesService.Infractructure
 {
     public class MinioProvider : IFileProvider
     {
         private const int MAX_DEGREE_OF_PARALLELISM = 10;
-        private readonly IMinioClient _minioClient;
 
-        public MinioProvider(IMinioClient minioClient)
+        private readonly IMinioClient _minioClient;
+        private readonly MinioOptions _options;
+
+        public MinioProvider(IMinioClient minioClient, IOptions<MinioOptions> options)
         {
             _minioClient = minioClient;
+            _options = options.Value;
         }
 
         public async Task<Result<IReadOnlyList<string>, ErrorList>> UploadFiles(
-            IEnumerable<FileData> files, 
+            IEnumerable<FileData> files,
             CancellationToken cancellationToken)
         {
             var semaphoreSlim = new SemaphoreSlim(MAX_DEGREE_OF_PARALLELISM);
@@ -33,7 +38,7 @@ namespace Academy.FilesService.Infractructure
 
                 var pathsResult = await Task.WhenAll(tasks);
 
-                if(pathsResult.Any(r => r.IsFailure))
+                if (pathsResult.Any(r => r.IsFailure))
                 {
                     return pathsResult.First(r => r.IsFailure).Error.ToErrorList();
                 }
@@ -55,7 +60,7 @@ namespace Academy.FilesService.Infractructure
         {
             await semaphoreSlim.WaitAsync(cancellationToken);
 
-            var path = Guid.NewGuid().ToString() + fileData.Name; 
+            var path = Guid.NewGuid().ToString() + fileData.Name;
             var putObjectArgs = new PutObjectArgs()
                 .WithBucket(fileData.Bucket)
                 .WithStreamData(fileData.Content)
@@ -96,7 +101,29 @@ namespace Academy.FilesService.Infractructure
                     var makeBucketArgs = new MakeBucketArgs().WithBucket(bucketName);
 
                     await _minioClient.MakeBucketAsync(makeBucketArgs, cancellationToken);
-                } 
+                }
+            }
+        }
+
+        public async Task<Result<string, ErrorList>> GetPresignedUrl(
+            string fileUrl,
+            string bucket,
+            CancellationToken cancellationToken)
+        {
+
+            try
+            {
+                PresignedGetObjectArgs args = new PresignedGetObjectArgs()
+                    .WithBucket(bucket)
+                    .WithObject(fileUrl)
+                    .WithExpiry(_options.PresignedUrlExpiryHours * 60 * 60);
+
+                var presigned = await _minioClient.PresignedGetObjectAsync(args);
+                return presigned;
+            }
+            catch (MinioException ex)
+            {
+                return Errors.General.NotFound(fileUrl).ToErrorList();
             }
         }
     }

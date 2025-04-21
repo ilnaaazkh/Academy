@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Academy.Management.Application.Authorings.RejectAuthoring
+namespace Academy.Management.Application.Authorings.Command.RejectAuthoring
 {
     public class RejectAuthoringCommandHandler : ICommandHandler<RejectAuthoringCommand>
     {

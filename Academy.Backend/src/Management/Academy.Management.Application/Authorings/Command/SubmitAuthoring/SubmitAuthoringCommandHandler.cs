@@ -3,7 +3,7 @@ using Academy.Core.Extensions;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
 
-namespace Academy.Management.Application.Authorings.SubmitAuthoring
+namespace Academy.Management.Application.Authorings.Command.SubmitAuthoring
 {
     public class SubmitAuthoringCommandHandler : ICommandHandler<SubmitAuthoringCommand>
     {
@@ -15,24 +15,24 @@ namespace Academy.Management.Application.Authorings.SubmitAuthoring
         }
 
         public async Task<UnitResult<ErrorList>> Handle(
-            SubmitAuthoringCommand command, 
+            SubmitAuthoringCommand command,
             CancellationToken cancellationToken = default)
         {
             var authoring = await _authoringsRepository.GetById(command.AuthoringId, cancellationToken);
 
-            if(authoring is null)
+            if (authoring is null)
             {
                 return Errors.General.NotFound(command.AuthoringId).ToErrorList();
             }
 
-            if(authoring.UserId != command.UserId)
+            if (authoring.UserId != command.UserId)
             {
                 return Errors.General.AccessDenied().ToErrorList();
             }
 
             var result = authoring.SendOnReview();
 
-            if(result.IsFailure)
+            if (result.IsFailure)
                 return result.Error.ToErrorList();
 
             await _authoringsRepository.Save(authoring, cancellationToken);

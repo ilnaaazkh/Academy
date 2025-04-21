@@ -4,7 +4,7 @@ using Academy.Core.Extensions;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
 
-namespace Academy.Management.Application.Authorings.ApproveAuthoring
+namespace Academy.Management.Application.Authorings.Command.ApproveAuthoring
 {
     public class ApproveAuthoringCommandHandler : ICommandHandler<ApproveAuthoringCommand>
     {

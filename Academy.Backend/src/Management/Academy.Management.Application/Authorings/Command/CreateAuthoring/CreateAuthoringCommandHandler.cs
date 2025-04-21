@@ -5,7 +5,7 @@ using Academy.SharedKernel;
 using Academy.Management.Domain;
 using CSharpFunctionalExtensions;
 
-namespace Academy.Management.Application.Authorings.CreateAuthoring
+namespace Academy.Management.Application.Authorings.Command.CreateAuthoring
 {
     public class CreateAuthoringCommandHandler : ICommandHandler<Guid, CreteAuthoringCommand>
     {

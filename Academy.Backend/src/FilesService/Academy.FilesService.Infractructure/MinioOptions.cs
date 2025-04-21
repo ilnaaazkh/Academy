@@ -8,5 +8,7 @@
         public string AccessKey { get; init; } = string.Empty;
         public string SecretKey { get; init; } = string.Empty;
         public bool WithSSL { get; init; } = false;
+
+        public int PresignedUrlExpiryHours { get; init; }
     }
 }

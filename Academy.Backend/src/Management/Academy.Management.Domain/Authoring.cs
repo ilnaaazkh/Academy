@@ -64,7 +64,7 @@ namespace Academy.Management.Domain
 
         public UnitResult<Error> SendOnReview()
         {
-            if (Status != AuthorRoleRequestStatus.Draft)
+            if (Status != AuthorRoleRequestStatus.Draft || Status != AuthorRoleRequestStatus.Rejected)
                 return Error.Validation(
                     "authoring.invalid-status",
                     "Only authorings in 'Draft' status can be sent for review",

@@ -6,7 +6,7 @@ using Academy.SharedKernel;
 using Academy.SharedKernel.ValueObjects;
 using CSharpFunctionalExtensions;
 
-namespace Academy.Management.Application.Authorings.AddFilesToAuthoring
+namespace Academy.Management.Application.Authorings.Command.AddFilesToAuthoring
 {
     public record AddAttachemntsToAuthoringCommand(Guid AuthoringId, IEnumerable<UploadFileCommand> Files) : ICommand;
 

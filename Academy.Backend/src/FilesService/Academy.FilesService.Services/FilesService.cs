@@ -8,7 +8,6 @@ namespace Academy.FilesService.Services
 {
     public class FilesService
     {
-        private const string BUCKET = "test";
         private readonly IFileProvider _fileProvider;
 
         public FilesService(IFileProvider fileProvider)
@@ -23,6 +22,13 @@ namespace Academy.FilesService.Services
         {
             var fileDatas = files.Select(f => new FileData(f.FileName, bucket, f.Content));
             return await _fileProvider.UploadFiles(fileDatas, cancellationToken);
+        }
+
+        public async Task<Result<string, ErrorList>> GetPresignedUrl(string fileUrl, string bucket, CancellationToken cancellationToken)
+        {
+            var presignedUrlresult = await _fileProvider.GetPresignedUrl(fileUrl, bucket, cancellationToken);
+
+            return presignedUrlresult;
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Academy.Management.Application.Authorings.CreateAuthoring;
-using Academy.Management.Application.Authorings.RejectAuthoring;
+﻿using Academy.Management.Application.Authorings.Command.CreateAuthoring;
+using Academy.Management.Application.Authorings.Command.RejectAuthoring;
 using Academy.Management.Contracts.Requests;
 
 namespace Academy.Management.Presentation.Extensions

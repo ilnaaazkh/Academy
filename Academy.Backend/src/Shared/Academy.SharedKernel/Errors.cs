@@ -34,6 +34,12 @@
                 return Error.NotFound("record.not.found", $"record not found{forId}");
             }
 
+            public static Error NotFound(string? id)
+            {
+                var forId = id == null ? "" : $" for id={id}";
+                return Error.NotFound("record.not.found", $"record not found{forId}");
+            }
+
             public static Error Failure()
             {
                 return Error.Failure("failure", "Failure");

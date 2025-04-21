@@ -1,24 +1,28 @@
 ﻿using Academy.Framework;
 using Academy.Framework.Auth;
-using Academy.Management.Application.Authorings.CreateAuthoring;
 using Academy.Management.Contracts.Requests;
 using Academy.Management.Presentation.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Academy.Management.Application.Authorings.SubmitAuthoring;
-using Academy.Management.Application.Authorings.ApproveAuthoring;
-using Academy.Management.Application.Authorings.RejectAuthoring;
 using Microsoft.AspNetCore.Http;
 using Academy.Framework.Processors;
-using Academy.Management.Application.Authorings.AddFilesToAuthoring;
+using Microsoft.AspNetCore.Authorization;
+using Academy.Management.Application.Authorings.Command.ApproveAuthoring;
+using Academy.Management.Application.Authorings.Command.AddFilesToAuthoring;
+using Academy.Management.Application.Authorings.Command.AttachmentDownloadLink;
+using Academy.Management.Application.Authorings.Command.CreateAuthoring;
+using Academy.Management.Application.Authorings.Command.SubmitAuthoring;
+using Academy.Management.Application.Authorings.Command.RejectAuthoring;
+using Academy.Management.Application.Authorings.Query.GetAuthoringsQuery;
+using Newtonsoft.Json;
 
 namespace Academy.Management.Presentation
 {
     public class AuthoringsController : ApplicationController
     {
         [HttpPost]
-        [HasPermission(Permissions.Authorings.CreateAuhtoring)]
+        [HasPermission(Permissions.Authorings.CreateAuthoring)]
         public async Task<ActionResult> CreateAuthoring(
             [FromBody] CreateAuthoringRequest request,
             [FromServices] CreateAuthoringCommandHandler handler,
@@ -93,8 +97,8 @@ namespace Academy.Management.Presentation
             return Ok();
         }
 
-        [HttpPost("{authoringId:guid}")]
-        [HasPermission(Permissions.Authorings.CreateAuhtoring)]
+        [HttpPost("{authoringId:guid}/files")]
+        [HasPermission(Permissions.Authorings.CreateAuthoring)]
         public async Task<ActionResult> AddAttachmentsToAuthoring(
             [FromForm] IFormFileCollection files,
             [FromRoute] Guid authoringId,
@@ -111,6 +115,49 @@ namespace Academy.Management.Presentation
                 return result.Error.ToResponse();
 
             return Ok(result.Value);
+        }
+
+        [HttpGet("{authoringId:guid}/files/{fileId}")]
+        [Authorize]
+        public async Task<ActionResult> AddAttachmentsToAuthoring(
+            [FromRoute] string fileId,
+            [FromRoute] Guid authoringId,
+            [FromServices] GetAttachmentDownloadLinkCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var command = new GetAttachmentDownloadLinkCommand(fileId);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        [HasPermission(Permissions.Authorings.ApproveAuthoring)]
+        public async Task<ActionResult> GetAuthroings(
+            [FromQuery] GetAuthoringsQuery query,
+            [FromServices] GetAuthoringsQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var handleResult = await handler.Handle(query, cancellationToken);
+
+            var result = handleResult.Value;
+
+            var metadata = new
+            {
+                result.TotalCount,
+                result.PageSize,
+                result.CurrentPage,
+                result.TotalPages,
+                result.HasNext,
+                result.HasPrevious
+            };
+
+            Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
+
+            return Ok(result);
         }
     }
 }

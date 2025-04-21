@@ -18,6 +18,17 @@ namespace Academy.Management.Application
                     .WithScopedLifetime();
             });
 
+            services.Scan(scan =>
+            {
+                scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+                    .AddClasses(classes =>
+                    {
+                        classes.AssignableTo(typeof(IQueryHandler<,>));
+                    })
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime();
+            });
+
             return services;
         }
     }

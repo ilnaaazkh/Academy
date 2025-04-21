@@ -14,7 +14,7 @@ namespace Academy.Framework.Auth
 
         public static class Authorings 
         {
-            public const string CreateAuhtoring = "authorings.create";
+            public const string CreateAuthoring = "authorings.create";
             public const string SubmitAuthoring = "authorings.submit";
             public const string ApproveAuthoring = "authorings.approve";
             public const string RejectAuthoring = "authorings.reject";

@@ -13,6 +13,12 @@ namespace Academy.FilesService.Presentation
         {
             _fileService = fileService;
         }
+
+        public Task<Result<string, ErrorList>> GetDownloadLink(string fileUrl, string bucket, CancellationToken cancellationToken)
+        {
+            return _fileService.GetPresignedUrl(fileUrl, bucket, cancellationToken);
+        }
+
         public Task<Result<IReadOnlyList<string>, ErrorList>> UploadFiles(
             IEnumerable<UploadFileCommand> files, 
             string bucket,
