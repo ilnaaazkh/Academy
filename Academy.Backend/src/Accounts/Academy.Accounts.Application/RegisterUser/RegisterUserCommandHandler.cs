@@ -28,6 +28,14 @@ namespace Academy.Accounts.Application.RegisterUser
                 return new ErrorList(errors);
             }
 
+            var roleResult = await _userManager.AddToRoleAsync(user, Roles.STUDENT);
+
+            if(roleResult.Succeeded == false)
+            {
+                var errors = roleResult.Errors.Select(e => Error.Validation(e.Code, e.Description, null));
+                return new ErrorList(errors);
+            }
+
             return Result.Success<ErrorList>();
         }
     }

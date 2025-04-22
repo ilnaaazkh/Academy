@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Accounts\Academy.Accounts.Contracts\Academy.Accounts.Contracts.csproj" />
+    <ProjectReference Include="..\..\FilesService\Academy.FilesService.Contracts\Academy.FilesService.Contracts.csproj" />
+    <ProjectReference Include="..\Academy.Management.Domain\Academy.Management.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

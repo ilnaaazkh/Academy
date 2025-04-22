@@ -37,6 +37,10 @@ namespace Academy.CourseManagement.Application.Courses.UpdateModule
                 return courseResult.Error.ToErrorList();
 
             var course = courseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.Create(command.ModuleId);
             var moduleResult = course.GetModuleById(moduleId);
 

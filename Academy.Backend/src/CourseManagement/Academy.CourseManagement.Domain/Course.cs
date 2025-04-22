@@ -13,16 +13,20 @@ namespace Academy.CourseManagement.Domain
         private List<Module> _modules = new();
         public IReadOnlyList<Module> Modules => _modules;
 
+        public Guid AuthorId { get; }
+
         public Course() { }            
         
         public Course(CourseId id, 
             Title title, 
-            Description description)
+            Description description, 
+            Guid authorId)
         {
             Id = id;
             Title = title;
             Description = description;
             Status = Status.Draft;
+            AuthorId = authorId;
         }
 
         public UnitResult<Error> AddModule(Module module)

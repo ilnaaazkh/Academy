@@ -8,6 +8,12 @@
             {
                 return Error.Validation("user.invalid.credentials", "Invalid email or password");
             }
+
+            public static Error AccessDenied(string? message = null)
+            {
+                var label = message ?? "Access to recourse is denied";
+                return Error.AccessDenied("access.denied", label);
+            }
         }
         public static class General
         {
@@ -24,6 +30,12 @@
             }
 
             public static Error NotFound(Guid? id)
+            {
+                var forId = id == null ? "" : $" for id={id}";
+                return Error.NotFound("record.not.found", $"record not found{forId}");
+            }
+
+            public static Error NotFound(string? id)
             {
                 var forId = id == null ? "" : $" for id={id}";
                 return Error.NotFound("record.not.found", $"record not found{forId}");

@@ -4,5 +4,6 @@ namespace Academy.CourseManagement.Application.Courses.DeleteModule
 {
     public record DeleteModuleCommand(
         Guid CourseId,
-        Guid ModuleId) : ICommand;
+        Guid ModuleId,
+        Guid UserId) : ICommand;
 }

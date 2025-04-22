@@ -4,11 +4,9 @@ using Academy.Accounts.Infrastructure.Models;
 using Academy.Accounts.Infrastructure.Options;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using System.Text;
 

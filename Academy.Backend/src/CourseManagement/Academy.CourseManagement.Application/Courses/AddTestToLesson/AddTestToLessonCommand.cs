@@ -7,6 +7,7 @@ namespace Academy.CourseManagement.Application.Courses.AddTestToLesson
          Guid CourseId,
          Guid ModuleId,
          Guid LessonId,
-         IEnumerable<TestQuestionDto> Questions
+         IEnumerable<TestQuestionDto> Questions,
+         Guid UserId
         ) : ICommand;
 }

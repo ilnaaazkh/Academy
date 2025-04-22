@@ -5,6 +5,7 @@ using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
 using Academy.Web.Extensions;
 using Academy.Accounts.Infrastructure.Seeding;
+using Academy.Management.Presentation;
 
 DotNetEnv.Env.Load();
 
@@ -12,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(CoursesController).Assembly)
-    .AddApplicationPart(typeof(FilesController).Assembly);
+    .AddApplicationPart(typeof(FilesController).Assembly)
+    .AddApplicationPart(typeof(AuthoringsController).Assembly);
 
 
 builder.Services.AddRouting(options =>
@@ -26,7 +28,8 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services
     .AddCourseManagementModule()
     .AddFilesService(builder.Configuration)
-    .AddAccountsService(builder.Configuration);
+    .AddAccountsService(builder.Configuration)
+    .AddManagementService();
 
 var app = builder.Build();
 

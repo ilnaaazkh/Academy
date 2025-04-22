@@ -1,6 +1,4 @@
-﻿using Academy.CourseManagement.Application.Authors.Create;
-using Academy.CourseManagement.Application.Authors.Update.UpdateMainInfo;
-using Academy.CourseManagement.Application.Courses.AddLesson;
+﻿using Academy.CourseManagement.Application.Courses.AddLesson;
 using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.AddPracticeData;
 using Academy.CourseManagement.Application.Courses.AddTestToLesson;
@@ -8,7 +6,6 @@ using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.Update;
 using Academy.CourseManagement.Application.Courses.UpdateModule;
 using Academy.CourseManagement.Contracts.Requests;
-using System.Linq;
 
 namespace Academy.CourseManagement.Presentation.Extensions
 {
@@ -17,68 +14,59 @@ namespace Academy.CourseManagement.Presentation.Extensions
         public static AddPracticeDataCommand ToCommand(this AddPracticeDataRequest request, 
             Guid courseId, 
             Guid moduleId, 
-            Guid lessonId)
+            Guid lessonId,
+            Guid userId)
         {
             return new AddPracticeDataCommand(
                 courseId, moduleId, lessonId, 
-                request.TemplateCode, request.Tests.Select(t => new TestDto(t.Input, t.Expected)));
-        }
-        public static CreateAuthorCommand ToCommand(this CreateAuthorRequest request) 
-        {
-            return new CreateAuthorCommand(request.FirstName, request.LastName, request.Email, request.PhoneNumber);
-        }
-
-        public static UpdateMainInfoCommand ToCommand(this UpdateAuthorMainInfo request, Guid id)
-        {
-            return new UpdateMainInfoCommand(
-                id,
-                request.Email,
-                request.PhoneNumber,
-                request.FirstName,
-                request.LastName
-                );
+                request.TemplateCode, request.Tests.Select(t => new TestDto(t.Input, t.Expected)),
+                userId);
         }
     
-        public static CreateCourseCommand ToCommand(this CreateCourseRequest request)
+        public static CreateCourseCommand ToCommand(this CreateCourseRequest request, Guid authorId)
         {
-            return new CreateCourseCommand(request.Title, request.Description, request.AuthorId);
+            return new CreateCourseCommand(request.Title, request.Description, authorId);
         }
 
-        public static UpdateCourseCommand ToCommand(this UpdateCourseRequest request, Guid courseId)
+        public static UpdateCourseCommand ToCommand(this UpdateCourseRequest request, Guid courseId, Guid userId)
         {
-            return new UpdateCourseCommand(courseId, request.Title, request.Description);
+            return new UpdateCourseCommand(courseId, request.Title, request.Description, userId);
         }
         
-        public static AddModuleCommand ToCommand(this AddModuleRequest request, Guid courseId)
+        public static AddModuleCommand ToCommand(this AddModuleRequest request, Guid courseId, Guid userId)
         {
-            return new AddModuleCommand(courseId, request.Title, request.Description);
+            return new AddModuleCommand(courseId, request.Title, request.Description, userId);
         }
     
         public static UpdateModuleCommand ToCommand(
             this UpdateModuleRequest request, 
             Guid courseId, 
-            Guid moduleId)
+            Guid moduleId, 
+            Guid userId)
         {
-            return new UpdateModuleCommand(courseId, moduleId, request.Title, request.Description);
+            return new UpdateModuleCommand(courseId, moduleId, request.Title, request.Description, userId);
         }
 
         public static AddLessonCommand ToCommand(
             this AddLessonRequest request,
             Guid courseId,
-            Guid moduleId)
+            Guid moduleId,
+            Guid userId)
         {
             return new AddLessonCommand(courseId, 
                 moduleId, 
                 request.Title, 
                 request.Content, 
-                request.LessonType);
+                request.LessonType,
+                userId);
         }
 
         public static AddTestToLessonCommand ToCommand(
             this AddTestToLessonRequest request,
             Guid courseId,
             Guid moduleId,
-            Guid lessonId
+            Guid lessonId,
+            Guid userId
             )
         {
             var dtos = request.Questions.Select(q =>
@@ -94,7 +82,8 @@ namespace Academy.CourseManagement.Presentation.Extensions
                 courseId,
                 moduleId,
                 lessonId,
-                dtos);
+                dtos,
+                userId);
 
             return command;
         }

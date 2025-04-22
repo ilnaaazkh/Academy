@@ -2,12 +2,20 @@
   "Roles": {
     "Author": [
       "courses.create",
-      "courses.update"
-    ],
-    "Student": [
+      "courses.update",
+      "courses.delete",
       "courses.read"
     ],
+    "Student": [
+      "courses.read",
+      "authorings.create",
+      "authorings.update",
+      "authorings.submit"
+    ],
     "Admin": [
+      "courses.read",
+      "authorings.approve",
+      "authorings.reject"
     ]
   },
   "Permissions": {
@@ -16,6 +24,13 @@
       "courses.update",
       "courses.read",
       "courses.delete"
+    ],
+    "Authorings": [
+      "authorings.create",
+      "authorings.update",
+      "authorings.submit",
+      "authorings.approve",
+      "authorings.reject"
     ]
   }
 }

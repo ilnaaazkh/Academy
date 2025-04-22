@@ -2,5 +2,5 @@
 
 namespace Academy.CourseManagement.Application.Courses.Delete
 {
-    public record DeleteCourseCommand(Guid CourseId) : ICommand;
+    public record DeleteCourseCommand(Guid CourseId, Guid UserId) : ICommand;
 }

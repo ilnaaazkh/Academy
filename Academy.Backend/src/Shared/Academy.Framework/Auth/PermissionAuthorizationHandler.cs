@@ -4,7 +4,7 @@ namespace Academy.Framework.Auth
 {
     public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
     {
-        private const string Permission = "Permission";
+        private const string Permission = "permission";
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             PermissionRequirement requirement)
