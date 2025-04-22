@@ -27,8 +27,6 @@ namespace Academy.CourseManagement.Application.Courses.AddAttachments
             AddAttachmentsCommand command, 
             CancellationToken cancellationToken = default)
         {
-            //TODO: валидация
-            
             var courseId = CourseId.Create(command.CourseId);
             var courseResult = await _coursesRepository.GetById(courseId, cancellationToken);
 
@@ -36,6 +34,9 @@ namespace Academy.CourseManagement.Application.Courses.AddAttachments
                 return courseResult.Error.ToErrorList();
 
             var course = courseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
 
             //Попробовать загрузить файлы в S3 хранилище
             var uploadFilesResult = await _filesServiceContract.UploadFiles(command.Files, BUCKET, cancellationToken);

@@ -27,7 +27,10 @@ namespace Academy.CourseManagement.Application.Courses.DeleteModule
                 return courseResult.Error.ToErrorList();
 
             var course = courseResult.Value;
-            
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.Create(command.ModuleId);
             var deleteModuleResult = course.RemoveModule(moduleId);
 

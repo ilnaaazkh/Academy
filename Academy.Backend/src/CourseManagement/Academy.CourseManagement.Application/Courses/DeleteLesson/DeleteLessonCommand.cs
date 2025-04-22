@@ -24,6 +24,9 @@ namespace Academy.CourseManagement.Application.Courses.DeleteLesson
 
             var course = courseResult.Value;
 
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.Create(command.ModuleId);
             var lessonId = LessonId.Create(command.LessonId);
 
@@ -41,5 +44,6 @@ namespace Academy.CourseManagement.Application.Courses.DeleteLesson
     public record DeleteLessonCommand(
         Guid CourseId,
         Guid ModuleId,
-        Guid LessonId) : ICommand;
+        Guid LessonId,
+        Guid UserId) : ICommand;
 }

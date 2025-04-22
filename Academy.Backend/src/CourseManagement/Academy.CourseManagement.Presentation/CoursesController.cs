@@ -74,13 +74,14 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPost("{courseId:guid}/modules")]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddModule(
             [FromRoute] Guid courseId,
             [FromBody] AddModuleRequest request,
             [FromServices] AddModuleCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(request.ToCommand(courseId), cancellationToken);
+            var result = await handler.Handle(request.ToCommand(courseId, UserId), cancellationToken);
 
             if (result.IsFailure)
             {
@@ -91,6 +92,7 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPut("{courseId:guid}/modules/{moduleId:guid}")]
+        [HasPermission(Permissions.Courses.Update)]
         public async Task<ActionResult> UpdateModule(
             [FromRoute] Guid courseId,
             [FromRoute] Guid moduleId,
@@ -99,7 +101,7 @@ namespace Academy.CourseManagement.Presentation
             CancellationToken cancellationToken
             )
         {
-            var result = await handler.Handle(request.ToCommand(courseId, moduleId), cancellationToken);
+            var result = await handler.Handle(request.ToCommand(courseId, moduleId, UserId), cancellationToken);
 
             if (result.IsFailure)
             {
@@ -110,13 +112,14 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpDelete("{courseId:guid}/modules/{moduleId:guid}")]
-        public async Task<ActionResult> UpdateModule(
+        [HasPermission(Permissions.Courses.Delete)]
+        public async Task<ActionResult> DeleteModule(
             [FromRoute] Guid courseId,
             [FromRoute] Guid moduleId,
             [FromServices] DeleteModuleCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(new DeleteModuleCommand(courseId, moduleId), cancellationToken);
+            var result = await handler.Handle(new DeleteModuleCommand(courseId, moduleId, UserId), cancellationToken);
 
             if (result.IsFailure)
             {
@@ -127,6 +130,7 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons")]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddLesson(
             [FromRoute] Guid courseId,
             [FromRoute] Guid moduleId,
@@ -134,7 +138,7 @@ namespace Academy.CourseManagement.Presentation
             [FromServices] AddLessonCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var result = await handler.Handle(request.ToCommand(courseId, moduleId), cancellationToken);
+            var result = await handler.Handle(request.ToCommand(courseId, moduleId, UserId), cancellationToken);
 
             if (result.IsFailure)
             {
@@ -145,6 +149,7 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpDelete("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}")]
+        [HasPermission(Permissions.Courses.Delete)]
         public async Task<ActionResult> RemoveLesson(
             [FromRoute] Guid courseId,
             [FromRoute] Guid moduleId,
@@ -152,7 +157,7 @@ namespace Academy.CourseManagement.Presentation
             [FromServices] DeleteLessonCommandHandler handler, 
             CancellationToken cancellationToken)
         {
-            var command = new DeleteLessonCommand(courseId, moduleId, lessonId);
+            var command = new DeleteLessonCommand(courseId, moduleId, lessonId, UserId);
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
@@ -164,6 +169,7 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/test-questions")]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddTestToLesson(
             [FromRoute] Guid courseId,
             [FromRoute] Guid moduleId,
@@ -172,7 +178,7 @@ namespace Academy.CourseManagement.Presentation
             [FromServices] AddTestToLessonCommandHandler handler,
             CancellationToken cancellationToken)
         {
-            var command = request.ToCommand(courseId, moduleId, lessonId);
+            var command = request.ToCommand(courseId, moduleId, lessonId, UserId);
 
             var result = await handler.Handle(command, cancellationToken);
 
@@ -183,6 +189,7 @@ namespace Academy.CourseManagement.Presentation
         }
 
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/attachments")]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddAttachmentsToLesson(
            [FromRoute] Guid courseId,
            [FromRoute] Guid moduleId,
@@ -194,7 +201,7 @@ namespace Academy.CourseManagement.Presentation
             await using var formFileProcessor = new FormFileProcessor();
             var processedFiles = formFileProcessor.Process(files);
 
-            var command = new AddAttachmentsCommand(courseId, moduleId, lessonId, processedFiles);
+            var command = new AddAttachmentsCommand(courseId, moduleId, lessonId, processedFiles, UserId);
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)
@@ -205,6 +212,7 @@ namespace Academy.CourseManagement.Presentation
         
         
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/practice")]
+        [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddPracticeDataToLesson(
            [FromRoute] Guid courseId,
            [FromRoute] Guid moduleId,
@@ -213,7 +221,7 @@ namespace Academy.CourseManagement.Presentation
            [FromServices] AddPracticeDataCommandHandler handler,
            CancellationToken cancellationToken)
         {
-            var command = request.ToCommand(courseId, moduleId, lessonId);
+            var command = request.ToCommand(courseId, moduleId, lessonId, UserId);
             var result = await handler.Handle(command, cancellationToken);
 
             if (result.IsFailure)

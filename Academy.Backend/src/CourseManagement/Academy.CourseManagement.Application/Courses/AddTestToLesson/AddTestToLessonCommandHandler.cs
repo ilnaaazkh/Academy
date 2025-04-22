@@ -35,6 +35,10 @@ namespace Academy.CourseManagement.Application.Courses.AddTestToLesson
                 return courseResult.Error.ToErrorList();
 
             var course = courseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.Create(command.ModuleId);
             var lessonId = LessonId.Create(command.LessonId);
 

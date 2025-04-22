@@ -39,6 +39,10 @@ namespace Academy.CourseManagement.Application.Courses.AddLesson
             }
 
             var course = courseResult.Value;
+
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.Create(command.ModuleId);
             var lessonId = LessonId.NewLessonId();
             var title = Title.Create(command.Title).Value;

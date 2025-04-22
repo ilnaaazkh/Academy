@@ -6,5 +6,6 @@ namespace Academy.CourseManagement.Application.Courses.UpdateModule
         Guid CourseId,
         Guid ModuleId,
         string Title,
-        string Description) : ICommand;
+        string Description,
+        Guid UserId) : ICommand;
 }

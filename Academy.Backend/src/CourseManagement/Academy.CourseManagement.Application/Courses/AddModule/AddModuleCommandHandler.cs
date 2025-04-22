@@ -40,6 +40,9 @@ namespace Academy.CourseManagement.Application.Courses.AddModule
 
             var course = courseResult.Value;
 
+            if (course.AuthorId != command.UserId)
+                return Errors.User.AccessDenied().ToErrorList();
+
             var moduleId = ModuleId.NewModuleId();
             var title = Title.Create(command.Title).Value;
             var description = Description.Create(command.Description).Value;

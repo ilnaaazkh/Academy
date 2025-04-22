@@ -7,5 +7,6 @@ namespace Academy.CourseManagement.Application.Courses.AddAttachments
         Guid CourseId,
         Guid ModuleId,
         Guid LessonId,
-        IEnumerable<UploadFileCommand> Files) : ICommand;
+        IEnumerable<UploadFileCommand> Files,
+        Guid UserId) : ICommand;
 }
