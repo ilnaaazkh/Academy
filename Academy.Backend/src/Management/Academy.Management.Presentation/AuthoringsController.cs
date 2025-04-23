@@ -136,12 +136,12 @@ namespace Academy.Management.Presentation
 
         [HttpGet]
         [HasPermission(Permissions.Authorings.ApproveAuthoring)]
-        public async Task<ActionResult> GetAuthroings(
-            [FromQuery] GetAuthoringsQuery query,
+        public async Task<ActionResult> GetAuthorings(
+            [FromQuery] GetAuthoringsRequest query,
             [FromServices] GetAuthoringsQueryHandler handler,
             CancellationToken cancellationToken)
         {
-            var handleResult = await handler.Handle(query, cancellationToken);
+            var handleResult = await handler.Handle(query.ToQuery(), cancellationToken);
 
             var result = handleResult.Value;
 
