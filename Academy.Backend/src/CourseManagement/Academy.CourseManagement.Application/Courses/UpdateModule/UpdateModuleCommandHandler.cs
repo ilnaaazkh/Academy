@@ -53,9 +53,6 @@ namespace Academy.CourseManagement.Application.Courses.UpdateModule
             Title title = Title.Create(command.Title).Value;
             module.UpdateTitle(title);
 
-            Description description = Description.Create(command.Description).Value;
-            module.UpdateDescription(description);
-
             var saveResult = await _coursesRepository.Save(course, cancellationToken);
 
             if(saveResult.IsFailure)

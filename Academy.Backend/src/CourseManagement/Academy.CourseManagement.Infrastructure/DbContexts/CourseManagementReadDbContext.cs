@@ -20,6 +20,8 @@ namespace Academy.CourseManagement.Infrastructure.DbContexts
         }
 
         public IQueryable<CourseDto> Courses => Set<CourseDto>();
+        public IQueryable<ModuleDto> Modules => Set<ModuleDto>();
+        public IQueryable<LessonDto> Lessons => Set<LessonDto>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

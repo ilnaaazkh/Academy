@@ -2,5 +2,5 @@
 
 namespace Academy.CourseManagement.Application.Courses.AddModule
 {
-    public record AddModuleCommand(Guid CourseId, string Title, string Description, Guid UserId) : ICommand;
+    public record AddModuleCommand(Guid CourseId, string Title, Guid UserId) : ICommand;
 }

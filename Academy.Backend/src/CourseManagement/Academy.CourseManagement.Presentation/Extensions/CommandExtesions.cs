@@ -38,7 +38,7 @@ namespace Academy.CourseManagement.Presentation.Extensions
         
         public static AddModuleCommand ToCommand(this AddModuleRequest request, Guid courseId, Guid userId)
         {
-            return new AddModuleCommand(courseId, request.Title, request.Description, userId);
+            return new AddModuleCommand(courseId, request.Title, userId);
         }
     
         public static UpdateModuleCommand ToCommand(
@@ -47,7 +47,7 @@ namespace Academy.CourseManagement.Presentation.Extensions
             Guid moduleId, 
             Guid userId)
         {
-            return new UpdateModuleCommand(courseId, moduleId, request.Title, request.Description, userId);
+            return new UpdateModuleCommand(courseId, moduleId, request.Title, userId);
         }
 
         public static AddLessonCommand ToCommand(

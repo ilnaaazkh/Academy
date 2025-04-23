@@ -9,18 +9,15 @@ namespace Academy.CourseManagement.Domain
     {
         private List<Lesson> _lessons = new();
         public Title Title { get; private set; }
-        public Description Description { get; set; }
         public Position Position { get; private set; } = null!;
         public IReadOnlyList<Lesson> Lessons => _lessons.AsReadOnly();
 
         public Module(
             ModuleId id,
-            Title title, 
-            Description description)
+            Title title)
         {
             Id = id;
             Title = title;
-            Description = description;
         }
 
         public UnitResult<Error> AddLesson(Lesson lesson)
@@ -98,12 +95,6 @@ namespace Academy.CourseManagement.Domain
             return UnitResult.Success<Error>();
         }
 
-        public UnitResult<Error> UpdateDescription(Description description)
-        {
-            Description = description;
-
-            return UnitResult.Success<Error>();
-        }
 
         public UnitResult<Error> AddTestToLesson(
             LessonId lessonId,

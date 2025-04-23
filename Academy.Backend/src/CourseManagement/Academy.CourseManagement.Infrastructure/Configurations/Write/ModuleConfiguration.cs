@@ -25,12 +25,6 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
                 .HasConversion(t => t.Value,
                     value => Title.Create(value).Value);
 
-            builder.Property(m => m.Description)
-               .IsRequired()
-               .HasMaxLength(Description.MAX_LENGTH)
-               .HasConversion(t => t.Value,
-                   value => Description.Create(value).Value);
-
             builder.Property(m => m.Position)
                 .IsRequired()
                 .HasConversion(pos => pos.Value,
