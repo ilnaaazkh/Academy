@@ -10,7 +10,7 @@
         public int PageSize
         {
             get { return _pageSize; }
-            set { _pageSize = (value <= _maxPageSize) ? value : _maxPageSize; }
+            set { _pageSize = value <= _maxPageSize ? value : _maxPageSize; }
         }
     }
 }

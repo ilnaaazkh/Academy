@@ -45,8 +45,7 @@ namespace Academy.CourseManagement.Application.Courses.AddModule
 
             var moduleId = ModuleId.NewModuleId();
             var title = Title.Create(command.Title).Value;
-            var description = Description.Create(command.Description).Value;
-            var module = new Module(moduleId, title, description);
+            var module = new Module(moduleId, title);
 
             course.AddModule(module);
 

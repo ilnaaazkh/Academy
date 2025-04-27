@@ -9,7 +9,6 @@ namespace Academy.CourseManagement.Application.Courses.AddModule
         public AddModuleCommandValidator()
         {
             RuleFor(m => m.Title).MustBeValueObject(Title.Create);
-            RuleFor(m => m.Description).MustBeValueObject(Description.Create);
         }
     }
 

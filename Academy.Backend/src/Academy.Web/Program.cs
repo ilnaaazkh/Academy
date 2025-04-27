@@ -1,7 +1,6 @@
 using Academy.FilesService.Presentation;
 using Academy.CourseManagement.Presentation;
 using Academy.Accounts.Presentation;
-using Academy.Web.Migrations;
 using Academy.Web.Middlewares;
 using Academy.Web.Extensions;
 using Academy.Accounts.Infrastructure.Seeding;
@@ -42,7 +41,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

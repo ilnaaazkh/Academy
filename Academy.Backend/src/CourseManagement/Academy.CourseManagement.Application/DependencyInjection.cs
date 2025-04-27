@@ -20,6 +20,17 @@ namespace Academy.CourseManagement.Application
                     .WithScopedLifetime();
             });
 
+            services.Scan(scan =>
+            {
+                scan.FromAssemblies(typeof(DependencyInjection).Assembly)
+                    .AddClasses(classes =>
+                    {
+                        classes.AssignableTo(typeof(IQueryHandler<,>));
+                    })
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime();
+            });
+
             services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
             return services;

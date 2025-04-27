@@ -16,11 +16,50 @@ using Academy.Framework.Processors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Academy.Framework.Auth;
+using Academy.CourseManagement.Application.Courses.GetCourses;
+using Newtonsoft.Json;
+using Academy.CourseManagement.Application.Courses.GetCourseModules;
 
 namespace Academy.CourseManagement.Presentation
 {
     public class CoursesController : ApplicationController
     {
+        [HttpGet("{courseId:guid}")]
+        public async Task<ActionResult> GetCourseModules(
+            [FromRoute] Guid courseId,
+            [FromServices] GetCourseModulesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetCourseModulesQuery(courseId), cancellationToken);
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCourses(
+            [FromQuery] GetCoursesRequest request,
+            [FromServices] GetCoursesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(request.ToQuery(), cancellationToken);
+
+            var value = result.Value;
+
+            var metadata = new
+            {
+                value.TotalCount,
+                value.PageSize,
+                value.CurrentPage,
+                value.TotalPages,
+                value.HasNext,
+                value.HasPrevious
+            };
+
+            Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
+
+            return Ok(value);
+        }
+
         [HttpPost]
         [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> CreateCourse(

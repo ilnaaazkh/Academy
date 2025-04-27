@@ -10,7 +10,7 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
     {
         public void Configure(EntityTypeBuilder<Course> builder)
         {
-            builder.ToTable("courses");
+            builder.ToTable(Tables.Courses);
 
             builder.HasKey(c => c.Id);
 
