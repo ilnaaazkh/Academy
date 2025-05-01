@@ -22,70 +22,76 @@ namespace Academy.CourseManagement.Infrastructure.CodeRunner
 
         public async Task<Result<string, Error>> Run(string code, CancellationToken cancellationToken)
         {
-            CreateContainerResponse? container = null;
-            try
-            {
-                var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-                Directory.CreateDirectory(tempDir);
 
-                await File.WriteAllTextAsync(Path.Combine(tempDir, "Program.cs"), code, cancellationToken);
+            var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(tempDir);
 
-                var csproj = @"<Project Sdk=""Microsoft.NET.Sdk"">
+            await File.WriteAllTextAsync(Path.Combine(tempDir, "Program.cs"), code, cancellationToken);
+
+            var csproj = @"<Project Sdk=""Microsoft.NET.Sdk"">
                               <PropertyGroup>
                                 <OutputType>Exe</OutputType>
                                 <TargetFramework>net8.0</TargetFramework>
                               </PropertyGroup>
                             </Project>";
 
-                await File.WriteAllTextAsync(Path.Combine(tempDir, "UserCode.csproj"), csproj, cancellationToken);
+            await File.WriteAllTextAsync(Path.Combine(tempDir, "UserCode.csproj"), csproj, cancellationToken);
 
-                const string image = "mcr.microsoft.com/dotnet/sdk:8.0";
+            const string image = "mcr.microsoft.com/dotnet/sdk:8.0";
 
-                container = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
-                {
-                    Image = image,
-                    Cmd = new[] { "/bin/sh", "-c", "dotnet build && dotnet run --no-build" },
-                    HostConfig = new HostConfig
-                    {
-                        Binds = new List<string> { $"{tempDir}:/app" },
-                        AutoRemove = true,
-                        Memory = 256 * 1024 * 1024,
-                        MemorySwap = 256 * 1024 * 1024,
-                    },
-                    WorkingDir = "/app"
-                }, cancellationToken);
-
-                using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                cts.CancelAfter(TimeSpan.FromSeconds(5));
-
-                await _client.Containers.StartContainerAsync(container.ID, null, cts.Token);
-
-                using var logStream = await _client.Containers.GetContainerLogsAsync(
-                                                    container.ID,
-                                                    tty: false,
-                                                    new ContainerLogsParameters
-                                                    {
-                                                        ShowStdout = true,
-                                                        ShowStderr = true,
-                                                        Follow = true
-                                                    },
-                                                    cancellationToken
-                                                );
-
-
-                var (stdout, stderr) = await logStream.ReadOutputToEndAsync(cancellationToken);
-
-                var cleanOutput = ExtractUserOutput(stdout);
-
-                var result = string.IsNullOrWhiteSpace(stderr) ? cleanOutput : $"{cleanOutput}\nErrors:\n{stderr}";
-
-                return result;
-            }
-            catch(OperationCanceledException)
+            var container = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
             {
-                await _client.Containers.KillContainerAsync(container?.ID, new ContainerKillParameters(), cancellationToken);
+                Image = image,
+                Cmd = new[] { "/bin/sh", "-c", "dotnet build && dotnet run --no-build" },
+                HostConfig = new HostConfig
+                {
+                    Binds = new List<string> { $"{tempDir}:/app" },
+                    AutoRemove = true,
+                    Memory = 256 * 1024 * 1024,
+                    MemorySwap = 256 * 1024 * 1024,
+                },
+                WorkingDir = "/app"
+            }, cancellationToken);
+
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            cts.CancelAfter(TimeSpan.FromSeconds(5));
+
+            await _client.Containers.StartContainerAsync(container.ID, null, cts.Token);
+
+            var logTask = Task.Run(async () =>
+            {
+                using var logStream = await _client.Containers.GetContainerLogsAsync(
+                    container.ID,
+                    tty: false,
+                    new ContainerLogsParameters
+                    {
+                        ShowStdout = true,
+                        ShowStderr = true,
+                        Follow = true
+                    },
+                    cancellationToken
+                );
+
+                return await logStream.ReadOutputToEndAsync(cancellationToken);
+            });
+
+            var timeoutTask = Task.Delay(TimeSpan.FromSeconds(15), cancellationToken);
+
+            var completedTask = await Task.WhenAny(logTask, timeoutTask);
+
+            if (completedTask == timeoutTask)
+            {
+                await _client.Containers.KillContainerAsync(container.ID, new ContainerKillParameters(), cancellationToken);
                 return "Время выполнения кода превышено.";
             }
+
+            var (stdout, stderr) = await logTask;
+
+            var cleanOutput = ExtractUserOutput(stdout);
+
+            var result = string.IsNullOrWhiteSpace(stderr) ? cleanOutput : $"{cleanOutput}\nErrors:\n{stderr}";
+
+            return result;
         }
 
         private string ExtractUserOutput(string log)
