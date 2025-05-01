@@ -1,4 +1,5 @@
 ﻿using Academy.Core.Abstractions;
+using Academy.CourseManagement.Application.Courses.CodeExecution;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 

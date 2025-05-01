@@ -2,6 +2,7 @@
 using Academy.CourseManagement.Application.Courses.AddModule;
 using Academy.CourseManagement.Application.Courses.AddPracticeData;
 using Academy.CourseManagement.Application.Courses.AddTestToLesson;
+using Academy.CourseManagement.Application.Courses.CodeExecution;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.GetCourses;
 using Academy.CourseManagement.Application.Courses.Update;
@@ -10,10 +11,11 @@ using Academy.CourseManagement.Contracts.Requests;
 
 namespace Academy.CourseManagement.Presentation.Extensions
 {
-    public static class CommandExtesions
+    public static class CommandQueryExtesions
     {
-        public static GetCoursesQuery ToQuery(this GetCoursesRequest r)
-            => new(r.PageSize, r.PageNumber);
+        public static RunCodeCommand ToCommand(this RunCodeRequest request) => new(request.Code);
+        public static GetCoursesQuery ToQuery(this GetCoursesRequest request)
+            => new(request.PageSize, request.PageNumber);
         public static AddPracticeDataCommand ToCommand(this AddPracticeDataRequest request, 
             Guid courseId, 
             Guid moduleId, 
