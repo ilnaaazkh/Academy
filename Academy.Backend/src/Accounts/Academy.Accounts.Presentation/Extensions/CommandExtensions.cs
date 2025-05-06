@@ -7,8 +7,6 @@ namespace Academy.Accounts.Presentation.Extensions
 {
     internal static class CommandExtensions
     {
-        public static RefreshTokensCommand ToCommand(this RefreshTokensRequest request)
-            => new(request.AccessToken, request.RefreshToken);
         public static RegisterUserCommand ToCommand(this RegisterUserRequest request) 
             => new(request.Email, request.Email, request.Password);
         

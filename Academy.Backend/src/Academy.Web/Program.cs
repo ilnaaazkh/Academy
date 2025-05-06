@@ -43,19 +43,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseCors(options =>
 {
     options
         .WithOrigins("http://localhost:5173")
         .AllowAnyHeader()
         .AllowAnyMethod()
-        .AllowCredentials();
+        .AllowCredentials()
+        .WithExposedHeaders("*"); ;
 });
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapControllers();
 

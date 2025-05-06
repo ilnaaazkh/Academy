@@ -5,6 +5,7 @@ using Academy.Accounts.Contracts.Requests;
 using Academy.Accounts.Presentation.Extensions;
 using Academy.Framework;
 using Academy.Framework.Auth;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Academy.Accounts.Presentation
@@ -30,26 +31,53 @@ namespace Academy.Accounts.Presentation
         {
             var result = await handler.Handle(request.ToCommand(), ct);
 
-            return result.IsSuccess ? Ok(result.Value) : result.Error.ToResponse();
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            SetRefreshTokenCookie(result.Value.RefreshToken.ToString());
+
+            return  Ok(result.Value);
         }
 
         [HttpPost("refresh")]
         public async Task<ActionResult> RefreshTokens(
-            [FromBody] RefreshTokensRequest request,
             [FromServices] RefreshTokensCommandHandler handler,
             CancellationToken ct)
         {
-            var result = await handler.Handle(request.ToCommand(), ct);
+            string? refreshTokenStr = HttpContext.Request.Cookies["refresh_token"];
 
-            return result.IsSuccess ? Ok(result.Value) : result.Error.ToResponse();
+            if (!Guid.TryParse(refreshTokenStr, out var refreshToken))
+            {
+                return Unauthorized("Refresh token is required");
+            }
+
+            var result = await handler.Handle(new RefreshTokenCommand(refreshToken), ct);
+
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            SetRefreshTokenCookie(result.Value.RefreshToken.ToString());
+
+            return Ok(result.Value);
         }
 
-        [HasPermission("test.select")]
-        [HttpGet("test")]
-        public ActionResult Test()
+        private void SetRefreshTokenCookie(string token)
         {
-            var ctx = HttpContext.User.Claims;
-            return Ok("dscsdcsd");
+            HttpContext.Response.Cookies.Append(
+                "refresh_token",
+                token,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddDays(30)
+                }
+            );
         }
     }
 }

@@ -1,7 +1,7 @@
 import { baseApi } from "../../shared/api";
 import { Envelope } from "../../models/response/Envelope";
 
-type LoginResponse = {
+export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };

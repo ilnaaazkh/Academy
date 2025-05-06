@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AppState } from "../store/store";
+import { Envelope } from "../models/response/Envelope";
+import { LoginResponse } from "../modules/auth/api";
+import { setCredentials } from "../modules/auth/authSlice";
 
 const BASE_URL = "https://localhost:7177/api";
 
@@ -16,7 +19,37 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+export const baseQueryWithRefresh: typeof baseQuery = async (
+  args,
+  api,
+  extraOptions
+) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (result.error && result.error.status == 401) {
+    const authResponse = await baseQuery(
+      {
+        url: "accounts/refresh",
+        method: "POST",
+      },
+      api,
+      extraOptions
+    );
+
+    if (authResponse.error) {
+      return result;
+    }
+
+    const data = authResponse.data as Envelope<LoginResponse>;
+    api.dispatch(setCredentials({ accessToken: data.result!.accessToken }));
+    result = await baseQuery(args, api, extraOptions);
+    return result;
+  }
+
+  return result;
+};
+
 export const baseApi = createApi({
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithRefresh,
   endpoints: () => ({}),
 });

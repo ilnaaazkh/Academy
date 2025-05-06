@@ -12,4 +12,8 @@ export default function CoursesPage() {
   if (isError) {
     return <div>Ошибка</div>;
   }
+
+  {
+    data?.toString();
+  }
 }

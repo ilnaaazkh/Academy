@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace Academy.Accounts.Application.RefreshTokens
 {
-    public class RefreshTokensCommandHandler : ICommandHandler<LoginResponse, RefreshTokensCommand>
+    public class RefreshTokensCommandHandler : ICommandHandler<LoginResponse, RefreshTokenCommand>
     {
         private readonly RefreshSessionManager _sessionManager;
         private readonly JwtProvider _tokenProvider;
@@ -24,7 +24,7 @@ namespace Academy.Accounts.Application.RefreshTokens
             _tokenProvider = tokenProvider;
         }
 
-        public async Task<Result<LoginResponse, ErrorList>> Handle(RefreshTokensCommand command, CancellationToken cancellationToken = default)
+        public async Task<Result<LoginResponse, ErrorList>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken = default)
         {
             var refreshSession = await _sessionManager.GetByRefreshSession(command.RefreshToken, cancellationToken);
 
@@ -36,30 +36,6 @@ namespace Academy.Accounts.Application.RefreshTokens
             if(refreshSession.ExpiresAt <= DateTime.UtcNow)
             {
                 return Errors.Tokens.ExpiredToken().ToErrorList();
-            }
-
-            var claimsResult = await _tokenProvider.GetUserClaims(command.AccessToken, cancellationToken); 
-
-            if(claimsResult.IsFailure)
-                return Errors.Tokens.InvalidToken().ToErrorList();
-
-            var userIdString = claimsResult.Value.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if(!Guid.TryParse(userIdString, out var userId))
-                return Errors.General.Failure().ToErrorList();
-
-            if(refreshSession.UserId != userId)
-                return Errors.Tokens.InvalidToken().ToErrorList();
-
-            var userJtiString = claimsResult.Value.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
-            if(!Guid.TryParse(userJtiString, out var jti))
-            {
-                return Errors.Tokens.InvalidToken().ToErrorList();
-            }
-
-            if(refreshSession.Jti != jti)
-            {
-                return Errors.Tokens.InvalidToken().ToErrorList();
             }
 
             await _sessionManager.Delete(refreshSession, cancellationToken);

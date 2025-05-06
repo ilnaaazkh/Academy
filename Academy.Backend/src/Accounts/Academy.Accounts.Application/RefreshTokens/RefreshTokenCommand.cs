@@ -2,5 +2,5 @@
 
 namespace Academy.Accounts.Application.RefreshTokens
 {
-    public record RefreshTokensCommand(string AccessToken, Guid RefreshToken) : ICommand;
+    public record RefreshTokenCommand(Guid RefreshToken) : ICommand;
 }
