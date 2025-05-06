@@ -10,7 +10,7 @@ namespace Academy.Accounts.Presentation.Extensions
         public static RefreshTokensCommand ToCommand(this RefreshTokensRequest request)
             => new(request.AccessToken, request.RefreshToken);
         public static RegisterUserCommand ToCommand(this RegisterUserRequest request) 
-            => new(request.Email, request.UserName, request.Password);
+            => new(request.Email, request.Email, request.Password);
         
         public static LoginUserCommand ToCommand(this LoginUserRequest request) 
             => new(request.Email, request.Password);
