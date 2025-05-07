@@ -13,7 +13,7 @@ export default function Header() {
         C# Academy
       </RouterLink>
       {isAuthenticated ? (
-        <RouterLink to="/login">
+        <RouterLink to="/profile">
           <AccountCircleIcon />
         </RouterLink>
       ) : (

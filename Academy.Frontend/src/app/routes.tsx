@@ -3,6 +3,7 @@ import App from "../App";
 import { LoginPage } from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegisterPage";
 import { coursesRoutes } from "../modules/courses/сoursesRoutes";
+import { accountRoutes } from "../modules/account/accountRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
         Component: RegistrationPage,
       },
       coursesRoutes,
+      accountRoutes,
     ],
   },
 ]);

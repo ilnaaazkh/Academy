@@ -4,6 +4,7 @@ import { Envelope } from "../../models/response/Envelope";
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
+  roles: string[];
 };
 
 export const authApi = baseApi.injectEndpoints({

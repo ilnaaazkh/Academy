@@ -39,7 +39,9 @@ namespace Academy.Accounts.Application.LoginUser
             var tokenResult = await _tokenProvider.GenerateAccessToken(user, cancellationToken);
             var refreshToken = await _tokenProvider.GenerateRefreshToken(user, tokenResult.Jti, cancellationToken);
 
-            var result = new LoginResponse(tokenResult.AccessToken, refreshToken);
+            var roles = await _userManager.GetRolesAsync(user); 
+
+            var result = new LoginResponse(tokenResult.AccessToken, refreshToken, roles);
 
             return result;
         }

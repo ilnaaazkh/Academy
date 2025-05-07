@@ -6,6 +6,7 @@ using Academy.Core.Abstractions;
 using Academy.Core.Extensions;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -14,13 +15,16 @@ namespace Academy.Accounts.Application.RefreshTokens
     public class RefreshTokensCommandHandler : ICommandHandler<LoginResponse, RefreshTokenCommand>
     {
         private readonly RefreshSessionManager _sessionManager;
+        private readonly UserManager<User> _userManager;
         private readonly JwtProvider _tokenProvider;
 
         public RefreshTokensCommandHandler(
             RefreshSessionManager sessionManager, 
+            UserManager<User> userManager,
             JwtProvider tokenProvider)
         {
             _sessionManager = sessionManager;
+            _userManager = userManager;
             _tokenProvider = tokenProvider;
         }
 
@@ -43,7 +47,10 @@ namespace Academy.Accounts.Application.RefreshTokens
             var tokenResult = await _tokenProvider.GenerateAccessToken(refreshSession.User!, cancellationToken);
             var newRefreshToken = await _tokenProvider.GenerateRefreshToken(refreshSession.User!, tokenResult.Jti, cancellationToken);
 
-            var result = new LoginResponse(tokenResult.AccessToken, newRefreshToken);
+            var user = await _userManager.FindByIdAsync(refreshSession.UserId.ToString());
+            var roles = await _userManager.GetRolesAsync(user!);
+
+            var result = new LoginResponse(tokenResult.AccessToken, newRefreshToken, roles ?? []);
 
             return result;
         }

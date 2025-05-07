@@ -24,7 +24,12 @@ function LoginForm() {
     const response = await login({ email, password }).unwrap();
 
     if (response?.result) {
-      dispatch(setCredentials({ accessToken: response.result.accessToken }));
+      dispatch(
+        setCredentials({
+          accessToken: response.result.accessToken,
+          roles: response.result.roles,
+        })
+      );
       navigate("/");
     }
 

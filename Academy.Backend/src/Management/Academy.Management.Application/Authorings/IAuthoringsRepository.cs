@@ -8,7 +8,7 @@ namespace Academy.Management.Application.Authorings
     {
         Task<Guid> Add(Authoring authorRole, CancellationToken cancellationToken);
         Task<(List<Authoring>, int)> GetAuthoringsOnPending(GetAuthoringsQuery query, CancellationToken cancellationToken);
-        Task<Authoring> GetById(Guid authoringId, CancellationToken cancellationToken);
+        Task<Authoring?> GetById(Guid authoringId, CancellationToken cancellationToken);
         Task Save(Authoring authorRoleRequest, CancellationToken cancellationToken);
     }
 }

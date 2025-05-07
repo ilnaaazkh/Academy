@@ -41,9 +41,13 @@ export const baseQueryWithRefresh: typeof baseQuery = async (
     }
 
     const data = authResponse.data as Envelope<LoginResponse>;
-    api.dispatch(setCredentials({ accessToken: data.result!.accessToken }));
+    api.dispatch(
+      setCredentials({
+        accessToken: data.result!.accessToken,
+        roles: data.result!.roles,
+      })
+    );
     result = await baseQuery(args, api, extraOptions);
-    return result;
   }
 
   return result;
