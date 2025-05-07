@@ -9,8 +9,10 @@ export function CourseCard({ course }: Props) {
   return (
     <Card
       sx={{
-        height: "100%",
+        height: "300px",
         display: "flex",
+        width: "300px",
+        borderRadius: "20px",
         flexDirection: "column",
         transition: "transform 0.2s",
         "&:hover": {
