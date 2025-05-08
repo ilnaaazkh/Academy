@@ -7,12 +7,15 @@ import {
   CardMedia,
 } from "@mui/material";
 import { Course } from "./coursesSlice";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   course: Course;
 };
 
 export function CourseCard({ course }: Props) {
+  const navigate = useNavigate();
+
   return (
     <Card
       sx={{
@@ -62,6 +65,9 @@ export function CourseCard({ course }: Props) {
           variant="contained"
           fullWidth
           size="medium"
+          onClick={() => {
+            navigate(`/${course.id}`);
+          }}
         >
           Начать учиться
         </Button>

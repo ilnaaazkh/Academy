@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router";
 import App from "../App";
 import { LoginPage } from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegisterPage";
-import { coursesRoutes } from "../modules/courses/сoursesRoutes";
+import { courseRoute, coursesRoutes } from "../modules/courses/сoursesRoutes";
 import { accountRoutes } from "../modules/account/accountRoutes";
 
 export const router = createBrowserRouter([
@@ -20,6 +20,7 @@ export const router = createBrowserRouter([
       },
       coursesRoutes,
       accountRoutes,
+      courseRoute,
     ],
   },
 ]);

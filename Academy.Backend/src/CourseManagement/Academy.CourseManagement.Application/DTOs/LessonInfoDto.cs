@@ -1,11 +1,11 @@
 ﻿namespace Academy.CourseManagement.Application.DTOs
 {
-    public class ModuleDto 
+    public class LessonInfoDto
     {
         public Guid Id { get; set; }
-        public Guid CourseId { get; set; }
         public string Title { get; set; } = string.Empty;
         public int Position { get; set; }
-        public List<LessonInfoDto> Lessons { get; set; } = new();
+        public string LessonType { get; set; } = default!;
+        public LessonDto LessonDto { get; set; } = default!;
     }
 }
