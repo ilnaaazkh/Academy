@@ -19,6 +19,8 @@ using Academy.Framework.Auth;
 using Academy.CourseManagement.Application.Courses.GetCourses;
 using Newtonsoft.Json;
 using Academy.CourseManagement.Application.Courses.GetCourseModules;
+using Academy.CourseManagement.Application.Courses.AddCoursePreview;
+using Academy.SharedKernel.ValueObjects.Ids;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -267,6 +269,26 @@ namespace Academy.CourseManagement.Presentation
                 return result.Error.ToResponse();
 
             return Ok(result.Value);
+        }
+
+        [HttpPost("{courseId:guid}/preview")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> AddCoursePreview(
+            [FromRoute] Guid courseId,
+            [FromForm] IFormFileCollection files,
+            [FromServices] AddCoursePreviewCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            await using var formFileProcessor = new FormFileProcessor();
+            var processedFiles = formFileProcessor.Process(files);
+
+            var command = new AddCoursePreviewCommand(courseId, processedFiles, UserId);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok();
         }
     }
 }

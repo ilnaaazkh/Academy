@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Alert, CircularProgress, Grid } from "@mui/material";
 import { CourseCard } from "./CourseCard";
 import { useGetCoursesQuery } from "./api";
 import { useState } from "react";
@@ -12,11 +12,21 @@ export default function CoursesPage() {
   });
 
   if (isLoading) {
-    return <div>Загрузка...</div>;
+    return (
+      <div className="h-3/4 flex justify-center items-center">
+        <CircularProgress size="3rem" />
+      </div>
+    );
   }
 
   if (isError) {
-    return <div>Ошибка</div>;
+    return (
+      <div className="h-3/4 flex justify-center items-center m-10">
+        <Alert severity="error" variant="outlined">
+          Ошибка при получении данных. Попробуйте позже
+        </Alert>
+      </div>
+    );
   }
 
   return (

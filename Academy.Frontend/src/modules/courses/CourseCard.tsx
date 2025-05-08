@@ -1,4 +1,11 @@
-import { Button, Card, CardContent, Typography, Box } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  CardMedia,
+} from "@mui/material";
 import { Course } from "./coursesSlice";
 
 type Props = {
@@ -9,9 +16,9 @@ export function CourseCard({ course }: Props) {
   return (
     <Card
       sx={{
-        height: "300px",
+        height: "400px",
         display: "flex",
-        width: "300px",
+        width: "400px",
         borderRadius: "20px",
         flexDirection: "column",
         transition: "transform 0.2s",
@@ -21,12 +28,25 @@ export function CourseCard({ course }: Props) {
         },
       }}
     >
+      <CardMedia
+        component="img"
+        height="160"
+        image={course.preview}
+        alt={course.title}
+        sx={{
+          width: "100%",
+          objectFit: "cover",
+          aspectRatio: "16/9",
+          borderTopLeftRadius: "20px",
+          borderTopRightRadius: "20px",
+        }}
+      />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography
           variant="h5"
           component="div"
           gutterBottom
-          sx={{ fontWeight: 600 }}
+          sx={{ fontWeight: 300 }}
         >
           {course.title}
         </Typography>
@@ -36,8 +56,13 @@ export function CourseCard({ course }: Props) {
         </Typography>
       </CardContent>
 
-      <Box sx={{ p: 2 }}>
-        <Button variant="contained" fullWidth size="medium">
+      <Box className="p-4">
+        <Button
+          sx={{ borderRadius: "10px" }}
+          variant="contained"
+          fullWidth
+          size="medium"
+        >
           Начать учиться
         </Button>
       </Box>

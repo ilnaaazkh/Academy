@@ -1,3 +1,20 @@
+import {
+  Drawer,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+
 export function AccountPage() {
-  return <div>Профиль</div>;
+  return (
+    <Drawer open>
+      <ListItem>
+        <ListItemButton>
+          <ListItemIcon></ListItemIcon>
+          <ListItemText primary={"csdcdscds"} />
+        </ListItemButton>
+      </ListItem>
+    </Drawer>
+  );
 }

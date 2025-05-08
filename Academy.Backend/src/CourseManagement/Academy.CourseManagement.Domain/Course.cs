@@ -12,7 +12,7 @@ namespace Academy.CourseManagement.Domain
         public Status Status { get; private set; }
         private List<Module> _modules = new();
         public IReadOnlyList<Module> Modules => _modules;
-
+        public string? Preview { get; set; }
         public Guid AuthorId { get; }
 
         public Course() { }            
@@ -27,6 +27,12 @@ namespace Academy.CourseManagement.Domain
             Description = description;
             Status = Status.Draft;
             AuthorId = authorId;
+        }
+
+        public UnitResult<Error> SetPreview(string fileName)
+        {
+            Preview = fileName;
+            return UnitResult.Success<Error>();
         }
 
         public UnitResult<Error> AddModule(Module module)
