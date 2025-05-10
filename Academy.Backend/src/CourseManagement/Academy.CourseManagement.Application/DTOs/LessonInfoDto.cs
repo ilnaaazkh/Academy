@@ -6,6 +6,5 @@
         public string Title { get; set; } = string.Empty;
         public int Position { get; set; }
         public string LessonType { get; set; } = default!;
-        public LessonDto LessonDto { get; set; } = default!;
     }
 }

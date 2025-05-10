@@ -1,6 +1,8 @@
 import { Envelope } from "../../models/response/Envelope";
 import { baseApi } from "../../shared/api";
 import { Course } from "./coursesSlice";
+import { LessonDto } from "./models/lessonDto";
+import { ModuleDto } from "./models/moduleDto";
 
 export const coursesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,7 +15,21 @@ export const coursesApi = baseApi.injectEndpoints({
         params: { pageNumber, pageSize },
       }),
     }),
+    getCourseStructure: builder.query<Envelope<ModuleDto[]>, { id: string }>({
+      query: ({ id }) => ({
+        url: `/courses/${id}`,
+      }),
+    }),
+    getLesson: builder.query<Envelope<LessonDto>, { id: string }>({
+      query: ({ id }) => ({
+        url: `/lessons/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetCoursesQuery } = coursesApi;
+export const {
+  useGetCoursesQuery,
+  useGetCourseStructureQuery,
+  useGetLessonQuery,
+} = coursesApi;

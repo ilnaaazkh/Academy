@@ -20,7 +20,6 @@ using Academy.CourseManagement.Application.Courses.GetCourses;
 using Newtonsoft.Json;
 using Academy.CourseManagement.Application.Courses.GetCourseModules;
 using Academy.CourseManagement.Application.Courses.AddCoursePreview;
-using Academy.SharedKernel.ValueObjects.Ids;
 
 namespace Academy.CourseManagement.Presentation
 {
