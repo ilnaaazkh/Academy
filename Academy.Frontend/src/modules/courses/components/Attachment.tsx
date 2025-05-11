@@ -1,5 +1,5 @@
 import { Chip, CircularProgress } from "@mui/material";
-import { useLazyGetAttachmentLinkQuery } from "../modules/courses/api";
+import { useLazyGetAttachmentLinkQuery } from "../api";
 import { useState } from "react";
 
 interface Props {

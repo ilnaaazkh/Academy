@@ -33,6 +33,13 @@ export const coursesApi = baseApi.injectEndpoints({
         url: `/lessons/${lessonId}/attachments/${encodeURIComponent(fileUrl)}`,
       }),
     }),
+    runCode: builder.mutation<Envelope<string>, { code: string }>({
+      query: ({ code }) => ({
+        url: "/execute",
+        method: "POST",
+        body: { code },
+      }),
+    }),
   }),
 });
 
@@ -41,4 +48,5 @@ export const {
   useGetCourseStructureQuery,
   useGetLessonQuery,
   useLazyGetAttachmentLinkQuery,
+  useRunCodeMutation,
 } = coursesApi;

@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Box,
   Divider,
   List,
