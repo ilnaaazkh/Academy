@@ -10,6 +10,7 @@ namespace Academy.CourseManagement.Application
     {
         public class Buckets {
             public static readonly string PREVIEW = "preview";
+            public static readonly string ATTACHMENTS = "attachments";
         }
     }
 }

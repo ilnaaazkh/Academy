@@ -14,11 +14,11 @@ export function CoursePage() {
   if (isError || !data?.result) return <p>Ошибка загрузки</p>;
 
   return (
-    <div className="flex h-screen">
+    <Box display="flex" height="100vh" overflow="hidden">
       <CourseSidebar modules={data.result} id={id!} />
-      <Box className="w-5/6 p-4 m-0">
+      <Box className="flex-1 overflow-y-auto px-4 py-4">
         <Outlet />
       </Box>
-    </div>
+    </Box>
   );
 }

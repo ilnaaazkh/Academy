@@ -25,6 +25,14 @@ export const coursesApi = baseApi.injectEndpoints({
         url: `/lessons/${id}`,
       }),
     }),
+    getAttachmentLink: builder.query<
+      Envelope<string>,
+      { lessonId: string; fileUrl: string }
+    >({
+      query: ({ lessonId, fileUrl }) => ({
+        url: `/lessons/${lessonId}/attachments/${encodeURIComponent(fileUrl)}`,
+      }),
+    }),
   }),
 });
 
@@ -32,4 +40,5 @@ export const {
   useGetCoursesQuery,
   useGetCourseStructureQuery,
   useGetLessonQuery,
+  useLazyGetAttachmentLinkQuery,
 } = coursesApi;

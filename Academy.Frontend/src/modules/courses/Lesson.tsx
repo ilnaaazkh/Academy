@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula as codeTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
+import Attachment from "../../components/Attachment";
 
 export default function Lesson() {
   const { lessonId } = useParams<string>();
@@ -28,7 +29,7 @@ export default function Lesson() {
   }
 
   return (
-    <div className="px-72">
+    <div className="px-72 py-10">
       <div className="prose text-center max-w-none">
         <ReactMarkdown>
           {data?.result?.title ? "# " + data?.result?.title : ""}
@@ -58,6 +59,22 @@ export default function Lesson() {
         >
           {data?.result?.content ?? ""}
         </ReactMarkdown>
+      </div>
+      {/*в зависимости от типа показывать содержимое либо тест, либо редактор кода*/}
+      <div className="text-left prose">
+        {!!data?.result?.attachments?.length && (
+          <h2 className="mb-4">Приложения</h2>
+        )}
+        <div className="space-x-2">
+          {data?.result?.attachments.map((a) => (
+            <Attachment
+              key={a.fileUrl}
+              fileUrl={a.fileUrl}
+              lessonId={lessonId}
+              fileName={a.fileName}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

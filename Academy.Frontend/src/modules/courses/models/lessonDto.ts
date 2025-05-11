@@ -3,7 +3,7 @@ export interface LessonDto {
   title: string;
   position: number;
   content: string;
-  lessonType: string;
+  lessonType: "TEST" | "LECTURE" | "PRACTICE";
   questions: Question[];
   attachments: Attachment[];
   practiceLessonData: PracticeLessonData;
