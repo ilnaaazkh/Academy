@@ -59,7 +59,7 @@ export function CourseCard({ course }: Props) {
         </Typography>
       </CardContent>
 
-      <Box className="p-4">
+      <Box className="px-4">
         <Button
           sx={{ borderRadius: "10px" }}
           variant="contained"

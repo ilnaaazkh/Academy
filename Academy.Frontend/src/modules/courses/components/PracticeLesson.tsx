@@ -20,7 +20,7 @@ export function PracticeLesson({ data }: Props) {
   async function handleRunCode() {
     try {
       const result = await runCode({ code }).unwrap();
-      setOutput(result.result);
+      setOutput(result.result ?? "Нет вывода");
     } catch {
       setOutput("Произошла ошибка при выполнении кода.");
     }

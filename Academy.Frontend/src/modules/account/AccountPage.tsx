@@ -7,14 +7,5 @@ import {
 } from "@mui/material";
 
 export function AccountPage() {
-  return (
-    <Drawer open>
-      <ListItem>
-        <ListItemButton>
-          <ListItemIcon></ListItemIcon>
-          <ListItemText primary={"csdcdscds"} />
-        </ListItemButton>
-      </ListItem>
-    </Drawer>
-  );
+  return <h1>Hello world</h1>;
 }

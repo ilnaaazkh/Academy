@@ -15,7 +15,7 @@ export interface Question {
 }
 
 export interface Answer {
-  text: string;
+  title: string;
   isCorrect: boolean;
 }
 

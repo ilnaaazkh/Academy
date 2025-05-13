@@ -8,6 +8,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula as codeTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Attachment from "./components/Attachment";
 import { PracticeLesson } from "./components/PracticeLesson";
+import TestLesson from "./components/TestLesson";
 
 export default function Lesson() {
   const { lessonId } = useParams<string>();
@@ -61,7 +62,12 @@ export default function Lesson() {
           {data?.result?.content ?? ""}
         </ReactMarkdown>
       </div>
-      {data?.result?.lessonType === "PRACTICE" && <PracticeLesson />}
+      {data?.result?.lessonType === "PRACTICE" && (
+        <PracticeLesson data={data.result.practiceLessonData} />
+      )}
+      {data?.result?.lessonType === "TEST" && (
+        <TestLesson questions={data.result.questions} />
+      )}
       <div className="text-left prose">
         {!!data?.result?.attachments?.length && (
           <h2 className="mb-4">Приложения</h2>
