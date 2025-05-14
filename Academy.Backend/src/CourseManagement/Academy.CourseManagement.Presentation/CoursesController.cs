@@ -20,6 +20,8 @@ using Academy.CourseManagement.Application.Courses.GetCourses;
 using Newtonsoft.Json;
 using Academy.CourseManagement.Application.Courses.GetCourseModules;
 using Academy.CourseManagement.Application.Courses.AddCoursePreview;
+using Microsoft.AspNetCore.Authorization;
+using Academy.CourseManagement.Application.Courses;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -288,6 +290,17 @@ namespace Academy.CourseManagement.Presentation
                 return result.Error.ToResponse();
 
             return Ok();
+        }
+
+        [HttpGet("/my-courses")]
+        [Authorize]
+        public async Task<ActionResult> GetAuthorCourses(
+            [FromServices] GetAuthorCoursesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetAuthorCoursesQuery(UserId));
+
+            return Ok(result.Value);
         }
     }
 }

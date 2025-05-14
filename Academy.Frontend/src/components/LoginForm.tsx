@@ -1,67 +1,105 @@
-import { useState } from "react";
-import { Button, TextField, Typography, Paper } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Typography,
+  Box,
+  CircularProgress,
+} from "@mui/material";
 import { useLoginMutation } from "../modules/auth/api";
 import { useAppDispatch } from "../store/store";
 import { setCredentials } from "../modules/auth/authSlice";
 import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  email: z.string().nonempty({ message: "Поле обязательно для заполения" }),
+  password: z.string().nonempty({ message: "Поле обязательно для заполения" }),
+});
+
+type FormFields = z.infer<typeof schema>;
 
 function LoginForm() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [login, { isLoading, isError }] = useLoginMutation();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
+  });
+  const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async ({ email, password }: FormFields) => {
+    try {
+      const response = await login({ email, password }).unwrap();
 
-    if (!email || !password) {
-      setError("Пожалуйста, заполните все поля.");
-      return;
+      if (response?.result) {
+        dispatch(
+          setCredentials({
+            accessToken: response.result.accessToken,
+            roles: response.result.roles,
+          })
+        );
+        navigate("/");
+      }
+    } catch {
+      setError("root", {
+        message: "Неверный логин или пароль",
+      });
     }
-
-    const response = await login({ email, password }).unwrap();
-
-    if (response?.result) {
-      dispatch(
-        setCredentials({
-          accessToken: response.result.accessToken,
-          roles: response.result.roles,
-        })
-      );
-      navigate("/");
-    }
-
-    setError(null);
   };
 
   return (
-    <Paper elevation={3} className="p-6 max-w-md mx-auto">
-      <Typography variant="h4" className="mb-5 text-center">
-        Вход
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-md mx-auto mt-10 space-y-6"
+    >
+      <Typography variant="h5" className="text-center">
+        Вход в аккаунт
       </Typography>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <TextField
-          label="Email"
-          type="email"
-          fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          label="Пароль"
-          type="password"
-          fullWidth
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <Typography color="error">{error}</Typography>}
-        <Button variant="contained" type="submit" fullWidth>
-          Войти
+
+      <TextField
+        label="Email"
+        fullWidth
+        {...register("email")}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        variant="outlined"
+      />
+
+      <TextField
+        label="Пароль"
+        fullWidth
+        type="password"
+        {...register("password")}
+        error={!!errors.password}
+        helperText={errors.password?.message}
+        variant="outlined"
+      />
+
+      {errors.root?.message && (
+        <div className="text-red-500">{errors.root?.message}</div>
+      )}
+
+      <Box className="text-center">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isSubmitting}
+          startIcon={
+            isSubmitting ? <CircularProgress size={20} color="inherit" /> : null
+          }
+          className="min-w-[200px] h-12"
+        >
+          {isSubmitting ? "Загрузка..." : "Войти"}
         </Button>
-      </form>
-    </Paper>
+      </Box>
+    </form>
   );
 }
 

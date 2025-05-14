@@ -12,10 +12,6 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Read
             builder.ToTable(Tables.Courses);
 
             builder.HasKey(c => c.Id);
-
-            builder.Property(c => c.Status)
-                .HasConversion(c => c.Value,
-                    v => Status.Create(v).Value);
         }
     }
 }

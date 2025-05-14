@@ -1,10 +1,11 @@
 import { baseApi } from "../../shared/api";
 import { Envelope } from "../../models/response/Envelope";
+import { Role } from "./authSlice";
 
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
-  roles: string[];
+  roles: Role[];
 };
 
 export const authApi = baseApi.injectEndpoints({
@@ -19,7 +20,24 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
     }),
+    registration: builder.mutation<
+      Envelope<void>,
+      { email: string; password: string }
+    >({
+      query: ({ email, password }) => ({
+        url: "/accounts/register",
+        body: { email, password },
+        method: "POST",
+      }),
+    }),
+    refresh: builder.mutation<Envelope<LoginResponse>, void>({
+      query: () => ({
+        url: "/accounts/refresh",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useRegistrationMutation, useRefreshMutation } =
+  authApi;

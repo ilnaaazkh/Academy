@@ -8,6 +8,8 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
+import { useRegistrationMutation } from "../modules/auth/api";
+import { useNavigate } from "react-router";
 
 const schema = z.object({
   email: z.string().email({ message: "Введите валидный email" }),
@@ -23,13 +25,22 @@ export default function RegistrationForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError,
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: FormFields) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log("Регистрация прошла успешно", data);
+  const [registration] = useRegistrationMutation();
+  const navigate = useNavigate();
+
+  const onSubmit = async ({ email, password }: FormFields) => {
+    try {
+      console.log(email, password);
+      await registration({ email, password }).unwrap();
+      navigate("/login");
+    } catch {
+      setError("root", { message: "Аккаунт с таким email уже существует" });
+    }
   };
 
   return (
@@ -59,6 +70,10 @@ export default function RegistrationForm() {
         helperText={errors.password?.message}
         variant="outlined"
       />
+
+      {errors.root?.message && (
+        <div className="text-red-500">{errors.root?.message}</div>
+      )}
 
       <Box className="text-center">
         <Button

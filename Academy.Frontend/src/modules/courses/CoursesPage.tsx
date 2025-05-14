@@ -4,7 +4,7 @@ import { useGetCoursesQuery } from "./api";
 import { useState } from "react";
 
 export default function CoursesPage() {
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageNumber] = useState<number>(1);
   const pageSize: number = 10;
   const { data, isError, isLoading } = useGetCoursesQuery({
     pageSize,
