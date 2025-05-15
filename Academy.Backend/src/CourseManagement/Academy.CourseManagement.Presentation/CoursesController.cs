@@ -292,7 +292,7 @@ namespace Academy.CourseManagement.Presentation
             return Ok();
         }
 
-        [HttpGet("/my-courses")]
+        [HttpGet("my-courses")]
         [Authorize]
         public async Task<ActionResult> GetAuthorCourses(
             [FromServices] GetAuthorCoursesQueryHandler handler,

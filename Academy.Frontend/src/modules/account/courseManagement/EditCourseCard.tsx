@@ -6,14 +6,14 @@ import {
   Box,
   CardMedia,
 } from "@mui/material";
-import { CourseDto } from "../../models/response/courseDto";
+import { CourseDto } from "../../../models/response/courseDto";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
   course: CourseDto;
 };
 
-export function CourseCard({ course }: Props) {
+export function EditCourseCard({ course }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -69,7 +69,7 @@ export function CourseCard({ course }: Props) {
             navigate(`/${course.id}`);
           }}
         >
-          Начать учиться
+          Редактировать
         </Button>
       </Box>
     </Card>

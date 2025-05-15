@@ -1,12 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { coursesSlice } from "../modules/courses/coursesSlice";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import { baseApi } from "../shared/api";
 import authReducer from "../modules/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
-    courses: coursesSlice.reducer,
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },

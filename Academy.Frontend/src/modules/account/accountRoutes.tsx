@@ -1,7 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import { AccountPage } from "./AccountPage";
 import { ProtectedRoute } from "../../shared/ProtectedRoute";
-import OwnCourses from "./OwnCourses";
+import OwnCourses from "./courseManagement/OwnCourses";
 
 export const accountRoutes: RouteObject = {
   path: "/profile",

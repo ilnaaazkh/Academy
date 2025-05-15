@@ -33,24 +33,11 @@ export default function CoursesPage() {
     <Grid
       container
       spacing={3}
-      sx={{
-        padding: 3,
-        maxWidth: "lg",
-        margin: "0 auto",
-      }}
+      className="justify-between mx-20 mt-20"
+      columns={{ xs: 4, sm: 8, md: 12 }}
     >
       {data?.result?.map((course) => (
-        <Grid
-          key={course.id}
-          xs={12}
-          sm={6}
-          md={4}
-          lg={3}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
+        <Grid key={course.id} className="my-2">
           <CourseCard course={course} />
         </Grid>
       ))}

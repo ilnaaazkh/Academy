@@ -1,13 +1,13 @@
+import { CourseDto } from "../../models/response/courseDto";
 import { Envelope } from "../../models/response/Envelope";
 import { baseApi } from "../../shared/api";
-import { Course } from "./coursesSlice";
 import { LessonDto } from "./models/lessonDto";
 import { ModuleDto } from "./models/moduleDto";
 
 export const coursesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCourses: builder.query<
-      Envelope<Course[]>,
+      Envelope<CourseDto[]>,
       { pageSize: number; pageNumber: number }
     >({
       query: ({ pageSize, pageNumber }) => ({
