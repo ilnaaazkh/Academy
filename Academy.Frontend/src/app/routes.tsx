@@ -4,6 +4,7 @@ import { LoginPage } from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegisterPage";
 import { courseRoute, coursesRoutes } from "../modules/courses/сoursesRoutes";
 import { accountRoutes } from "../modules/account/accountRoutes";
+import { courseManagementRoutes } from "../modules/account/courseManagement/courseManagementRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       coursesRoutes,
       accountRoutes,
       courseRoute,
+      courseManagementRoutes,
     ],
   },
 ]);

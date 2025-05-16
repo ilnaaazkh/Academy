@@ -17,8 +17,9 @@ export const coursesApi = baseApi.injectEndpoints({
     }),
     getCourseStructure: builder.query<Envelope<ModuleDto[]>, { id: string }>({
       query: ({ id }) => ({
-        url: `/courses/${id}`,
+        url: `/courses/${id}/modules`,
       }),
+      providesTags: ["Modules"],
     }),
     getLesson: builder.query<Envelope<LessonDto>, { id: string }>({
       query: ({ id }) => ({

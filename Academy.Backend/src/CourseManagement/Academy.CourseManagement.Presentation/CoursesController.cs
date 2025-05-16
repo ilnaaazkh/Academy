@@ -27,7 +27,15 @@ namespace Academy.CourseManagement.Presentation
 {
     public class CoursesController : ApplicationController
     {
-        [HttpGet("{courseId:guid}")]
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult> GetCourse(
+            [FromRoute] Guid id)
+        {
+            return Ok();
+        }
+
+
+        [HttpGet("{courseId:guid}/modules")]
         public async Task<ActionResult> GetCourseModules(
             [FromRoute] Guid courseId,
             [FromServices] GetCourseModulesQueryHandler handler,

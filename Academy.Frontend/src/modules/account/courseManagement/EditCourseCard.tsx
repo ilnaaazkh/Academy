@@ -66,7 +66,7 @@ export function EditCourseCard({ course }: Props) {
           fullWidth
           size="medium"
           onClick={() => {
-            navigate(`/${course.id}`);
+            navigate(`/own-courses/${course.id}`);
           }}
         >
           Редактировать

@@ -22,7 +22,33 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Courses"],
     }),
+    addModule: builder.mutation<
+      Envelope<string>,
+      { title: string; courseId: string }
+    >({
+      query: ({ title, courseId }) => ({
+        url: `courses/${courseId}/modules`,
+        method: "POST",
+        body: { title },
+      }),
+      invalidatesTags: ["Modules"],
+    }),
+    deleteModule: builder.mutation<
+      Envelope<void>,
+      { courseId: string; moduleId: string }
+    >({
+      query: ({ courseId, moduleId }) => ({
+        url: `courses/${courseId}/modules/${moduleId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Modules"],
+    }),
   }),
 });
 
-export const { useGetOwnCoursesQuery, useCreateCourseMutation } = api;
+export const {
+  useGetOwnCoursesQuery,
+  useCreateCourseMutation,
+  useAddModuleMutation,
+  useDeleteModuleMutation,
+} = api;

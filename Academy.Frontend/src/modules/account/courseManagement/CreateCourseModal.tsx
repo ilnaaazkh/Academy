@@ -61,6 +61,7 @@ export default function CreateCourseModal({ isOpen, onClose }: Props) {
           {...register("description")}
           label="Описание"
           error={!!errors.description}
+          multiline
           helperText={errors.description?.message}
           variant="outlined"
         ></TextField>
