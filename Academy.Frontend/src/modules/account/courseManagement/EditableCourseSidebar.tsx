@@ -16,6 +16,7 @@ import { Edit, Delete, Add, ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import AddModuleModal from "./AddModuleModal";
 import DeleteModuleModal from "./DeleteModuleModal";
+import EditModuleModal from "./EditModuleModal";
 
 export interface Props {
   modules: ModuleDto[];
@@ -25,11 +26,21 @@ export interface Props {
 export default function EditableCourseSidebar({ modules, id }: Props) {
   const [isAddModuleOpen, setIsAddModuleOpen] = useState(false);
   const [isDeleteModuleOpen, setIsDeleteModuleOpen] = useState(false);
-  const [selectedModule, setSelectedModule] = useState<string>("");
+  const [isUpdateModuleOpen, setIsUpdateModuleOpen] = useState(false);
 
-  function handleDeleteModuleClick(moduleId: string) {
-    setSelectedModule(moduleId);
+  const [selectedModule, setSelectedModule] = useState<{
+    title: string;
+    id: string;
+  }>({ title: "", id: "" });
+
+  function handleDeleteModuleClick(moduleId: string, title: string) {
+    setSelectedModule({ id: moduleId, title });
     setIsDeleteModuleOpen(true);
+  }
+
+  function handleUpdateModuleClick(moduleId: string, title: string) {
+    setSelectedModule({ id: moduleId, title });
+    setIsUpdateModuleOpen(true);
   }
 
   return (
@@ -57,10 +68,14 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
               <Typography variant="h6" className="text-start pl-3 flex-grow">
                 {module.title}
               </Typography>
-              <IconButton onClick={() => {}}>
+              <IconButton
+                onClick={() => handleUpdateModuleClick(module.id, module.title)}
+              >
                 <Edit fontSize="small" />
               </IconButton>
-              <IconButton onClick={() => handleDeleteModuleClick(module.id)}>
+              <IconButton
+                onClick={() => handleDeleteModuleClick(module.id, module.title)}
+              >
                 <Delete fontSize="small" />
               </IconButton>
             </Box>
@@ -117,7 +132,14 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
         isOpen={isDeleteModuleOpen}
         onClose={() => setIsDeleteModuleOpen(false)}
         courseId={id}
-        moduleId={selectedModule}
+        moduleId={selectedModule.id}
+      />
+      <EditModuleModal
+        isOpen={isUpdateModuleOpen}
+        onClose={() => setIsUpdateModuleOpen(false)}
+        courseId={id}
+        moduleId={selectedModule.id}
+        currentTitle={selectedModule.title}
       />
     </>
   );

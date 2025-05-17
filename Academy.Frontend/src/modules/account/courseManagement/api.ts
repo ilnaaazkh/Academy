@@ -43,6 +43,21 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Modules"],
     }),
+    updateModule: builder.mutation<
+      Envelope<string>, // Тип ответа - обновленный модуль
+      {
+        courseId: string;
+        moduleId: string;
+        title: string;
+      }
+    >({
+      query: ({ courseId, moduleId, title }) => ({
+        url: `courses/${courseId}/modules/${moduleId}`,
+        method: "PUT",
+        body: { title },
+      }),
+      invalidatesTags: ["Modules"],
+    }),
   }),
 });
 
@@ -51,4 +66,5 @@ export const {
   useCreateCourseMutation,
   useAddModuleMutation,
   useDeleteModuleMutation,
+  useUpdateModuleMutation,
 } = api;
