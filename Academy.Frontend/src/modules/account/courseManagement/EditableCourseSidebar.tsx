@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { LessonInfoDto, ModuleDto } from "../../courses/models/moduleDto";
 import { NavLink } from "react-router-dom";
-import { Edit, Delete, Add, ArrowBack } from "@mui/icons-material";
+import { Edit, Delete, Add, ArrowBack, FastForward } from "@mui/icons-material";
 import { useState } from "react";
 import AddModuleModal from "./AddModuleModal";
 import DeleteModuleModal from "./DeleteModuleModal";
 import EditModuleModal from "./EditModuleModal";
+import AddLessonModal from "./AddLessonModal";
+import DeleteLessonModal from "./DeleteLessonModal";
 
 export interface Props {
   modules: ModuleDto[];
@@ -27,8 +29,15 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
   const [isAddModuleOpen, setIsAddModuleOpen] = useState(false);
   const [isDeleteModuleOpen, setIsDeleteModuleOpen] = useState(false);
   const [isUpdateModuleOpen, setIsUpdateModuleOpen] = useState(false);
+  const [isAddLessonOpen, setIsAddLessonOpen] = useState(false);
+  const [isDeleteLessonOpen, setIsDeleteLessonOpen] = useState(false);
 
   const [selectedModule, setSelectedModule] = useState<{
+    title: string;
+    id: string;
+  }>({ title: "", id: "" });
+
+  const [selectedLesson, setSelectedLesson] = useState<{
     title: string;
     id: string;
   }>({ title: "", id: "" });
@@ -41,6 +50,22 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
   function handleUpdateModuleClick(moduleId: string, title: string) {
     setSelectedModule({ id: moduleId, title });
     setIsUpdateModuleOpen(true);
+  }
+
+  function handleAddLessonClick(moduleId: string, title: string) {
+    setSelectedModule({ id: moduleId, title });
+    setIsAddLessonOpen(true);
+  }
+
+  function handleDeleteLessonClick(
+    moduleId: string,
+    title: string,
+    lessonId: string,
+    lessonTitle: string
+  ) {
+    setSelectedModule({ id: moduleId, title });
+    setSelectedLesson({ id: lessonId, title: lessonTitle });
+    setIsDeleteLessonOpen(true);
   }
 
   const linkToMain = `/own-courses/${id}`;
@@ -95,7 +120,16 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
                     <IconButton onClick={() => {}}>
                       <Edit fontSize="small" />
                     </IconButton>
-                    <IconButton onClick={() => {}}>
+                    <IconButton
+                      onClick={() => {
+                        handleDeleteLessonClick(
+                          module.id,
+                          module.title,
+                          lesson.id,
+                          lesson.title
+                        );
+                      }}
+                    >
                       <Delete fontSize="small" />
                     </IconButton>
                   </ListItemIcon>
@@ -103,7 +137,11 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
               ))}
 
               <ListItem>
-                <Button startIcon={<Add />} fullWidth onClick={() => {}}>
+                <Button
+                  onClick={() => handleAddLessonClick(module.id, module.title)}
+                  startIcon={<Add />}
+                  fullWidth
+                >
                   Добавить урок
                 </Button>
               </ListItem>
@@ -142,6 +180,22 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
         courseId={id}
         moduleId={selectedModule.id}
         currentTitle={selectedModule.title}
+      />
+
+      <AddLessonModal
+        isOpen={isAddLessonOpen}
+        onClose={() => setIsAddLessonOpen(false)}
+        courseId={id}
+        moduleId={selectedModule.id}
+      />
+
+      <DeleteLessonModal
+        isOpen={isDeleteLessonOpen}
+        onClose={() => setIsDeleteLessonOpen(false)}
+        courseId={id}
+        moduleId={selectedModule.id}
+        lessonId={selectedLesson.id}
+        lessonTitle={selectedLesson.title}
       />
     </>
   );

@@ -65,6 +65,32 @@ const api = baseApi.injectEndpoints({
       }),
       providesTags: ["CourseInfo"],
     }),
+    addLesson: builder.mutation<
+      Envelope<string>,
+      {
+        courseId: string;
+        moduleId: string;
+        title: string;
+        lessonType: "LECTURE" | "PRACTICE" | "TEST";
+      }
+    >({
+      query: ({ courseId, moduleId, title, lessonType }) => ({
+        url: `courses/${courseId}/modules/${moduleId}/lessons`,
+        method: "POST",
+        body: { title, lessonType },
+      }),
+      invalidatesTags: ["Modules"],
+    }),
+    deleteLesson: builder.mutation<
+      Envelope<void>,
+      { courseId: string; moduleId: string; lessonId: string }
+    >({
+      query: ({ courseId, moduleId, lessonId }) => ({
+        url: `courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Modules"],
+    }),
   }),
 });
 
@@ -75,4 +101,6 @@ export const {
   useDeleteModuleMutation,
   useUpdateModuleMutation,
   useGetCourseInfoQuery,
+  useAddLessonMutation,
+  useDeleteLessonMutation,
 } = api;
