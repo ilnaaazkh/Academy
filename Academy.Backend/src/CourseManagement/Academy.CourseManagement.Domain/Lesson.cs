@@ -8,7 +8,7 @@ namespace Academy.CourseManagement.Domain
     public class Lesson : Entity<LessonId>
     {
         public Title Title { get; private set; }
-        public Content Content { get; private set; }
+        public Content? Content { get; private set; }
         public LessonType LessonType { get; private set; }
         public Position Position { get; private set; }
         public IReadOnlyList<Question> Questions { get; private set; } = new List<Question>();
@@ -20,12 +20,10 @@ namespace Academy.CourseManagement.Domain
         public Lesson(
             LessonId id,
             Title title, 
-            Content content, 
             LessonType lessonType)
         {
             Id = id;
             Title = title;
-            Content = content;
             LessonType = lessonType;
         }
 

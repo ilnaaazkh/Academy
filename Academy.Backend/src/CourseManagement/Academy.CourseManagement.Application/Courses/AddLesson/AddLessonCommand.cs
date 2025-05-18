@@ -6,7 +6,6 @@ namespace Academy.CourseManagement.Application.Courses.AddLesson
         Guid CourseId,
         Guid ModuleId,
         string Title,
-        string Content,
         string LessonType,
         Guid UserId) : ICommand;
 }

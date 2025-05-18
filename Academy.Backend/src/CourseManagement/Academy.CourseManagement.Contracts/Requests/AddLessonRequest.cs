@@ -2,7 +2,7 @@
 
 namespace Academy.CourseManagement.Contracts.Requests
 {
-    public record AddLessonRequest(string Title, string Content, string LessonType);
+    public record AddLessonRequest(string Title, string LessonType);
 
     public record TestQuestionDto(
         string Title,

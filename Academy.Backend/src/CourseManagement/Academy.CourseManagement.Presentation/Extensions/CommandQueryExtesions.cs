@@ -61,7 +61,6 @@ namespace Academy.CourseManagement.Presentation.Extensions
             return new AddLessonCommand(courseId, 
                 moduleId, 
                 request.Title, 
-                request.Content, 
                 request.LessonType,
                 userId);
         }

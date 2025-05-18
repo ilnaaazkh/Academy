@@ -22,6 +22,7 @@ using Academy.CourseManagement.Application.Courses.GetCourseModules;
 using Academy.CourseManagement.Application.Courses.AddCoursePreview;
 using Microsoft.AspNetCore.Authorization;
 using Academy.CourseManagement.Application.Courses;
+using Academy.CourseManagement.Application.Courses.GetCourse;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -29,9 +30,12 @@ namespace Academy.CourseManagement.Presentation
     {
         [HttpGet("{id:guid}")]
         public async Task<ActionResult> GetCourse(
-            [FromRoute] Guid id)
+            [FromRoute] Guid id,
+            [FromServices] GetCourseQueryHandler handler,
+            CancellationToken cancellationToken)
         {
-            return Ok();
+            var result = await handler.Handle(new GetCourseQuery(id), cancellationToken);
+            return Ok(result.Value);
         }
 
 

@@ -46,10 +46,9 @@ namespace Academy.CourseManagement.Application.Courses.AddLesson
             var moduleId = ModuleId.Create(command.ModuleId);
             var lessonId = LessonId.NewLessonId();
             var title = Title.Create(command.Title).Value;
-            var content = Content.Create(command.Content).Value;
             var lessonType = LessonType.Create(command.LessonType).Value;
 
-            var lesson = new Lesson(lessonId, title, content, lessonType);
+            var lesson = new Lesson(lessonId, title, lessonType);
 
             var result = course.AddLesson(moduleId, lesson);
 

@@ -43,6 +43,8 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
     setIsUpdateModuleOpen(true);
   }
 
+  const linkToMain = `/own-courses/${id}`;
+
   return (
     <>
       <Box className="w-1/6 py-3 border-r h-screen overflow-y-auto">
@@ -56,7 +58,7 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
         </ListItemButton>
         <ListItemButton
           component={NavLink}
-          to="/profile/own-courses"
+          to={linkToMain}
           sx={{ pl: 2, mb: 2 }}
         >
           <ListItemText primary="Главная" />

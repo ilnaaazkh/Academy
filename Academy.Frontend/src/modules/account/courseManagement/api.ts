@@ -44,7 +44,7 @@ const api = baseApi.injectEndpoints({
       invalidatesTags: ["Modules"],
     }),
     updateModule: builder.mutation<
-      Envelope<string>, // Тип ответа - обновленный модуль
+      Envelope<string>,
       {
         courseId: string;
         moduleId: string;
@@ -58,6 +58,13 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Modules"],
     }),
+    getCourseInfo: builder.query<Envelope<CourseDto>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["CourseInfo"],
+    }),
   }),
 });
 
@@ -67,4 +74,5 @@ export const {
   useAddModuleMutation,
   useDeleteModuleMutation,
   useUpdateModuleMutation,
+  useGetCourseInfoQuery,
 } = api;
