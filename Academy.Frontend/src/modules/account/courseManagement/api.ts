@@ -121,6 +121,7 @@ const api = baseApi.injectEndpoints({
         method: "POST",
         body: { templateCode },
       }),
+      invalidatesTags: ["Lesson"],
     }),
   }),
 });

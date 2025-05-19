@@ -126,7 +126,7 @@ export default function EditableLessonContent() {
 
       <div className="text-right">
         <Button
-          disabled={!content.trim() || isUpdating}
+          disabled={!content?.trim() || isUpdating}
           variant="contained"
           onClick={onSaveContentClick}
         >
