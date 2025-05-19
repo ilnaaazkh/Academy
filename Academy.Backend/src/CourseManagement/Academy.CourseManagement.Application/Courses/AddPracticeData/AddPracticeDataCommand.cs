@@ -7,6 +7,5 @@ namespace Academy.CourseManagement.Application.Courses.AddPracticeData
         Guid ModuleId,
         Guid LessonId,
         string TemplateCode,
-        IEnumerable<TestDto> Tests,
         Guid userId) : ICommand;
 }

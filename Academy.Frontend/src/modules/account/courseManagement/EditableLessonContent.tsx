@@ -10,9 +10,13 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import { useUpdateLessonContentMutation } from "./api";
+import {
+  useAddPracticeToLessonMutation,
+  useUpdateLessonContentMutation,
+} from "./api";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { CloseSharp } from "@mui/icons-material";
+import { PracticeLesson } from "../../courses/components/PracticeLesson";
 
 export default function EditableLessonContent() {
   const { courseId, moduleId, lessonId } = useParams();
@@ -29,6 +33,8 @@ export default function EditableLessonContent() {
   const [updateContent, { isLoading: isUpdating }] =
     useUpdateLessonContentMutation();
 
+  const [updatePractice] = useAddPracticeToLessonMutation();
+
   useEffect(() => {
     if (data?.result) {
       setContent(data.result.content);
@@ -36,12 +42,39 @@ export default function EditableLessonContent() {
   }, [data]);
 
   async function onSaveContentClick() {
+    if (!courseId || !moduleId || !lessonId) return;
+
     try {
       await updateContent({
-        courseId: courseId!,
-        moduleId: moduleId!,
-        lessonId: lessonId!,
+        courseId,
+        moduleId,
+        lessonId,
         content,
+      }).unwrap();
+
+      setNotification({
+        open: true,
+        message: "Изменения успешно сохранены",
+        severity: "success",
+      });
+    } catch {
+      setNotification({
+        open: true,
+        message: "Не удалось сохранить изменения",
+        severity: "error",
+      });
+    }
+  }
+
+  async function onSavePracticeClick(templateCode: string) {
+    if (!courseId || !moduleId || !lessonId) return;
+
+    try {
+      await updatePractice({
+        courseId,
+        moduleId,
+        lessonId,
+        templateCode,
       }).unwrap();
 
       setNotification({
@@ -83,7 +116,12 @@ export default function EditableLessonContent() {
       </div>
 
       <div className="mb-5 h-1/2" data-color-mode="light">
-        <MDEditor value={content} onChange={(val) => setContent(val || "")} />
+        <MDEditor
+          value={content}
+          height={400}
+          textareaProps={{ placeholder: "" }}
+          onChange={(val) => setContent(val || "")}
+        />
       </div>
 
       <div className="text-right">
@@ -94,6 +132,16 @@ export default function EditableLessonContent() {
         >
           {isUpdating ? <CircularProgress size={24} /> : "Сохранить"}
         </Button>
+      </div>
+
+      <div>
+        {data?.result?.lessonType === "PRACTICE" && (
+          <PracticeLesson
+            onSave={onSavePracticeClick}
+            editMode
+            data={data.result.practiceLessonData}
+          />
+        )}
       </div>
 
       <Snackbar

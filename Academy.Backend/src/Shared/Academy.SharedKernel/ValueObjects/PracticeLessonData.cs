@@ -6,31 +6,27 @@ namespace Academy.SharedKernel.ValueObjects
     public class PracticeLessonData : ValueObject
     {
         public string TemplateCode { get; }
-        public List<Test> Tests { get; }
+
 
         [JsonConstructor]
-        private PracticeLessonData(string templateCode, List<Test> tests)
+        private PracticeLessonData(string templateCode)
         {
             TemplateCode = templateCode;
-            Tests = tests;
         }
 
-        public static Result<PracticeLessonData, Error> Create(string templateCode, IEnumerable<Test> tests)
+        public static Result<PracticeLessonData, Error> Create(string templateCode)
         {
             if (string.IsNullOrWhiteSpace(templateCode))
             {
                 return Errors.General.ValueIsRequired(nameof(templateCode));
             }
 
-            return new PracticeLessonData(templateCode, tests.ToList());
+            return new PracticeLessonData(templateCode);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return TemplateCode;
-
-            foreach (var test in Tests)
-                yield return test;
         }
     }
 }

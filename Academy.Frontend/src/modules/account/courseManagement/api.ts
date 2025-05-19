@@ -107,6 +107,21 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Lesson"],
     }),
+    addPracticeToLesson: builder.mutation<
+      Envelope<string>,
+      {
+        courseId: string;
+        moduleId: string;
+        lessonId: string;
+        templateCode: string;
+      }
+    >({
+      query: ({ courseId, moduleId, lessonId, templateCode }) => ({
+        url: `courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/practice`,
+        method: "POST",
+        body: { templateCode },
+      }),
+    }),
   }),
 });
 
@@ -120,4 +135,5 @@ export const {
   useAddLessonMutation,
   useDeleteLessonMutation,
   useUpdateLessonContentMutation,
+  useAddPracticeToLessonMutation,
 } = api;

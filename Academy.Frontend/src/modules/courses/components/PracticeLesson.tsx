@@ -6,9 +6,11 @@ import { useRunCodeMutation } from "../api";
 
 interface Props {
   data: PracticeLessonData;
+  editMode?: true;
+  onSave?: (templateCode: string) => void;
 }
 
-export function PracticeLesson({ data }: Props) {
+export function PracticeLesson({ data, editMode, onSave }: Props) {
   const [code, setCode] = useState(data?.templateCode ?? "");
   const [output, setOutput] = useState("");
   const [runCode, { isLoading }] = useRunCodeMutation();
@@ -37,15 +39,29 @@ export function PracticeLesson({ data }: Props) {
           options={{ minimap: { enabled: false } }}
         />
       </div>
-      <div className="text-right my-2">
-        <Button
-          color="primary"
-          variant="contained"
-          onClick={handleRunCode}
-          disabled={isLoading}
-        >
-          {isLoading ? "Выполнение..." : "Отправить"}
-        </Button>
+      <div className="flex gap-2 my-2 justify-end">
+        <div>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleRunCode}
+            disabled={isLoading}
+          >
+            {isLoading ? "Выполнение..." : "Запустить"}
+          </Button>
+        </div>
+
+        {editMode && (
+          <div>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => (onSave ? onSave(code) : "")}
+            >
+              Сохранить
+            </Button>
+          </div>
+        )}
       </div>
       <Typography variant="h6" className="text-left mb-2">
         Вывод:

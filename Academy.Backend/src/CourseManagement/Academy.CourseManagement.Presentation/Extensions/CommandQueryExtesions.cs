@@ -32,7 +32,7 @@ namespace Academy.CourseManagement.Presentation.Extensions
         {
             return new AddPracticeDataCommand(
                 courseId, moduleId, lessonId, 
-                request.TemplateCode, request.Tests.Select(t => new TestDto(t.Input, t.Expected)),
+                request.TemplateCode,
                 userId);
         }
     

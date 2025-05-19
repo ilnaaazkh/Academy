@@ -37,9 +37,7 @@ namespace Academy.CourseManagement.Application.Courses.AddPracticeData
             var moduleId = ModuleId.Create(command.ModuleId);
             var lessonId = LessonId.Create(command.LessonId);
 
-            var practiceData = PracticeLessonData.Create(
-                command.TemplateCode, 
-                command.Tests.Select(t => new Test(t.Input.ToList(), t.Expected))).Value;
+            var practiceData = PracticeLessonData.Create(command.TemplateCode).Value;
 
             var result = courseResult.Value.AddPracticeDataToLesson(moduleId, lessonId, practiceData);
 
