@@ -91,6 +91,22 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Modules"],
     }),
+    updateLessonContent: builder.mutation<
+      Envelope<void>,
+      {
+        courseId: string;
+        moduleId: string;
+        lessonId: string;
+        content: string;
+      }
+    >({
+      query: ({ courseId, moduleId, lessonId, content }) => ({
+        url: `/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/content`,
+        method: "POST",
+        body: { content },
+      }),
+      invalidatesTags: ["Lesson"],
+    }),
   }),
 });
 
@@ -103,4 +119,5 @@ export const {
   useGetCourseInfoQuery,
   useAddLessonMutation,
   useDeleteLessonMutation,
+  useUpdateLessonContentMutation,
 } = api;

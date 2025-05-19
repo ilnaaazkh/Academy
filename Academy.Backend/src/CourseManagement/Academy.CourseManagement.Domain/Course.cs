@@ -153,5 +153,18 @@ namespace Academy.CourseManagement.Domain
 
             return moduleResult.Value.AddPracticeDataToLesson(lessonId, practiceLessonData);
         }
+
+        public UnitResult<Error> SetLessonContent(
+            ModuleId moduleId,
+            LessonId lessonId,
+            Content content)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if (moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.SetLessonContent(lessonId, content);
+        }
     }
 }

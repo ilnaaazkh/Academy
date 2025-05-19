@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { LessonInfoDto, ModuleDto } from "../../courses/models/moduleDto";
 import { NavLink } from "react-router-dom";
-import { Edit, Delete, Add, ArrowBack, FastForward } from "@mui/icons-material";
+import { Edit, Delete, Add, ArrowBack } from "@mui/icons-material";
 import { useState } from "react";
 import AddModuleModal from "./AddModuleModal";
 import DeleteModuleModal from "./DeleteModuleModal";
@@ -112,7 +112,7 @@ export default function EditableCourseSidebar({ modules, id }: Props) {
                 <ListItem key={lesson.id} disablePadding>
                   <ListItemButton
                     component={NavLink}
-                    to={`/${id}/lessons/${lesson.id}`}
+                    to={`modules/${module.id}/lessons/${lesson.id}`}
                   >
                     <ListItemText primary={lesson.title} className="pl-2" />
                   </ListItemButton>

@@ -23,6 +23,7 @@ using Academy.CourseManagement.Application.Courses.AddCoursePreview;
 using Microsoft.AspNetCore.Authorization;
 using Academy.CourseManagement.Application.Courses;
 using Academy.CourseManagement.Application.Courses.GetCourse;
+using Academy.CourseManagement.Application.Courses.AddLessonContent;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -230,6 +231,26 @@ namespace Academy.CourseManagement.Presentation
             [FromRoute] Guid lessonId,
             [FromBody] AddTestToLessonRequest request,
             [FromServices] AddTestToLessonCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand(courseId, moduleId, lessonId, UserId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/content")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> AddLessonContent(
+            [FromRoute] Guid courseId,
+            [FromRoute] Guid moduleId,
+            [FromRoute] Guid lessonId,
+            [FromBody] AddLessonContentRequest request,
+            [FromServices] AddLessonContentCommandHandler handler,
             CancellationToken cancellationToken)
         {
             var command = request.ToCommand(courseId, moduleId, lessonId, UserId);

@@ -25,6 +25,7 @@ export const coursesApi = baseApi.injectEndpoints({
       query: ({ id }) => ({
         url: `/lessons/${id}`,
       }),
+      providesTags: ["Lesson"],
     }),
     getAttachmentLink: builder.query<
       Envelope<string>,
