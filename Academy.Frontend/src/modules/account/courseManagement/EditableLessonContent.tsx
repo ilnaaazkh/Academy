@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import MDEditor from "@uiw/react-md-editor";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useGetLessonQuery } from "../../courses/api";
 import {
   Alert,
@@ -11,12 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  useAddLessonAttachmentsMutation,
   useAddPracticeToLessonMutation,
+  useRemoveAttachmentMutation,
   useUpdateLessonContentMutation,
 } from "./api";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { CloseSharp } from "@mui/icons-material";
+import { CloudUpload } from "@mui/icons-material";
 import { PracticeLesson } from "../../courses/components/PracticeLesson";
+import Attachment from "../../courses/components/Attachment";
 
 export default function EditableLessonContent() {
   const { courseId, moduleId, lessonId } = useParams();
@@ -34,6 +38,8 @@ export default function EditableLessonContent() {
     useUpdateLessonContentMutation();
 
   const [updatePractice] = useAddPracticeToLessonMutation();
+  const [uploadFiles] = useAddLessonAttachmentsMutation();
+  const [removeAttachment] = useRemoveAttachmentMutation();
 
   useEffect(() => {
     if (data?.result) {
@@ -66,6 +72,21 @@ export default function EditableLessonContent() {
     }
   }
 
+  async function onAttachmentDelete(fileUrl: string) {
+    if (!courseId || !moduleId || !lessonId) return;
+
+    try {
+      await removeAttachment({
+        courseId,
+        moduleId,
+        lessonId,
+        fileUrl,
+      }).unwrap();
+    } catch {
+      console.log("Failed to delete file");
+    }
+  }
+
   async function onSavePracticeClick(templateCode: string) {
     if (!courseId || !moduleId || !lessonId) return;
 
@@ -91,6 +112,29 @@ export default function EditableLessonContent() {
     }
   }
 
+  async function handleFileUpload(e: ChangeEvent<HTMLInputElement>) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    if (!courseId || !moduleId || !lessonId) return;
+
+    const filesArray = Array.from(files);
+    try {
+      await uploadFiles({
+        courseId,
+        moduleId,
+        lessonId,
+        files: filesArray,
+      }).unwrap();
+    } catch {
+      setNotification({
+        open: true,
+        message: "Не удалось загрузить файлы",
+        severity: "error",
+      });
+    }
+  }
+
   const handleCloseNotification = () => {
     setNotification((prev) => ({ ...prev, open: false }));
   };
@@ -111,8 +155,8 @@ export default function EditableLessonContent() {
 
   return (
     <div className="mx-24">
-      <div className="mb-10">
-        <Typography variant="h4">{data?.result?.title}</Typography>
+      <div className="mb-10 prose mx-auto">
+        <h1>{data?.result?.title}</h1>
       </div>
 
       <div className="mb-5 h-1/2" data-color-mode="light">
@@ -142,6 +186,31 @@ export default function EditableLessonContent() {
             data={data.result.practiceLessonData}
           />
         )}
+      </div>
+
+      <div className="text-left prose mt-4">
+        <h2 className="mb-4">Приложения</h2>
+        <div className="flex flex-col gap-3">
+          {data?.result?.attachments.map((a) => (
+            <Attachment
+              key={a.fileUrl}
+              fileUrl={a.fileUrl}
+              lessonId={lessonId ?? ""}
+              onDelete={() => onAttachmentDelete(a.fileUrl)}
+              fileName={a.fileName}
+            />
+          ))}
+        </div>
+        <div className="mt-4">
+          <Button
+            variant="outlined"
+            component="label"
+            startIcon={<CloudUpload />}
+          >
+            Загрузить файлы
+            <input type="file" hidden multiple onChange={handleFileUpload} />
+          </Button>
+        </div>
       </div>
 
       <Snackbar

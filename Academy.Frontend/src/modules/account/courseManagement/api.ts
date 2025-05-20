@@ -123,6 +123,46 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Lesson"],
     }),
+    addLessonAttachments: builder.mutation<
+      Envelope<string[]>,
+      {
+        courseId: string;
+        moduleId: string;
+        lessonId: string;
+        files: File[];
+      }
+    >({
+      query: ({ courseId, moduleId, lessonId, files }) => {
+        const formData = new FormData();
+        files.forEach((file) => {
+          formData.append("files", file);
+        });
+
+        return {
+          url: `courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/attachments`,
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Lesson"],
+    }),
+    removeAttachment: builder.mutation<
+      Envelope<void>,
+      {
+        courseId: string;
+        moduleId: string;
+        lessonId: string;
+        fileUrl: string;
+      }
+    >({
+      query: ({ courseId, moduleId, lessonId, fileUrl }) => ({
+        url: `/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/attachments/${encodeURIComponent(
+          fileUrl
+        )}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Lesson"],
+    }),
   }),
 });
 
@@ -137,4 +177,6 @@ export const {
   useDeleteLessonMutation,
   useUpdateLessonContentMutation,
   useAddPracticeToLessonMutation,
+  useAddLessonAttachmentsMutation,
+  useRemoveAttachmentMutation,
 } = api;

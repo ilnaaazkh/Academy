@@ -72,7 +72,7 @@ export default function Lesson() {
         {!!data?.result?.attachments?.length && (
           <h2 className="mb-4">Приложения</h2>
         )}
-        <div className="space-x-2">
+        <div className="flex flex-col gap-3">
           {data?.result?.attachments.map((a) => (
             <Attachment
               key={a.fileUrl}

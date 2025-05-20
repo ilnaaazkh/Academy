@@ -44,6 +44,23 @@ namespace Academy.CourseManagement.Domain
             return UnitResult.Success<Error>();
         }
 
+        public UnitResult<Error> RemoveAttachment(string fileUrl)
+        {
+            var currentAttachments = Attachments.ToList();
+            var attachmentToRemove = currentAttachments.FirstOrDefault(a =>
+                string.Equals(a.FileUrl, fileUrl, StringComparison.OrdinalIgnoreCase));
+
+            if (attachmentToRemove == null)
+            {
+                return Errors.General.NotFound(fileUrl);
+            }
+
+            currentAttachments.Remove(attachmentToRemove);
+            Attachments = currentAttachments.AsReadOnly();
+
+            return UnitResult.Success<Error>();
+        } 
+
         public UnitResult<Error> SetContent(Content content)
         {
             Content = content;

@@ -6,9 +6,15 @@ interface Props {
   fileUrl: string;
   fileName: string;
   lessonId: string;
+  onDelete?: () => void;
 }
 
-export default function Attachment({ fileName, fileUrl, lessonId }: Props) {
+export default function Attachment({
+  fileName,
+  fileUrl,
+  lessonId,
+  onDelete,
+}: Props) {
   const [trigger] = useLazyGetAttachmentLinkQuery();
   const [loading, setLoading] = useState(false);
 
@@ -31,6 +37,8 @@ export default function Attachment({ fileName, fileUrl, lessonId }: Props) {
       label={fileName}
       onClick={handleClick}
       clickable
+      onDelete={onDelete}
+      className="w-fit text-left"
       icon={loading ? <CircularProgress size={16} /> : undefined}
     />
   );

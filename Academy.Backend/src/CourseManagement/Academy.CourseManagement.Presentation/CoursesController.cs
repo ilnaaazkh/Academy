@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authorization;
 using Academy.CourseManagement.Application.Courses;
 using Academy.CourseManagement.Application.Courses.GetCourse;
 using Academy.CourseManagement.Application.Courses.AddLessonContent;
+using Academy.CourseManagement.Application.Courses.DeleteAttachment;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -284,8 +285,27 @@ namespace Academy.CourseManagement.Presentation
 
             return Ok(result.Value);
         }
-        
-        
+
+        [HttpDelete("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/attachments/{fileUrl}")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> RemoveAttachmentFromLesson(
+           [FromRoute] Guid courseId,
+           [FromRoute] Guid moduleId,
+           [FromRoute] Guid lessonId,
+           string fileUrl,
+           [FromServices] DeleteAttachmentCommandHandler handler,
+           CancellationToken cancellationToken)
+        {
+            var command = new DeleteAttachmentCommand(courseId, moduleId, lessonId, UserId, fileUrl);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/practice")]
         [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddPracticeDataToLesson(

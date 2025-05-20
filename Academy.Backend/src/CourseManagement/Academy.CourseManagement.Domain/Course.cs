@@ -141,6 +141,19 @@ namespace Academy.CourseManagement.Domain
             return moduleResult.Value.AddAttachmentsToLesson(lessonId, attachments);
         }
 
+        public UnitResult<Error> RemoveAttachmentFromLesson(
+            ModuleId moduleId, 
+            LessonId lessonId,
+            string fileUrl)
+        {
+            var moduleResult = GetModuleById(moduleId);
+
+            if(moduleResult.IsFailure)
+                return moduleResult.Error;
+
+            return moduleResult.Value.RemoveAttachmentsFromLesson(lessonId, fileUrl);
+        }
+
         public UnitResult<Error> AddPracticeDataToLesson(
             ModuleId moduleId,
             LessonId lessonId,
