@@ -1,6 +1,7 @@
 import { CourseDto } from "../../../models/response/courseDto";
 import { Envelope } from "../../../models/response/Envelope";
 import { baseApi } from "../../../shared/api";
+import { Question } from "../../courses/models/lessonDto";
 
 const api = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -163,6 +164,22 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Lesson"],
     }),
+    addTestQuestions: builder.mutation<
+      Envelope<string>,
+      {
+        courseId: string;
+        moduleId: string;
+        lessonId: string;
+        questions: Question[];
+      }
+    >({
+      query: ({ courseId, moduleId, lessonId, questions }) => ({
+        url: `courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/test-questions`,
+        method: "POST",
+        body: { questions },
+      }),
+      invalidatesTags: ["Lesson"],
+    }),
   }),
 });
 
@@ -179,4 +196,5 @@ export const {
   useAddPracticeToLessonMutation,
   useAddLessonAttachmentsMutation,
   useRemoveAttachmentMutation,
+  useAddTestQuestionsMutation,
 } = api;

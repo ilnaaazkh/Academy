@@ -8,11 +8,11 @@ import {
   CircularProgress,
   IconButton,
   Snackbar,
-  Typography,
 } from "@mui/material";
 import {
   useAddLessonAttachmentsMutation,
   useAddPracticeToLessonMutation,
+  useAddTestQuestionsMutation,
   useRemoveAttachmentMutation,
   useUpdateLessonContentMutation,
 } from "./api";
@@ -21,10 +21,13 @@ import { CloseSharp } from "@mui/icons-material";
 import { CloudUpload } from "@mui/icons-material";
 import { PracticeLesson } from "../../courses/components/PracticeLesson";
 import Attachment from "../../courses/components/Attachment";
+import EditableTest from "./EditableTest";
+import { Question } from "../../courses/models/lessonDto";
 
 export default function EditableLessonContent() {
   const { courseId, moduleId, lessonId } = useParams();
   const [content, setContent] = useState("");
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
@@ -34,16 +37,20 @@ export default function EditableLessonContent() {
   const { data, isLoading, isError } = useGetLessonQuery(
     lessonId ? { id: lessonId } : skipToken
   );
+
   const [updateContent, { isLoading: isUpdating }] =
     useUpdateLessonContentMutation();
-
   const [updatePractice] = useAddPracticeToLessonMutation();
   const [uploadFiles] = useAddLessonAttachmentsMutation();
   const [removeAttachment] = useRemoveAttachmentMutation();
+  const [addTest] = useAddTestQuestionsMutation();
 
   useEffect(() => {
     if (data?.result) {
       setContent(data.result.content);
+      if (data.result.questions) {
+        setQuestions(data.result.questions);
+      }
     }
   }, [data]);
 
@@ -139,6 +146,26 @@ export default function EditableLessonContent() {
     setNotification((prev) => ({ ...prev, open: false }));
   };
 
+  async function onTestSave() {
+    if (!courseId || !moduleId || !lessonId) return;
+
+    try {
+      await addTest({ courseId, moduleId, lessonId, questions }).unwrap();
+
+      setNotification({
+        open: true,
+        message: "Изменения успешно сохранены",
+        severity: "success",
+      });
+    } catch {
+      setNotification({
+        open: true,
+        message: "Не удалось сохранить изменения",
+        severity: "error",
+      });
+    }
+  }
+
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -168,7 +195,7 @@ export default function EditableLessonContent() {
         />
       </div>
 
-      <div className="text-right">
+      <div className="text-right my-4">
         <Button
           disabled={!content?.trim() || isUpdating}
           variant="contained"
@@ -185,6 +212,16 @@ export default function EditableLessonContent() {
             editMode
             data={data.result.practiceLessonData}
           />
+        )}
+
+        {data?.result?.lessonType === "TEST" && (
+          <div>
+            <EditableTest
+              questions={questions || []}
+              onQuestionsChange={setQuestions}
+            />
+            <Button onClick={onTestSave}>Сохранить</Button>
+          </div>
         )}
       </div>
 
