@@ -3,6 +3,12 @@ import { Envelope } from "../../../models/response/Envelope";
 import { baseApi } from "../../../shared/api";
 import { Question } from "../../courses/models/lessonDto";
 
+function createFormData(file: File): FormData {
+  const formData = new FormData();
+  formData.append("files", file);
+  return formData;
+}
+
 const api = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOwnCourses: builder.query<Envelope<CourseDto[]>, void>({
@@ -180,6 +186,38 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Lesson"],
     }),
+    uploadCoursePreview: builder.mutation<
+      Envelope<string>,
+      {
+        courseId: string;
+        file: File;
+      }
+    >({
+      query: ({ courseId, file }) => ({
+        url: `courses/${courseId}/preview`,
+        method: "POST",
+        body: createFormData(file),
+      }),
+      invalidatesTags: ["CourseInfo"],
+    }),
+    updateCourse: builder.mutation<
+      Envelope<void>,
+      { id: string; title: string; description: string }
+    >({
+      query: ({ id, title, description }) => ({
+        url: `courses/${id}`,
+        method: "PUT",
+        body: { title, description },
+      }),
+      invalidatesTags: ["Courses", "CourseInfo"],
+    }),
+    deleteCourse: builder.mutation<Envelope<void>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Courses"],
+    }),
   }),
 });
 
@@ -197,4 +235,7 @@ export const {
   useAddLessonAttachmentsMutation,
   useRemoveAttachmentMutation,
   useAddTestQuestionsMutation,
+  useUploadCoursePreviewMutation,
+  useUpdateCourseMutation,
+  useDeleteCourseMutation,
 } = api;
