@@ -17,6 +17,13 @@
             public const string ApproveAuthoring = "authorings.approve";
             public const string RejectAuthoring = "authorings.reject";
         }
+
+        public static class Authors 
+        {
+            public const string Create = "authors.create";
+            public const string Delete = "authors.delete";
+            public const string Read = "authors.read";
+        }
     }
 
 }

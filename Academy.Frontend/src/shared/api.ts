@@ -55,6 +55,6 @@ export const baseQueryWithRefresh: typeof baseQuery = async (
 
 export const baseApi = createApi({
   baseQuery: baseQueryWithRefresh,
-  tagTypes: ["Courses", "Modules", "CourseInfo", "Lesson"],
+  tagTypes: ["Courses", "Modules", "CourseInfo", "Lesson", "Authors"],
   endpoints: () => ({}),
 });

@@ -1,5 +1,6 @@
 ﻿using Academy.Accounts.Application.LoginUser;
 using Academy.Accounts.Application.RefreshTokens;
+using Academy.Accounts.Application.RegisterAuthor;
 using Academy.Accounts.Application.RegisterUser;
 using Academy.Accounts.Contracts.Requests;
 using Academy.Accounts.Presentation.Extensions;

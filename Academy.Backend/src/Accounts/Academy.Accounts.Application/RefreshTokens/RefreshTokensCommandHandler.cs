@@ -7,8 +7,6 @@ using Academy.Core.Extensions;
 using Academy.SharedKernel;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Academy.Accounts.Application.RefreshTokens
 {
