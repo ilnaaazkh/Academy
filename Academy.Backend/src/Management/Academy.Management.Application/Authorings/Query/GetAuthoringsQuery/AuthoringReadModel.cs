@@ -10,7 +10,11 @@ namespace Academy.Management.Application.Authorings.Query.GetAuthoringsQuery
         public string? Comment { get; set; }
         public string? RejectionComment { get; set; }
 
+        public string Status { get; set; }
+
         public IReadOnlyList<Attachment> Attachments = new List<Attachment>();
+
+        public DateTime? CreatedAt { get; set; }
 
         public AuthoringDataModel(Authoring authoring)
         {
@@ -18,6 +22,8 @@ namespace Academy.Management.Application.Authorings.Query.GetAuthoringsQuery
             Comment = authoring.Comment;
             RejectionComment = authoring.RejectionComment;
             Attachments = authoring.Attachments;
+            Status = authoring.Status.ToString();
+            CreatedAt = authoring.CreatedAt;
         }
     }
 }

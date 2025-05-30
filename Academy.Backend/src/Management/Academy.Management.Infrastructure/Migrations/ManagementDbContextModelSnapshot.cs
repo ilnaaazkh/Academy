@@ -25,7 +25,7 @@ namespace Academy.Management.Infrastructure.Migrations
 
             modelBuilder.Entity("Academy.Management.Domain.Authoring", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("AuthoringId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
@@ -60,7 +60,7 @@ namespace Academy.Management.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("Id")
+                    b.HasKey("AuthoringId")
                         .HasName("pk_authorings");
 
                     b.ToTable("authorings", "management");

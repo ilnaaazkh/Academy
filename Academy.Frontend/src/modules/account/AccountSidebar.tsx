@@ -29,6 +29,17 @@ export function AccountSidebar() {
     >
       <div>
         <List>
+          {isInRole("Student") && (
+            <ListItem>
+              <ListItemButton
+                key="my-authorings"
+                component={NavLink}
+                to={`/profile/my-authorings`}
+              >
+                <ListItemText primary={"Стать автором"} className="pl-2" />
+              </ListItemButton>
+            </ListItem>
+          )}
           {isInRole("Author") && (
             <ListItem>
               <ListItemButton

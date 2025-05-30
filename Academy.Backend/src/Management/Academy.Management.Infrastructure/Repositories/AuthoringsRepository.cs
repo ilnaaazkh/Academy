@@ -45,5 +45,15 @@ namespace Academy.Management.Infrastructure.Repositories
 
             return (result, totalCount);
         }
+
+        public async Task<IReadOnlyList<Authoring>> GetAuthoringsCreatedByUser(Guid userId, CancellationToken cancellationToken)
+        {
+            var result = await _dbContext.Authorings
+                .Where(a => a.UserId == userId)
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync(cancellationToken);
+
+            return result;
+        }
     }
 }

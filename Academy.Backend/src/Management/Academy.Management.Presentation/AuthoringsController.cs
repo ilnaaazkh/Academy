@@ -16,6 +16,8 @@ using Academy.Management.Application.Authorings.Command.SubmitAuthoring;
 using Academy.Management.Application.Authorings.Command.RejectAuthoring;
 using Academy.Management.Application.Authorings.Query.GetAuthoringsQuery;
 using Newtonsoft.Json;
+using Academy.Management.Application.Authorings.Query.GetMyAuthorings;
+using Academy.Management.Application.Authorings.Query.GetAuthoringQuery;
 
 namespace Academy.Management.Presentation
 {
@@ -158,6 +160,29 @@ namespace Academy.Management.Presentation
             Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
 
             return Ok(result);
+        }
+
+        [HttpGet("my-authorings")]
+        [Authorize]
+        public async Task<ActionResult> MyAuthorings(
+            [FromServices] GetMyAuthoringsQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetMyAuthoringsQuery(UserId), cancellationToken);
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("{id:guid}")]
+        [Authorize]
+        public async Task<ActionResult> MyAuthoring(
+            [FromRoute] Guid id,
+            [FromServices] GetAuthoringQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetAuthoringQuery(id), cancellationToken);
+
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
         }
     }
 }
