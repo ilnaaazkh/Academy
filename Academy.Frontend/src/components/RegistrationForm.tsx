@@ -47,12 +47,14 @@ export default function RegistrationForm() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="max-w-md mx-auto mt-10 space-y-6"
+      autoComplete="off"
     >
       <Typography variant="h5" className="text-center">
         Регистрация
       </Typography>
 
       <TextField
+        autoComplete="new-email"
         label="Email"
         fullWidth
         {...register("email")}
@@ -62,6 +64,7 @@ export default function RegistrationForm() {
       />
 
       <TextField
+        autoComplete="new-password"
         label="Пароль"
         fullWidth
         type="password"

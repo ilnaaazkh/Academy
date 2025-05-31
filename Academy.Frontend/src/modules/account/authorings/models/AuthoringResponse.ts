@@ -8,4 +8,7 @@ export interface AuthoringResponse {
   status: AuthorRoleRequestStatus;
   attachments: Attachment[];
   createdAt: string;
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
 }

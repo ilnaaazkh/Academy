@@ -88,12 +88,29 @@ const api = baseApi.injectEndpoints({
       }),
       providesTags: ["MyAuthorings"],
     }),
-    getAuthoring: builder.query<Envelope<AuthoringResponse[]>, { id: string }>({
+    getAuthoring: builder.query<Envelope<AuthoringResponse>, { id: string }>({
       query: ({ id }) => ({
         url: `authorings/${id}`,
         method: "GET",
       }),
       providesTags: ["MyAuthorings"],
+    }),
+    updateAuthoring: builder.mutation<
+      Envelope<string>,
+      {
+        id: string;
+        comment?: string;
+        firstName?: string;
+        lastName?: string;
+        middleName?: string;
+      }
+    >({
+      query: ({ id, ...body }) => ({
+        url: `authorings/${id}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["MyAuthorings"],
     }),
   }),
 });
@@ -108,4 +125,5 @@ export const {
   useGetAuthoringsQuery,
   useGetMyAuthoringsQuery,
   useGetAuthoringQuery,
+  useUpdateAuthoringMutation,
 } = api;

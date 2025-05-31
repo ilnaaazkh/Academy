@@ -15,6 +15,9 @@ namespace Academy.Management.Application.Authorings.Query.GetAuthoringsQuery
         public IReadOnlyList<Attachment> Attachments = new List<Attachment>();
 
         public DateTime? CreatedAt { get; set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string MiddleName { get; private set; }
 
         public AuthoringDataModel(Authoring authoring)
         {
@@ -24,6 +27,9 @@ namespace Academy.Management.Application.Authorings.Query.GetAuthoringsQuery
             Attachments = authoring.Attachments;
             Status = authoring.Status.ToString();
             CreatedAt = authoring.CreatedAt;
+            FirstName = authoring.FirstName;
+            LastName = authoring.LastName;
+            MiddleName = authoring.MiddleName;
         }
     }
 }

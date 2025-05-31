@@ -1,5 +1,6 @@
 import { Card, CardContent, Typography, Chip, Button } from "@mui/material";
 import { AuthorRoleRequestStatus } from "./models/AuthorRoleRequestStatus";
+import { statusMap } from "./models/statusMap";
 
 interface Props {
   comment?: string;
@@ -8,22 +9,7 @@ interface Props {
   onClick: () => void;
 }
 
-const statusMap: Record<
-  AuthorRoleRequestStatus,
-  { label: string; color: "default" | "warning" | "error" | "success" }
-> = {
-  Draft: { label: "Черновик", color: "default" },
-  Pending: { label: "На рассмотрении", color: "warning" },
-  Rejected: { label: "Отклонена", color: "error" },
-  Accepted: { label: "Принята", color: "success" },
-};
-
-export default function MyAuthoringCard({
-  comment,
-  createdAt,
-  status,
-  onClick,
-}: Props) {
+export default function MyAuthoringCard({ createdAt, status, onClick }: Props) {
   const { label, color } = statusMap[status];
 
   const formattedDate = new Date(createdAt).toLocaleDateString("ru-RU", {
@@ -39,11 +25,6 @@ export default function MyAuthoringCard({
           <Typography variant="body1" className="mb-2">
             Заявка от {formattedDate}
           </Typography>
-          {comment && (
-            <Typography variant="body2" color="text.secondary">
-              {comment}
-            </Typography>
-          )}
         </div>
         <div className="flex gap-2 items-center justify-between">
           <Chip label={label} color={color} />

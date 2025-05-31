@@ -62,6 +62,17 @@ export function AccountSidebar() {
               </ListItemButton>
             </ListItem>
           )}
+          {isInRole("Admin") && (
+            <ListItem>
+              <ListItemButton
+                key="authrings"
+                component={NavLink}
+                to={`/profile/authorings`}
+              >
+                <ListItemText primary={"Заявки"} className="pl-2" />
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
       </div>
       <Box>

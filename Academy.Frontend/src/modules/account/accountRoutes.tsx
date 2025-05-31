@@ -5,6 +5,7 @@ import OwnCourses from "./courseManagement/OwnCourses";
 import AuthorsPage from "./authors/AuthorsPage";
 import MyAuthoringsPage from "./authorings/MyAuthoringsPage";
 import MyAuthoringPage from "./authorings/MyAuthoringPage";
+import AuthoringsPage from "./authorings/AuthoringsPage";
 
 export const accountRoutes: RouteObject = {
   path: "/profile",
@@ -43,6 +44,14 @@ export const accountRoutes: RouteObject = {
       element: (
         <ProtectedRoute roles={["Student"]}>
           <MyAuthoringsPage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "authorings",
+      element: (
+        <ProtectedRoute roles={["Admin"]}>
+          <AuthoringsPage />
         </ProtectedRoute>
       ),
     },
