@@ -38,7 +38,7 @@ namespace Academy.Management.Infrastructure.Repositories
         {
             var authoringsQueryable = _dbContext.Authorings
                                     .Where(a => a.Status == Domain.AuthorRoleRequestStatus.Pending)
-                                    .OrderBy(a => a.CreatedAt);
+                                    .OrderByDescending(a => a.CreatedAt);
             
             var totalCount = authoringsQueryable.Count();
             var result = await authoringsQueryable.Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize).ToListAsync(); 

@@ -31,6 +31,14 @@ namespace Academy.Accounts.Presentation
                 return new ErrorList(errors);
             }
 
+            var deleteRoleResult = await _userManager.RemoveFromRoleAsync(user, Roles.STUDENT);
+
+            if (deleteRoleResult.Succeeded == false)
+            {
+                var errors = result.Errors.Select(e => Error.Validation(e.Code, e.Description, null));
+                return new ErrorList(errors);
+            }
+
             return UnitResult.Success<ErrorList>();
         }
     }

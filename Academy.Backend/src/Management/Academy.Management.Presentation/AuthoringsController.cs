@@ -176,7 +176,7 @@ namespace Academy.Management.Presentation
 
         [HttpGet("{id:guid}")]
         [Authorize]
-        public async Task<ActionResult> MyAuthoring(
+        public async Task<ActionResult> GetAuthoring(
             [FromRoute] Guid id,
             [FromServices] GetAuthoringQueryHandler handler,
             CancellationToken cancellationToken)
