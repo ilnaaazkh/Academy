@@ -218,6 +218,37 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Courses"],
     }),
+    getCoursesUnderModeration: builder.query<Envelope<CourseDto[]>, void>({
+      query: () => ({
+        url: "courses/under-moderation",
+        method: "GET",
+      }),
+      providesTags: ["CoursesModeration"],
+    }),
+
+    sendCourseOnReview: builder.mutation<Envelope<string>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}/send-on-review`,
+        method: "POST",
+      }),
+      invalidatesTags: ["CourseInfo"],
+    }),
+
+    publishCourse: builder.mutation<Envelope<string>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}/publish`,
+        method: "POST",
+      }),
+      invalidatesTags: ["CoursesModeration"],
+    }),
+
+    hideCourse: builder.mutation<Envelope<string>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}/hide`,
+        method: "POST",
+      }),
+      invalidatesTags: ["CourseInfo"],
+    }),
   }),
 });
 
@@ -238,4 +269,8 @@ export const {
   useUploadCoursePreviewMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
+  useGetCoursesUnderModerationQuery,
+  useSendCourseOnReviewMutation,
+  usePublishCourseMutation,
+  useHideCourseMutation,
 } = api;

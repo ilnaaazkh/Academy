@@ -6,6 +6,7 @@ using Academy.CourseManagement.Application.Courses.AddTestToLesson;
 using Academy.CourseManagement.Application.Courses.CodeExecution;
 using Academy.CourseManagement.Application.Courses.Create;
 using Academy.CourseManagement.Application.Courses.GetCourses;
+using Academy.CourseManagement.Application.Courses.GetCoursesUnderModeration;
 using Academy.CourseManagement.Application.Courses.Update;
 using Academy.CourseManagement.Application.Courses.UpdateModule;
 using Academy.CourseManagement.Contracts.Requests;
@@ -23,6 +24,9 @@ namespace Academy.CourseManagement.Presentation.Extensions
 
         public static RunCodeCommand ToCommand(this RunCodeRequest request) => new(request.Code);
         public static GetCoursesQuery ToQuery(this GetCoursesRequest request)
+            => new(request.PageSize, request.PageNumber);
+
+        public static GetCoursesUnderModerationQuery ToQuery(this GetCoursesUnderModerationRequest request) 
             => new(request.PageSize, request.PageNumber);
         public static AddPracticeDataCommand ToCommand(this AddPracticeDataRequest request, 
             Guid courseId, 

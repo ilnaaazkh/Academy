@@ -7,26 +7,25 @@ using Academy.CourseManagement.Domain;
 using Academy.FilesService.Contracts;
 using CSharpFunctionalExtensions;
 
-namespace Academy.CourseManagement.Application.Courses.GetCourses
+namespace Academy.CourseManagement.Application.Courses.GetCoursesUnderModeration
 {
-    public class GetCoursesQueryHandler : IQueryHandler<PagedList<CourseDto>, GetCoursesQuery>
+    public class GetCoursesUnderModerationQueryHandler : IQueryHandler<PagedList<CourseDto>, GetCoursesUnderModerationQuery>
     {
         private readonly IReadDbContext _readDbContext;
         private readonly IFilesServiceContract _filesServiceContract;
 
-        public GetCoursesQueryHandler(IReadDbContext readDbContext, 
+        public GetCoursesUnderModerationQueryHandler(IReadDbContext readDbContext,
             IFilesServiceContract filesServiceContract)
         {
             _readDbContext = readDbContext;
             _filesServiceContract = filesServiceContract;
         }
 
-        public async Task<Result<PagedList<CourseDto>>> Handle(GetCoursesQuery query, CancellationToken cancellationToken = default)
+        public async Task<Result<PagedList<CourseDto>>> Handle(GetCoursesUnderModerationQuery query, CancellationToken cancellationToken = default)
         {
             var coursesQuery = _readDbContext.Courses;
 
-            coursesQuery = coursesQuery.Where(s => s.Status == Status.Published.Value);
-
+            coursesQuery = coursesQuery.Where(s => s.Status == Status.UnderModeration.Value);
 
             var result = await coursesQuery.ToPagedList(query.PageSize, query.PageNumber);
 

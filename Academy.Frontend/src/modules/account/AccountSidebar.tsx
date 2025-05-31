@@ -11,6 +11,7 @@ import {
 import { NavLink } from "react-router";
 import { useAppDispatch } from "../../store/store";
 import { Logout } from "@mui/icons-material";
+import { baseApi } from "../../shared/api";
 
 export function AccountSidebar() {
   const roles = useSelector(selectRoles);
@@ -73,13 +74,30 @@ export function AccountSidebar() {
               </ListItemButton>
             </ListItem>
           )}
+          {isInRole("Admin") && (
+            <ListItem>
+              <ListItemButton
+                key="publish"
+                component={NavLink}
+                to={`/profile/publish`}
+              >
+                <ListItemText
+                  primary={"Запросы на публикацию"}
+                  className="pl-2"
+                />
+              </ListItemButton>
+            </ListItem>
+          )}
         </List>
       </div>
       <Box>
         <List>
           <ListItem disablePadding>
             <ListItemButton
-              onClick={() => dispatch(logout())}
+              onClick={() => {
+                dispatch(logout());
+                dispatch(baseApi.util.resetApiState());
+              }}
               component={NavLink}
               to="/"
               sx={{ color: "error.main" }}

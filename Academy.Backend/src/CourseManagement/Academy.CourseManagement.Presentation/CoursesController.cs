@@ -25,6 +25,10 @@ using Academy.CourseManagement.Application.Courses;
 using Academy.CourseManagement.Application.Courses.GetCourse;
 using Academy.CourseManagement.Application.Courses.AddLessonContent;
 using Academy.CourseManagement.Application.Courses.DeleteAttachment;
+using Academy.CourseManagement.Application.Courses.SendOnModeration;
+using Academy.CourseManagement.Application.Courses.Publish;
+using Academy.CourseManagement.Application.Courses.GetCoursesUnderModeration;
+using Academy.CourseManagement.Application.Courses.HideCourse;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -56,6 +60,33 @@ namespace Academy.CourseManagement.Presentation
         public async Task<ActionResult> GetCourses(
             [FromQuery] GetCoursesRequest request,
             [FromServices] GetCoursesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(request.ToQuery(), cancellationToken);
+
+            var value = result.Value;
+
+            var metadata = new
+            {
+                value.TotalCount,
+                value.PageSize,
+                value.CurrentPage,
+                value.TotalPages,
+                value.HasNext,
+                value.HasPrevious
+            };
+
+            Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
+
+            return Ok(value);
+        }
+
+
+        [HttpGet("under-moderation")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> GetCoursesUnderModeration(
+            [FromQuery] GetCoursesUnderModerationRequest request,
+            [FromServices] GetCoursesUnderModerationQueryHandler handler,
             CancellationToken cancellationToken)
         {
             var result = await handler.Handle(request.ToQuery(), cancellationToken);
@@ -352,6 +383,51 @@ namespace Academy.CourseManagement.Presentation
             CancellationToken cancellationToken)
         {
             var result = await handler.Handle(new GetAuthorCoursesQuery(UserId));
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/send-on-review")]
+        [HasPermission(Permissions.Courses.Update)]
+        public async Task<ActionResult> SendCourseOnReview(
+            [FromRoute] Guid id,
+            [FromServices] SendOnModerateCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new SendOnModerationCommand(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/publish")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> PublishCourse(
+            [FromRoute] Guid id,
+            [FromServices] PublishCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new PublishCommand(id), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/hide")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> HideCourse(
+            [FromRoute] Guid id,
+            [FromServices] HideCourseCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new HideCourseCommand(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
 
             return Ok(result.Value);
         }

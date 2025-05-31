@@ -18,7 +18,8 @@
       "authorings.reject",
       "authors.create",
       "authors.delete",
-      "authors.read"
+      "authors.read",
+      "courses.publish"
     ]
   },
   "Permissions": {
@@ -26,7 +27,8 @@
       "courses.create",
       "courses.update",
       "courses.read",
-      "courses.delete"
+      "courses.delete",
+      "courses.publish"
     ],
     "Authorings": [
       "authorings.create",

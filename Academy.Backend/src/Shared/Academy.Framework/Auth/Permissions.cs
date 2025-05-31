@@ -8,6 +8,7 @@
             public const string Update = "courses.update";
             public const string Read = "courses.read";
             public const string Delete = "courses.delete";
+            public const string Publish = "courses.publish";
         }
 
         public static class Authorings 

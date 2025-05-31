@@ -7,6 +7,7 @@ import MyAuthoringsPage from "./authorings/MyAuthoringsPage";
 import MyAuthoringPage from "./authorings/MyAuthoringPage";
 import AuthoringsPage from "./authorings/AuthoringsPage";
 import AuthoringDecisionPage from "./authorings/AuthoringDecisionPage";
+import PublishRequests from "./courseManagement/PublishRequests";
 
 export const accountRoutes: RouteObject = {
   path: "/profile",
@@ -53,6 +54,14 @@ export const accountRoutes: RouteObject = {
       element: (
         <ProtectedRoute roles={["Admin"]}>
           <AuthoringsPage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "publish",
+      element: (
+        <ProtectedRoute roles={["Admin"]}>
+          <PublishRequests />
         </ProtectedRoute>
       ),
     },

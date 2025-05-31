@@ -57,6 +57,7 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithRefresh,
   tagTypes: [
     "Courses",
+    "CoursesModeration",
     "Modules",
     "CourseInfo",
     "Lesson",

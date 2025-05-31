@@ -2,16 +2,25 @@ import { useNavigate, useParams } from "react-router";
 import {
   useDeleteCourseMutation,
   useGetCourseInfoQuery,
+  useHideCourseMutation,
+  useSendCourseOnReviewMutation,
   useUpdateCourseMutation,
   useUploadCoursePreviewMutation,
 } from "./api";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { Alert, Button, CircularProgress, TextField } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Chip,
+  CircularProgress,
+  TextField,
+} from "@mui/material";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChangeEvent, useEffect, useState } from "react";
 import DeleteCourseModal from "./DeleteCourseModal";
+import { getCourseStatusMeta } from "./helpers/helper";
 
 const schema = z.object({
   title: z.string().nonempty("Это поле обязательно для заполнения"),
@@ -36,6 +45,8 @@ export default function EditMainInfo() {
   const [uploadPreview] = useUploadCoursePreviewMutation();
   const [updateCourse] = useUpdateCourseMutation();
   const [deleteCourse] = useDeleteCourseMutation();
+  const [sendOnReview] = useSendCourseOnReviewMutation();
+  const [hideCourse] = useHideCourseMutation();
 
   async function handleUploadPreview(e: ChangeEvent<HTMLInputElement>) {
     if (!courseId) return;
@@ -82,6 +93,18 @@ export default function EditMainInfo() {
     }
   }
 
+  async function handleHideCourse() {
+    if (!courseId) return;
+
+    hideCourse({ id: courseId }).unwrap().then().catch();
+  }
+
+  function handleSendOnReview() {
+    if (!courseId) return;
+
+    sendOnReview({ id: courseId }).unwrap().then().catch();
+  }
+
   if (isLoading) {
     return <CircularProgress />;
   }
@@ -95,6 +118,8 @@ export default function EditMainInfo() {
       </div>
     );
   }
+
+  const { label, color } = getCourseStatusMeta(data!.result!.status);
 
   return (
     <>
@@ -155,16 +180,41 @@ export default function EditMainInfo() {
           </form>
         </div>
       </div>
-      <div>
-        <Button
-          className="w-fit self-end"
-          color="error"
-          variant="contained"
-          onClick={() => setDeleteModalOpen(true)}
-        >
-          Удалить курс
-        </Button>
+      <div className="flex justify-between px-14">
+        <div className="flex justify-between gap-3">
+          {data!.result!.status == "DRAFT" ? (
+            <Button
+              className="w-fit"
+              color="primary"
+              variant="contained"
+              onClick={handleSendOnReview}
+            >
+              Запрос на публикацию
+            </Button>
+          ) : (
+            <Button
+              className="w-fit"
+              color="primary"
+              variant="contained"
+              onClick={handleHideCourse}
+            >
+              Скрыть курс
+            </Button>
+          )}
+          <Button
+            className="w-fit"
+            color="error"
+            variant="contained"
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            Удалить курс
+          </Button>
+        </div>
+        <div>
+          Статус курса: <Chip label={label} color={color} />
+        </div>
       </div>
+
       <DeleteCourseModal
         onClose={() => setDeleteModalOpen(false)}
         isOpen={deleteModalOpen}

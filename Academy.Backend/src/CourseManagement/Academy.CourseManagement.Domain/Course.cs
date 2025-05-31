@@ -179,5 +179,23 @@ namespace Academy.CourseManagement.Domain
 
             return moduleResult.Value.SetLessonContent(lessonId, content);
         }
+
+        public UnitResult<Error> SendOnReview()
+        {
+            Status = Status.UnderModeration;
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> Publish()
+        {
+            Status = Status.Published;
+            return UnitResult.Success<Error>();
+        }
+
+        public UnitResult<Error> Hide()
+        {
+            Status = Status.Draft;
+            return UnitResult.Success<Error>();
+        }
     }
 }
