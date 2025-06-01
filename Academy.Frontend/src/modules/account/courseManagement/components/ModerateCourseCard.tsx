@@ -79,7 +79,9 @@ export function ModerateCourseCard({ course }: Props) {
           variant="outlined"
           fullWidth
           size="medium"
-          onClick={() => {}}
+          onClick={() => {
+            navigate(`/moderate/${course.id}`);
+          }}
         >
           Просмотреть
         </Button>
