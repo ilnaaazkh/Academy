@@ -19,7 +19,7 @@ export function EditCourseCard({ course }: Props) {
   return (
     <Card
       sx={{
-        height: "400px",
+        height: "420px",
         display: "flex",
         width: "400px",
         borderRadius: "20px",
@@ -59,7 +59,7 @@ export function EditCourseCard({ course }: Props) {
         </Typography>
       </CardContent>
 
-      <Box className="px-4">
+      <Box className="px-4 mb-4">
         <Button
           sx={{ borderRadius: "10px" }}
           variant="contained"
