@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { CourseDto } from "../../../../models/response/courseDto";
 import { useNavigate } from "react-router-dom";
-import { usePublishCourseMutation } from "../api";
+import { usePublishCourseMutation, useRejectCourseMutation } from "../api";
 
 type Props = {
   course: CourseDto;
@@ -16,7 +16,9 @@ type Props = {
 
 export function ModerateCourseCard({ course }: Props) {
   const navigate = useNavigate();
-  const [publishCourse, { isLoading }] = usePublishCourseMutation();
+  const [publishCourse, { isLoading: isPublishing }] =
+    usePublishCourseMutation();
+  const [reject, { isLoading: isRejecting }] = useRejectCourseMutation();
 
   const handlePublish = async () => {
     try {
@@ -27,7 +29,11 @@ export function ModerateCourseCard({ course }: Props) {
   };
 
   const handleReject = async () => {
-    console.log("Отклонено", course.id);
+    try {
+      await reject({ id: course.id }).unwrap();
+    } catch {
+      console.log("Не удалось отклонить запрос на публикацию");
+    }
   };
 
   return (
@@ -91,7 +97,7 @@ export function ModerateCourseCard({ course }: Props) {
             variant="contained"
             color="success"
             size="medium"
-            disabled={isLoading}
+            disabled={isPublishing || isRejecting}
             onClick={handlePublish}
           >
             Опубликовать
@@ -101,6 +107,7 @@ export function ModerateCourseCard({ course }: Props) {
             variant="contained"
             color="error"
             size="medium"
+            disabled={isPublishing || isRejecting}
             onClick={handleReject}
           >
             Отклонить

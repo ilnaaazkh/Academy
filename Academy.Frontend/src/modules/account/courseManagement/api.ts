@@ -249,6 +249,14 @@ const api = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["CourseInfo"],
     }),
+
+    rejectCourse: builder.mutation<Envelope<string>, { id: string }>({
+      query: ({ id }) => ({
+        url: `courses/${id}/reject`,
+        method: "POST",
+      }),
+      invalidatesTags: ["CoursesModeration"],
+    }),
   }),
 });
 
@@ -273,4 +281,5 @@ export const {
   useSendCourseOnReviewMutation,
   usePublishCourseMutation,
   useHideCourseMutation,
+  useRejectCourseMutation,
 } = api;

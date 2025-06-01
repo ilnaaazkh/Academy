@@ -29,6 +29,7 @@ using Academy.CourseManagement.Application.Courses.SendOnModeration;
 using Academy.CourseManagement.Application.Courses.Publish;
 using Academy.CourseManagement.Application.Courses.GetCoursesUnderModeration;
 using Academy.CourseManagement.Application.Courses.HideCourse;
+using Academy.CourseManagement.Application.Courses.RejectCourse;
 
 namespace Academy.CourseManagement.Presentation
 {
@@ -425,6 +426,21 @@ namespace Academy.CourseManagement.Presentation
             CancellationToken cancellationToken)
         {
             var result = await handler.Handle(new HideCourseCommand(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/reject")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> RejectCourse(
+            [FromRoute] Guid id,
+            [FromServices] RejectCourseCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new RejectCourseCommand(id), cancellationToken);
 
             if (result.IsFailure)
                 return result.Error.ToResponse();

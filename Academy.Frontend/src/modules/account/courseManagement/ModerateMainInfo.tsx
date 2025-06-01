@@ -1,5 +1,9 @@
 import { Alert, Button, CircularProgress, Typography } from "@mui/material";
-import { useGetCourseInfoQuery, usePublishCourseMutation } from "./api";
+import {
+  useGetCourseInfoQuery,
+  usePublishCourseMutation,
+  useRejectCourseMutation,
+} from "./api";
 import { useNavigate, useParams } from "react-router";
 import { skipToken } from "@reduxjs/toolkit/query";
 
@@ -10,7 +14,9 @@ export default function ModerateMainInfo() {
   );
   const navigate = useNavigate();
 
-  const [publishCourse] = usePublishCourseMutation();
+  const [publishCourse, { isLoading: isPublishing }] =
+    usePublishCourseMutation();
+  const [reject, { isLoading: isRejecting }] = useRejectCourseMutation();
 
   function handlePublishCourse() {
     if (!id) return;
@@ -19,6 +25,15 @@ export default function ModerateMainInfo() {
       .unwrap()
       .then(() => navigate("/profile/publish"))
       .catch(() => console.log("Ошибка при публикации курса"));
+  }
+
+  function handleRejectCourse() {
+    if (!id) return;
+
+    reject({ id })
+      .unwrap()
+      .then(() => navigate("/profile/publish"))
+      .catch(() => console.log("Ошибка при отклонении публикации курса"));
   }
 
   if (isLoading) {
@@ -70,11 +85,17 @@ export default function ModerateMainInfo() {
         <Button
           variant="contained"
           color="success"
+          disabled={isRejecting || isPublishing}
           onClick={handlePublishCourse}
         >
           Опубликовать
         </Button>
-        <Button variant="contained" color="error">
+        <Button
+          variant="contained"
+          disabled={isRejecting || isPublishing}
+          color="error"
+          onClick={handleRejectCourse}
+        >
           Отклонить
         </Button>
       </div>
