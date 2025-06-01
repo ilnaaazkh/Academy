@@ -16,6 +16,9 @@ using Academy.Management.Application.Authorings.Command.SubmitAuthoring;
 using Academy.Management.Application.Authorings.Command.RejectAuthoring;
 using Academy.Management.Application.Authorings.Query.GetAuthoringsQuery;
 using Newtonsoft.Json;
+using Academy.Management.Application.Authorings.Query.GetMyAuthorings;
+using Academy.Management.Application.Authorings.Query.GetAuthoringQuery;
+using Academy.Management.Application.Authorings.Command.UpdateAuthoring;
 
 namespace Academy.Management.Presentation
 {
@@ -158,6 +161,45 @@ namespace Academy.Management.Presentation
             Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
 
             return Ok(result);
+        }
+
+        [HttpGet("my-authorings")]
+        [Authorize]
+        public async Task<ActionResult> MyAuthorings(
+            [FromServices] GetMyAuthoringsQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetMyAuthoringsQuery(UserId), cancellationToken);
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("{id:guid}")]
+        [Authorize]
+        public async Task<ActionResult> GetAuthoring(
+            [FromRoute] Guid id,
+            [FromServices] GetAuthoringQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetAuthoringQuery(id), cancellationToken);
+
+            return result.IsSuccess ? Ok(result.Value) : NotFound();
+        }
+
+        [HttpPut("{id:guid}")]
+        [HasPermission(Permissions.Authorings.CreateAuthoring)]
+        public async Task<ActionResult> UpdateAuthoring(
+            [FromRoute] Guid id,
+            [FromBody] UpdateAuthoringRequest request,
+            [FromServices] UpdateAuthoringCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(request.ToCommad(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
         }
     }
 }

@@ -19,12 +19,34 @@ using Academy.Framework.Auth;
 using Academy.CourseManagement.Application.Courses.GetCourses;
 using Newtonsoft.Json;
 using Academy.CourseManagement.Application.Courses.GetCourseModules;
+using Academy.CourseManagement.Application.Courses.AddCoursePreview;
+using Microsoft.AspNetCore.Authorization;
+using Academy.CourseManagement.Application.Courses;
+using Academy.CourseManagement.Application.Courses.GetCourse;
+using Academy.CourseManagement.Application.Courses.AddLessonContent;
+using Academy.CourseManagement.Application.Courses.DeleteAttachment;
+using Academy.CourseManagement.Application.Courses.SendOnModeration;
+using Academy.CourseManagement.Application.Courses.Publish;
+using Academy.CourseManagement.Application.Courses.GetCoursesUnderModeration;
+using Academy.CourseManagement.Application.Courses.HideCourse;
+using Academy.CourseManagement.Application.Courses.RejectCourse;
 
 namespace Academy.CourseManagement.Presentation
 {
     public class CoursesController : ApplicationController
     {
-        [HttpGet("{courseId:guid}")]
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult> GetCourse(
+            [FromRoute] Guid id,
+            [FromServices] GetCourseQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetCourseQuery(id), cancellationToken);
+            return Ok(result.Value);
+        }
+
+
+        [HttpGet("{courseId:guid}/modules")]
         public async Task<ActionResult> GetCourseModules(
             [FromRoute] Guid courseId,
             [FromServices] GetCourseModulesQueryHandler handler,
@@ -39,6 +61,33 @@ namespace Academy.CourseManagement.Presentation
         public async Task<ActionResult> GetCourses(
             [FromQuery] GetCoursesRequest request,
             [FromServices] GetCoursesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(request.ToQuery(), cancellationToken);
+
+            var value = result.Value;
+
+            var metadata = new
+            {
+                value.TotalCount,
+                value.PageSize,
+                value.CurrentPage,
+                value.TotalPages,
+                value.HasNext,
+                value.HasPrevious
+            };
+
+            Response.Headers["X-Pagination"] = JsonConvert.SerializeObject(metadata);
+
+            return Ok(value);
+        }
+
+
+        [HttpGet("under-moderation")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> GetCoursesUnderModeration(
+            [FromQuery] GetCoursesUnderModerationRequest request,
+            [FromServices] GetCoursesUnderModerationQueryHandler handler,
             CancellationToken cancellationToken)
         {
             var result = await handler.Handle(request.ToQuery(), cancellationToken);
@@ -227,6 +276,26 @@ namespace Academy.CourseManagement.Presentation
             return Ok(result.Value);
         }
 
+        [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/content")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> AddLessonContent(
+            [FromRoute] Guid courseId,
+            [FromRoute] Guid moduleId,
+            [FromRoute] Guid lessonId,
+            [FromBody] AddLessonContentRequest request,
+            [FromServices] AddLessonContentCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var command = request.ToCommand(courseId, moduleId, lessonId, UserId);
+
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/attachments")]
         [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddAttachmentsToLesson(
@@ -248,8 +317,27 @@ namespace Academy.CourseManagement.Presentation
 
             return Ok(result.Value);
         }
-        
-        
+
+        [HttpDelete("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/attachments/{fileUrl}")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> RemoveAttachmentFromLesson(
+           [FromRoute] Guid courseId,
+           [FromRoute] Guid moduleId,
+           [FromRoute] Guid lessonId,
+           string fileUrl,
+           [FromServices] DeleteAttachmentCommandHandler handler,
+           CancellationToken cancellationToken)
+        {
+            var command = new DeleteAttachmentCommand(courseId, moduleId, lessonId, UserId, fileUrl);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+
         [HttpPost("{courseId:guid}/modules/{moduleId:guid}/lessons/{lessonId:guid}/practice")]
         [HasPermission(Permissions.Courses.Create)]
         public async Task<ActionResult> AddPracticeDataToLesson(
@@ -262,6 +350,97 @@ namespace Academy.CourseManagement.Presentation
         {
             var command = request.ToCommand(courseId, moduleId, lessonId, UserId);
             var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{courseId:guid}/preview")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> AddCoursePreview(
+            [FromRoute] Guid courseId,
+            [FromForm] IFormFileCollection files,
+            [FromServices] AddCoursePreviewCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            await using var formFileProcessor = new FormFileProcessor();
+            var processedFiles = formFileProcessor.Process(files);
+
+            var command = new AddCoursePreviewCommand(courseId, processedFiles, UserId);
+            var result = await handler.Handle(command, cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok();
+        }
+
+        [HttpGet("my-courses")]
+        [Authorize]
+        public async Task<ActionResult> GetAuthorCourses(
+            [FromServices] GetAuthorCoursesQueryHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new GetAuthorCoursesQuery(UserId));
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/send-on-review")]
+        [HasPermission(Permissions.Courses.Update)]
+        public async Task<ActionResult> SendCourseOnReview(
+            [FromRoute] Guid id,
+            [FromServices] SendOnModerateCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new SendOnModerationCommand(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/publish")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> PublishCourse(
+            [FromRoute] Guid id,
+            [FromServices] PublishCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new PublishCommand(id), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/hide")]
+        [HasPermission(Permissions.Courses.Create)]
+        public async Task<ActionResult> HideCourse(
+            [FromRoute] Guid id,
+            [FromServices] HideCourseCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new HideCourseCommand(id, UserId), cancellationToken);
+
+            if (result.IsFailure)
+                return result.Error.ToResponse();
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/reject")]
+        [HasPermission(Permissions.Courses.Publish)]
+        public async Task<ActionResult> RejectCourse(
+            [FromRoute] Guid id,
+            [FromServices] RejectCourseCommandHandler handler,
+            CancellationToken cancellationToken)
+        {
+            var result = await handler.Handle(new RejectCourseCommand(id), cancellationToken);
 
             if (result.IsFailure)
                 return result.Error.ToResponse();

@@ -11,7 +11,7 @@ namespace Academy.CourseManagement.Application.Courses.AddAttachments
     public class AddAttachmentsCommandHandler : ICommandHandler<Guid, AddAttachmentsCommand>
     {
         private readonly string[] ALLOWED_EXTENSIONS = [".pdf", ".zip"];
-        private const string BUCKET = "attachments";
+        private readonly string BUCKET = Constants.Buckets.ATTACHMENTS;
         private readonly ICoursesRepository _coursesRepository;
         private readonly IFilesServiceContract _filesServiceContract;
 

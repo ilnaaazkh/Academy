@@ -5,7 +5,7 @@ echo "🚀 Создание и применение миграций для Acco
 timestamp=$(date +"%Y%m%d%H%M%S")
 
 # Генерация миграции
-dotnet ef migrations add Accounts \
+dotnet ef migrations add Accounts_$timestamp \
     --context AccountsDbContext \
     --startup-project src/Academy.Web/ \
     --project src/Accounts/Academy.Accounts.Infrastructure \

@@ -39,6 +39,10 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("description");
 
+                    b.Property<string>("Preview")
+                        .HasColumnType("text")
+                        .HasColumnName("preview");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -69,7 +73,6 @@ namespace Academy.CourseManagement.Infrastructure.Migrations
                         .HasColumnName("attachments");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("content");
 

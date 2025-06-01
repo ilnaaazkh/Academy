@@ -15,7 +15,11 @@
     "Admin": [
       "courses.read",
       "authorings.approve",
-      "authorings.reject"
+      "authorings.reject",
+      "authors.create",
+      "authors.delete",
+      "authors.read",
+      "courses.publish"
     ]
   },
   "Permissions": {
@@ -23,7 +27,8 @@
       "courses.create",
       "courses.update",
       "courses.read",
-      "courses.delete"
+      "courses.delete",
+      "courses.publish"
     ],
     "Authorings": [
       "authorings.create",
@@ -31,6 +36,11 @@
       "authorings.submit",
       "authorings.approve",
       "authorings.reject"
+    ],
+    "Authors": [
+      "authors.read",
+      "authors.create",
+      "authors.delete"
     ]
   }
 }

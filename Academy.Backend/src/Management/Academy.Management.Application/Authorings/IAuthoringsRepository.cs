@@ -7,8 +7,9 @@ namespace Academy.Management.Application.Authorings
     public interface IAuthoringsRepository
     {
         Task<Guid> Add(Authoring authorRole, CancellationToken cancellationToken);
+        Task<IReadOnlyList<Authoring>> GetAuthoringsCreatedByUser(Guid userId, CancellationToken cancellationToken);
         Task<(List<Authoring>, int)> GetAuthoringsOnPending(GetAuthoringsQuery query, CancellationToken cancellationToken);
-        Task<Authoring> GetById(Guid authoringId, CancellationToken cancellationToken);
+        Task<Authoring?> GetById(Guid authoringId, CancellationToken cancellationToken);
         Task Save(Authoring authorRoleRequest, CancellationToken cancellationToken);
     }
 }

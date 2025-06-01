@@ -1,5 +1,4 @@
 ﻿using Academy.CourseManagement.Application.DTOs;
-using Academy.CourseManagement.Domain;
 using Academy.SharedKernel.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,13 +7,20 @@ using Newtonsoft.Json;
 
 namespace Academy.CourseManagement.Infrastructure.Configurations.Read
 {
-    public class LessonDtoConfiguration : IEntityTypeConfiguration<LessonDto>
+
+    public partial class LessonDtoConfiguration : IEntityTypeConfiguration<LessonDto>
     {
         public void Configure(EntityTypeBuilder<LessonDto> builder)
         {
             builder.ToTable(Tables.Lessons);
 
             builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.LessonType).HasColumnName("lesson_type");
+            builder.Property(x => x.Position).HasColumnName("position");
+            builder.Property(x => x.Title).HasColumnName("title");
+            builder.Property(x => x.Content).HasColumnName("content");
+            
 
             builder.Property(l => l.Questions)
               .HasConversion(
@@ -43,6 +49,12 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Read
                 .HasConversion(p => JsonConvert.SerializeObject(p),
                     v => JsonConvert.DeserializeObject<PracticeLessonData>(v)!)
                 .HasColumnType("jsonb");
+
+            builder.HasOne(x => x.LessonInfoDto)
+                .WithOne()
+                .HasForeignKey<LessonDto>(l => l.Id);
+
+            builder.Navigation(l => l.LessonInfoDto).IsRequired();
         }
     }
 }

@@ -10,14 +10,12 @@ namespace Academy.Management.Application.Authorings.Command.CreateAuthoring
     public class CreateAuthoringCommandHandler : ICommandHandler<Guid, CreteAuthoringCommand>
     {
         private readonly IAuthoringsRepository _authorRoleRequestRepository;
-        private readonly IAccountsContract _accountsContract;
 
         public CreateAuthoringCommandHandler(
             IAuthoringsRepository authorRoleRequestRepository,
             IAccountsContract accountsContract)
         {
             _authorRoleRequestRepository = authorRoleRequestRepository;
-            _accountsContract = accountsContract;
         }
 
         public async Task<Result<Guid, ErrorList>> Handle(

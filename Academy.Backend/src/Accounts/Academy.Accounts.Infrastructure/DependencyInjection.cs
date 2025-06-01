@@ -21,6 +21,10 @@ namespace Academy.Accounts.Infrastructure
             services.AddIdentity<User, Role>(options =>
                 {
                     options.User.RequireUniqueEmail = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
                 })
                 .AddEntityFrameworkStores<AccountsDbContext>();
 

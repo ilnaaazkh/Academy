@@ -51,15 +51,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Accounts.Contracts"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Management", "Management", "{BC620E8E-619E-44F0-AEDD-B2D6464AAB56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy.Management.Domain", "src\Management\Academy.Management.Domain\Academy.Management.Domain.csproj", "{4E8D1CCB-0E81-4954-A428-B5BB2F4A4A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Management.Domain", "src\Management\Academy.Management.Domain\Academy.Management.Domain.csproj", "{4E8D1CCB-0E81-4954-A428-B5BB2F4A4A0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy.Management.Application", "src\Management\Academy.Management.Application\Academy.Management.Application.csproj", "{33E244E1-6D70-43B5-91EF-84406804FA5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Management.Application", "src\Management\Academy.Management.Application\Academy.Management.Application.csproj", "{33E244E1-6D70-43B5-91EF-84406804FA5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy.Management.Infrastructure", "src\Management\Academy.Management.Infrastructure\Academy.Management.Infrastructure.csproj", "{B7EB1EF4-96B2-4FEC-ADD3-79DF6844AB0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Management.Infrastructure", "src\Management\Academy.Management.Infrastructure\Academy.Management.Infrastructure.csproj", "{B7EB1EF4-96B2-4FEC-ADD3-79DF6844AB0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy.Management.Presentation", "src\Management\Academy.Management.Presentation\Academy.Management.Presentation.csproj", "{29289BE9-A9C7-48EE-99E7-1C5EAF5A99F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Management.Presentation", "src\Management\Academy.Management.Presentation\Academy.Management.Presentation.csproj", "{29289BE9-A9C7-48EE-99E7-1C5EAF5A99F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy.Management.Contracts", "src\Management\Academy.Management.Contracts\Academy.Management.Contracts.csproj", "{9ABAB477-B830-4EF2-949A-CD9AF5DF0543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Academy.Management.Contracts", "src\Management\Academy.Management.Contracts\Academy.Management.Contracts.csproj", "{9ABAB477-B830-4EF2-949A-CD9AF5DF0543}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Progress", "Progress", "{B7F9EA6E-501E-4965-81F8-4940F66BCDD6}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,6 +196,7 @@ Global
 		{B7EB1EF4-96B2-4FEC-ADD3-79DF6844AB0D} = {BC620E8E-619E-44F0-AEDD-B2D6464AAB56}
 		{29289BE9-A9C7-48EE-99E7-1C5EAF5A99F4} = {BC620E8E-619E-44F0-AEDD-B2D6464AAB56}
 		{9ABAB477-B830-4EF2-949A-CD9AF5DF0543} = {BC620E8E-619E-44F0-AEDD-B2D6464AAB56}
+		{B7F9EA6E-501E-4965-81F8-4940F66BCDD6} = {1774B583-27A6-4813-9A0E-02AF281F054E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80775800-F43D-417A-98DB-C3867D7FABB2}

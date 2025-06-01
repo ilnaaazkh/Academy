@@ -40,6 +40,8 @@ namespace Academy.CourseManagement.Infrastructure.Configurations.Write
                 .HasForeignKey("course_id")
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(c => c.Preview);
+
             builder.Property(c => c.AuthorId).IsRequired();
         }
     }

@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Academy.CourseManagement.Presentation
 {
-    [Route("execute")]
+    [Route("/api")]
     public class CodeExecutionController : ApplicationController
     {
-        [HttpPost]
+        [HttpPost("execute")]
         public async Task<ActionResult> Execute(
             [FromBody] RunCodeRequest request,
             [FromServices] RunCodeCommandHandler handler, 

@@ -38,12 +38,22 @@ namespace Academy.Management.Infrastructure.Repositories
         {
             var authoringsQueryable = _dbContext.Authorings
                                     .Where(a => a.Status == Domain.AuthorRoleRequestStatus.Pending)
-                                    .OrderBy(a => a.CreatedAt);
+                                    .OrderByDescending(a => a.CreatedAt);
             
             var totalCount = authoringsQueryable.Count();
             var result = await authoringsQueryable.Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize).ToListAsync(); 
 
             return (result, totalCount);
+        }
+
+        public async Task<IReadOnlyList<Authoring>> GetAuthoringsCreatedByUser(Guid userId, CancellationToken cancellationToken)
+        {
+            var result = await _dbContext.Authorings
+                .Where(a => a.UserId == userId)
+                .OrderByDescending(a => a.CreatedAt)
+                .ToListAsync(cancellationToken);
+
+            return result;
         }
     }
 }

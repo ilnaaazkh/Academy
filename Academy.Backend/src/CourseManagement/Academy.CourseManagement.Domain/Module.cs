@@ -119,6 +119,18 @@ namespace Academy.CourseManagement.Domain
 
             return lessonResult.Value.AddAttachments(attachments);
         }
+
+        public UnitResult<Error> RemoveAttachmentsFromLesson(
+            LessonId lessonId,
+            string fileUrl)
+        {
+            var lessonResult = GetLessonById(lessonId);
+
+            if (lessonResult.IsFailure)
+                return lessonResult.Error;
+
+            return lessonResult.Value.RemoveAttachment(fileUrl);
+        }
    
         public UnitResult<Error> AddPracticeDataToLesson(
             LessonId lessonId, 
@@ -130,6 +142,18 @@ namespace Academy.CourseManagement.Domain
                 return lessonResult.Error;
 
             return lessonResult.Value.AddPracticeLessonData(practiceLessonData);
+        }
+
+        public UnitResult<Error> SetLessonContent(
+            LessonId lessonId,
+            Content content)
+        {
+            var lessonResult = GetLessonById(lessonId);
+
+            if (lessonResult.IsFailure)
+                return lessonResult.Error;
+
+            return lessonResult.Value.SetContent(content);
         }
 
         private Result<Lesson, Error> GetLessonById(LessonId id)

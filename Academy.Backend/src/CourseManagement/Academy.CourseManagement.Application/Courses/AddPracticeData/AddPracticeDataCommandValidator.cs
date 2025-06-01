@@ -9,12 +9,9 @@ namespace Academy.CourseManagement.Application.Courses.AddPracticeData
     {
         public AddPracticeDataCommandValidator()
         {
-            RuleFor(c => new { c.TemplateCode, c.Tests })
+            RuleFor(c => new { c.TemplateCode })
                 .MustBeValueObject(c => 
-                    PracticeLessonData.Create(
-                        c.TemplateCode, 
-                        c.Tests.Select(t => new Test(t.Input.ToList(), t.Expected))
-                        )
+                    PracticeLessonData.Create(c.TemplateCode)
                     );
         }
     }
